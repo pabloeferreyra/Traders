@@ -20,5 +20,7 @@ namespace Traders.Data
             .Property(b => b.DateMov)
             .HasDefaultValueSql("getdate()");
         }
+        public DbSet<BadgesViewModel> Badges { get; set; }
+        public DbSet<MovementsViewModel> Movements { get; set; }
     }
 }
