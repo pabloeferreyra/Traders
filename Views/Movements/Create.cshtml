@@ -1,7 +1,14 @@
 ﻿@model Traders.Models.MovementsViewModel
+@using Microsoft.AspNetCore.Identity
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nuevo Movimiento";
 }
 
 <h1>Create</h1>
@@ -14,8 +21,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserGuid" class="control-label"></label>
-                <input asp-for="UserGuid" class="form-control" />
+                <input asp-for="UserGuid" class="form-control" readonly value="@User.Identity.Name.ToString()" />
                 <span asp-validation-for="UserGuid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateMov" class="control-label"></label>
+                <input asp-for="DateMov" class="form-control" type="datetime-local" data-date-format="dd/MM/yyyy hh:mm" />
+                <span asp-validation-for="DateMov" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
