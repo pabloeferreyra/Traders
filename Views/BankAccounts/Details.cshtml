@@ -28,10 +28,6 @@
         </dl>
     </div>
     <div class="card-footer">
-        @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
-        {
-            <a asp-action="Edit" class="btn btn-outline-info" asp-route-id="@Model.Id">Editar</a>
-        }
         <a asp-action="Index" class="btn btn-outline-warning">Volver</a>
     </div>
 </div>
