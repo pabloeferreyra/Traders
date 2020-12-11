@@ -10,5 +10,6 @@ namespace Traders.Models
         public Guid Id { get; set; }
         public String Name { get; set; }
         public Decimal Amount { get; set; }
+        public ICollection<MovementsViewModel> Movements { get; set; }
     }
 }

@@ -22,5 +22,6 @@ namespace Traders.Data
         }
         public DbSet<BadgesViewModel> Badges { get; set; }
         public DbSet<MovementsViewModel> Movements { get; set; }
+        public DbSet<BankAccountsViewModel> BankAccounts { get; set; }
     }
 }

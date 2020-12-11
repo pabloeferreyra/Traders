@@ -13,5 +13,6 @@ namespace Traders.Models
         public Guid Id { get; set; }
         [Display(Name = "Nombre"), Required]
         public string Name { get; set; }
+        public ICollection<MovementsViewModel> Movements { get; set; }
     }
 }
