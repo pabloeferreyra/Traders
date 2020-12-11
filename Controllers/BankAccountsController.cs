@@ -21,14 +21,14 @@ namespace Traders.Controllers
         }
 
         // GET: BankAccounts
-        [Authorize(Roles = "Trader")]
+        [Authorize(Roles = "Trader, Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.BankAccounts.ToListAsync());
         }
 
         // GET: BankAccounts/Details/5
-        [Authorize(Roles = "Trader")]
+        [Authorize(Roles = "Trader, Admin")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
