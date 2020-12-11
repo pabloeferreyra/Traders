@@ -19,5 +19,19 @@ namespace Traders.Models
         [Display(Name ="Usuario"), Required]
         public string UserGuid { get; set; }
 
+        public Decimal AmountIn { get; set; }
+        public Guid BadgeGuidIn { get; set; }
+        public Guid BankAccountGuidIn { get; set; }
+
+        public Decimal AmountOut { get; set; }
+        public Guid BadgeGuidOut { get; set; }
+        public Guid BankAccountGuidOut { get; set; }
+
+        [Display(Name = "Divisa"), Required]
+        public BadgesViewModel Badges { get; set; }
+
+        [Display(Name = "Cuenta"), Required]
+        public BankAccountsViewModel BankAccounts { get; set; }
+
     }
 }

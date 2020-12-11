@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Traders.Models.BadgesViewModel>
+@using Microsoft.AspNetCore.Identity
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Divisas";
+}
+
+<p>
+    @{
+        if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+        {
+            <a asp-action="Create">Crear</a>
+        }
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="BadgesPartial">
+        <partial name="_BadgesPartial" model="@Model.ToList()" />
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/js/badges.js"></script>
+}

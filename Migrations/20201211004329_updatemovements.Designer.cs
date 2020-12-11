@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201211004329_updatemovements")]
+    partial class updatemovements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,13 +355,13 @@ namespace Traders.Migrations
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.HasOne("Traders.Models.BadgesViewModel", "Badges")
-                        .WithMany("Movements")
+                        .WithMany()
                         .HasForeignKey("BadgesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
-                        .WithMany("Movements")
+                        .WithMany()
                         .HasForeignKey("BankAccountsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

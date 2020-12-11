@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201210011401_movementsalpha")]
+    partial class movementsalpha
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,34 +236,17 @@ namespace Traders.Migrations
                     b.ToTable("Badges");
                 });
 
-            modelBuilder.Entity("Traders.Models.BankAccountsViewModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BankAccounts");
-                });
-
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("AmountIn")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("AmountIn")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("AmountOut")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("AmountOut")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("BadgeGuidIn")
                         .HasColumnType("uniqueidentifier");
@@ -270,15 +255,6 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BadgesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BankAccountGuidIn")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BankAccountGuidOut")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BankAccountsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateMov")
@@ -293,8 +269,6 @@ namespace Traders.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BadgesId");
-
-                    b.HasIndex("BankAccountsId");
 
                     b.ToTable("Movements");
                 });
@@ -353,14 +327,8 @@ namespace Traders.Migrations
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.HasOne("Traders.Models.BadgesViewModel", "Badges")
-                        .WithMany("Movements")
+                        .WithMany()
                         .HasForeignKey("BadgesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
-                        .WithMany("Movements")
-                        .HasForeignKey("BankAccountsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
