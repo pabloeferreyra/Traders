@@ -18,11 +18,17 @@ namespace Traders.Models
         
         [Display(Name ="Usuario"), Required]
         public string UserGuid { get; set; }
-
+        
+        [Display(Name = "Monto venta"), Required]
+        [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountIn { get; set; }
+        
         public Guid BadgeGuidIn { get; set; }
+       
         public Guid BankAccountGuidIn { get; set; }
-
+        
+        [Display(Name = "Monto compra"), Required]
+        [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOut { get; set; }
         public Guid BadgeGuidOut { get; set; }
         public Guid BankAccountGuidOut { get; set; }
@@ -32,6 +38,10 @@ namespace Traders.Models
 
         [Display(Name = "Cuenta"), Required]
         public BankAccountsViewModel BankAccounts { get; set; }
+
+        [Display(Name = "Comision"), Required]
+        [Column(TypeName = "decimal(10,8)")]
+        public Decimal Comission { get; set; }
 
     }
 }

@@ -1,14 +1,7 @@
 ﻿@model Traders.Models.MovementsViewModel
-@using Microsoft.AspNetCore.Identity
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-}
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Nuevo Movimiento";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
@@ -21,13 +14,38 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserGuid" class="control-label"></label>
-                <input asp-for="UserGuid" class="form-control" readonly value="@User.Identity.Name.ToString()" />
+                <input asp-for="UserGuid" class="form-control" />
                 <span asp-validation-for="UserGuid" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateMov" class="control-label"></label>
-                <input asp-for="DateMov" class="form-control" type="datetime-local" data-date-format="dd/MM/yyyy hh:mm" />
-                <span asp-validation-for="DateMov" class="text-danger"></span>
+                <label asp-for="AmountIn" class="control-label"></label>
+                <input asp-for="AmountIn" class="form-control" />
+                <span asp-validation-for="AmountIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeGuidIn" class="control-label"></label>
+                <input asp-for="BadgeGuidIn" class="form-control" />
+                <span asp-validation-for="BadgeGuidIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BankAccountGuidIn" class="control-label"></label>
+                <input asp-for="BankAccountGuidIn" class="form-control" />
+                <span asp-validation-for="BankAccountGuidIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmountOut" class="control-label"></label>
+                <input asp-for="AmountOut" class="form-control" />
+                <span asp-validation-for="AmountOut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeGuidOut" class="control-label"></label>
+                <input asp-for="BadgeGuidOut" class="form-control" />
+                <span asp-validation-for="BadgeGuidOut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BankAccountGuidOut" class="control-label"></label>
+                <input asp-for="BankAccountGuidOut" class="form-control" />
+                <span asp-validation-for="BankAccountGuidOut" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +15,25 @@ namespace Traders.Controllers
     public class MovementsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public MovementsController(ApplicationDbContext context)
+        public MovementsController(ApplicationDbContext context,
+                                UserManager<IdentityUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
         // GET: Movements
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movements.ToListAsync());
+            var movements = await _context.Movements.ToListAsync();
+            for (int i = 0; i <= movements.Count(); i++)
+            {
+                var movement = movements[i];
+                movements[i].UserGuid = userManager.FindByIdAsync(movement.UserGuid).Result.UserName;
+            }
+            return View(movements);
         }
 
         // GET: Movements/Details/5
@@ -39,6 +50,10 @@ namespace Traders.Controllers
             {
                 return NotFound();
             }
+            else
+            {
+                movementsViewModel.UserGuid = userManager.FindByIdAsync(movementsViewModel.UserGuid).Result.UserName;
+            }
 
             return View(movementsViewModel);
         }
@@ -49,101 +64,27 @@ namespace Traders.Controllers
             return View();
         }
 
-        // POST: Movements/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateMov,UserGuid")] MovementsViewModel movementsViewModel)
+        public async Task<IActionResult> Create([Bind("Id,DateMov,UserGuid,AmountIn,BadgeGuidIn,BankAccountGuidIn,AmountOut,BadgeGuidOut,BankAccountGuidOut, Commission")] MovementsViewModel movementsViewModel)
         {
             if (ModelState.IsValid)
             {
                 movementsViewModel.Id = Guid.NewGuid();
+                movementsViewModel.UserGuid = User.FindFirstValue(ClaimTypes.Name);
                 _context.Add(movementsViewModel);
+                await _context.SaveChangesAsync();
+                var accountIn = await _context.BankAccounts.Where(b => b.Id == movementsViewModel.BankAccountGuidIn).FirstOrDefaultAsync();
+                var accountOut = await _context.BankAccounts.Where(b => b.Id == movementsViewModel.BankAccountGuidOut).FirstOrDefaultAsync();
+                accountIn.Amount += movementsViewModel.AmountIn;
+                accountOut.Amount += movementsViewModel.AmountOut;
+                _context.Update(accountIn);
+                _context.Update(accountOut);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(movementsViewModel);
-        }
-
-        // GET: Movements/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movementsViewModel = await _context.Movements.FindAsync(id);
-            if (movementsViewModel == null)
-            {
-                return NotFound();
-            }
-            return View(movementsViewModel);
-        }
-
-        // POST: Movements/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,DateMov,UserGuid")] MovementsViewModel movementsViewModel)
-        {
-            if (id != movementsViewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(movementsViewModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovementsViewModelExists(movementsViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(movementsViewModel);
-        }
-
-        // GET: Movements/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movementsViewModel = await _context.Movements
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (movementsViewModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(movementsViewModel);
-        }
-
-        // POST: Movements/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var movementsViewModel = await _context.Movements.FindAsync(id);
-            _context.Movements.Remove(movementsViewModel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool MovementsViewModelExists(Guid id)
