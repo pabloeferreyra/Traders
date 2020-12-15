@@ -1,63 +1,94 @@
 ﻿@model Traders.Models.MovementsViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear nuevo movimiento";
 }
 
-<h1>Create</h1>
 
-<h4>MovementsViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="card">
+    <div class="card-header">
+        <h4>Crear Movimiento</h4>
+    </div>
+    <hr />
+    <form method="post">
+        <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserGuid" class="control-label"></label>
-                <input asp-for="UserGuid" class="form-control" />
-                <span asp-validation-for="UserGuid" class="text-danger"></span>
+                <input asp-for="UserGuid" id="UserGuid" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="AmountIn" class="control-label"></label>
-                <input asp-for="AmountIn" class="form-control" />
-                <span asp-validation-for="AmountIn" class="text-danger"></span>
+                <input asp-for="AmountIn" id="AmmountIn" class="form-control" />
+                <span asp-validation-for="AmountIn" id="AmmountInVal" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BadgeGuidIn" class="control-label"></label>
-                <input asp-for="BadgeGuidIn" class="form-control" />
-                <span asp-validation-for="BadgeGuidIn" class="text-danger"></span>
+                <select asp-for="BadgeGuidIn" id="BadgesIn"
+                        class="form-control BadgeGuidIn"
+                        asp-items="@(new SelectList(ViewBag.BadgesIn, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
                 <label asp-for="BankAccountGuidIn" class="control-label"></label>
-                <input asp-for="BankAccountGuidIn" class="form-control" />
-                <span asp-validation-for="BankAccountGuidIn" class="text-danger"></span>
+                <input asp-for="BankAccountGuidIn" id="BankAccountIn" class="form-control" />
+                <span asp-validation-for="BankAccountGuidIn" id="BannkAccountGuidIn" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AmountOut" class="control-label"></label>
-                <input asp-for="AmountOut" class="form-control" />
-                <span asp-validation-for="AmountOut" class="text-danger"></span>
+                <input asp-for="AmountOut" id="AmountOut" class="form-control" />
+                <span asp-validation-for="AmountOut" id="AmmountOutVal" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BadgeGuidOut" class="control-label"></label>
-                <input asp-for="BadgeGuidOut" class="form-control" />
-                <span asp-validation-for="BadgeGuidOut" class="text-danger"></span>
+                <input asp-for="BadgeGuidOut" id="BadgesOut" class="form-control" />
+                <span asp-validation-for="BadgeGuidOut" id="BadgesGuidOut" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BankAccountGuidOut" class="control-label"></label>
-                <input asp-for="BankAccountGuidOut" class="form-control" />
-                <span asp-validation-for="BankAccountGuidOut" class="text-danger"></span>
+                <input asp-for="BankAccountGuidOut" id="BankAccountOut" class="form-control" />
+                <span asp-validation-for="BankAccountGuidOut" id="BankAccountGuidOut" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="AmountInS" class="control-label"></label>
+                <input asp-for="AmountInS" id="AmmountIn" class="form-control" />
+                <span asp-validation-for="AmountInS" id="AmmountInValS" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="BankAccountGuidInS" class="control-label"></label>
+                <input asp-for="BankAccountGuidInS" id="BankAccountInS" class="form-control" />
+                <span asp-validation-for="BankAccountGuidInS" class="text-danger"></span>
             </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+            <div class="form-group">
+                <label asp-for="AmountOutS" class="control-label"></label>
+                <input asp-for="AmountOutS" id="AmountOutS" class="form-control" />
+                <span asp-validation-for="AmountOutS" id="AmmountOutValS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeGuidOutS" class="control-label"></label>
+                <input asp-for="BadgeGuidOutS" id="BadgesOut" class="form-control" />
+                <span asp-validation-for="BadgeGuidOutS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BankAccountGuidOutS" class="control-label"></label>
+                <input asp-for="BankAccountGuidOutS" id="BankAccountOut" class="form-control" />
+                <span asp-validation-for="BankAccountGuidOutS" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comission" class="control-label"></label>
+                <input asp-for="Comission" id="Comission" class="form-control" /><label>USD</label>
+                <span asp-validation-for="Comission" id="ComissionVal" class="text-danger"></span>
+            </div>
+            <div class="card-footer">
+                <button id="btnCreateMov" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Movements")')">Crear</button>
+                <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
+            </div>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
+    <script src="~/js/movements.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

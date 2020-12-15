@@ -16,14 +16,19 @@
             @Html.DisplayFor(modelItem => item.BadgeGuidIn)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.BankAccountGuidIn)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.AmountOut)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BadgeGuidOut)
         </td>
-
         <td>
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            @Html.DisplayFor(modelItem => item.BankAccountGuidOut)
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
         </td>
     </tr>
 }

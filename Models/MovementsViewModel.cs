@@ -26,18 +26,41 @@ namespace Traders.Models
         public Guid BadgeGuidIn { get; set; }
        
         public Guid BankAccountGuidIn { get; set; }
-        
+
+
+        [Display(Name = "Monto venta")]
+        [Column(TypeName = "decimal(10,8)")]
+        public Decimal AmountInS { get; set; }
+
+        public Guid BadgeGuidInS { get; set; }
+
+        public Guid BankAccountGuidInS { get; set; }
+
         [Display(Name = "Monto compra"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOut { get; set; }
         public Guid BadgeGuidOut { get; set; }
         public Guid BankAccountGuidOut { get; set; }
 
+        [Display(Name = "Monto compra Segundo")]
+        [Column(TypeName = "decimal(10,8)")]
+        public Decimal AmountOutS { get; set; }
+
+        public Guid BadgeGuidOutS { get; set; }
+
+        public Guid BankAccountGuidOutS { get; set; }
+
         [Display(Name = "Divisa"), Required]
         public BadgesViewModel Badges { get; set; }
 
         [Display(Name = "Cuenta"), Required]
         public BankAccountsViewModel BankAccounts { get; set; }
+        
+        [Display(Name = "Divisa")]
+        public BadgesViewModel BadgesS { get; set; }
+
+        [Display(Name = "Cuenta")]
+        public BankAccountsViewModel BankAccountsS { get; set; }
 
         [Display(Name = "Comision"), Required]
         [Column(TypeName = "decimal(10,8)")]
