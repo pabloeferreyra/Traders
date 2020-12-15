@@ -11,6 +11,7 @@ using Traders.Models;
 
 namespace Traders.Controllers
 {
+    [Authorize(Roles = "Trader, Admin")]
     public class BankAccountsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,15 +21,11 @@ namespace Traders.Controllers
             _context = context;
         }
 
-        // GET: BankAccounts
-        [Authorize(Roles = "Trader, Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.BankAccounts.ToListAsync());
         }
 
-        // GET: BankAccounts/Details/5
-        [Authorize(Roles = "Trader, Admin")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -46,8 +43,6 @@ namespace Traders.Controllers
             return View(bankAccountsViewModel);
         }
 
-        // GET: BankAccounts/Create
-        [Authorize(Roles = "Admin, Traders")]
         public IActionResult Create()
         {
             return View();
@@ -58,7 +53,6 @@ namespace Traders.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Traders")]
         public async Task<IActionResult> Create([Bind("Id,Name,Amount")] BankAccountsViewModel bankAccountsViewModel)
         {
             if (ModelState.IsValid)

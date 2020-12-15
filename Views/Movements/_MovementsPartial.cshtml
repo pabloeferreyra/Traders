@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Traders.Models.MovementsViewModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateMov)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserGuid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmountIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BadgeGuidIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAccountGuidIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmountOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BadgeGuidOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAccountGuidOut)
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+        </td>
+    </tr>
+}

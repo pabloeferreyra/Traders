@@ -18,24 +18,28 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserGuid)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgeGuidIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccountGuidIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgeGuidOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccountGuidOut)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateMov)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserGuid)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        <partial name="_MovementsPartial" model="@Model.ToList()" />
     </tbody>
 </table>

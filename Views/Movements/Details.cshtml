@@ -1,30 +1,70 @@
 ﻿@model Traders.Models.MovementsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de movimiento" + Html.DisplayFor(model => model.Id);
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>MovementsViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+<div class="card mb-3">
+    <div class="card-header">
+        Detalles del movimiento @Html.DisplayFor(model => model.Id)
+    </div>
+    <div class="card-body">
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateMov)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.DateMov)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+        <div class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserGuid)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(model => model.UserGuid)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AmountIn)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.AmountIn)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BadgeGuidIn)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.BadgeGuidIn)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BankAccountGuidIn)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.BankAccountGuidIn)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AmountOut)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.AmountOut)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BadgeGuidOut)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.BadgeGuidOut)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BankAccountGuidOut)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.BankAccountGuidOut)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comission)
+        </div>
+        <div class="col-sm-10">
+            @Html.DisplayFor(model => model.Comission) USD
+        </div>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index">Volver</a>
+    </div>
 </div>
