@@ -15,7 +15,7 @@
 
 <p>
     @{
-        if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Trader")))
+        if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
             <a asp-action="Create">Nueva cuenta</a>
         }
