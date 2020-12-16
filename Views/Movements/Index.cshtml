@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Movimientos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Nuevo movimiento</a>
 </p>
 <table class="table">
     <thead>
@@ -22,19 +22,19 @@
                 @Html.DisplayNameFor(model => model.AmountIn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BadgeGuidIn)
+                @Html.DisplayNameFor(model => model.Badges)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BankAccountGuidIn)
+                @Html.DisplayNameFor(model => model.BankAccounts)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AmountOut)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BadgeGuidOut)
+                @Html.DisplayNameFor(model => model.BadgesS)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BankAccountGuidOut)
+                @Html.DisplayNameFor(model => model.BankAccountsS)
             </th>
             <th></th>
         </tr>

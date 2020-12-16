@@ -13,19 +13,19 @@
             @Html.DisplayFor(modelItem => item.AmountIn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BadgeGuidIn)
+            @Html.DisplayFor(modelItem => item.Badges.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccountGuidIn)
+            @Html.DisplayFor(modelItem => item.BankAccounts.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AmountOut)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BadgeGuidOut)
+            @Html.DisplayFor(modelItem => item.BadgesS.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccountGuidOut)
+            @Html.DisplayFor(modelItem => item.BankAccountsS.Name)
         </td>
         <td>
             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>

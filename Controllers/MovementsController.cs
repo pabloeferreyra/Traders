@@ -28,7 +28,17 @@ namespace Traders.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movements.ToListAsync());
+            var movements = await _context.Movements.ToListAsync();
+            List<MovementsViewModel> mov = new List<MovementsViewModel>();
+            foreach (var m in movements)
+            {
+                m.Badges = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == m.BadgeGuidIn);
+                m.BadgesS = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == m.BadgeGuidOut);
+                m.BankAccounts = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == m.BankAccountGuidIn);
+                m.BankAccountsS = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == m.BankAccountGuidOut);
+                mov.Add(m);
+            }
+            return View(mov);
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -40,11 +50,17 @@ namespace Traders.Controllers
 
             var movementsViewModel = await _context.Movements
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (movementsViewModel == null)
             {
                 return NotFound();
             }
 
+            movementsViewModel.Badges = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == movementsViewModel.BadgeGuidIn);
+            movementsViewModel.BadgesS = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == movementsViewModel.BadgeGuidOut);
+            movementsViewModel.BankAccounts = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == movementsViewModel.BankAccountGuidIn);
+            movementsViewModel.BankAccountsS = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == movementsViewModel.BankAccountGuidOut);
+            
             return View(movementsViewModel);
         }
 
@@ -72,15 +88,18 @@ namespace Traders.Controllers
                     BadgeGuidIn = movementsViewModel.BadgeGuidIn,
                     BadgeGuidOut = movementsViewModel.BadgeGuidOut,
                     BankAccountGuidIn = movementsViewModel.BankAccountGuidIn,
-                    BankAccountGuidOut = movementsViewModel.BankAccountGuidOut,
-                    Comission = (movementsViewModel.Comission / 2)
+                    BankAccountGuidOut = movementsViewModel.BankAccountGuidOut
                 };
+                if (movementsViewModel.AmountInS > 0)
+                    movements.Comission = (movementsViewModel.Comission / 2);
+                else
+                    movements.Comission = (movementsViewModel.Comission);
                 _context.Add(movements);
                 await _context.SaveChangesAsync();
                 var accountIn = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidIn).FirstOrDefaultAsync();
                 var accountOut = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidOut).FirstOrDefaultAsync();
                 accountIn.Amount += movements.AmountIn;
-                accountOut.Amount += movements.AmountOut;
+                accountOut.Amount -= movements.AmountOut;
                 _context.Update(accountIn);
                 _context.Update(accountOut);
                 await _context.SaveChangesAsync();
@@ -103,7 +122,7 @@ namespace Traders.Controllers
                     var accountInS = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidInS).FirstOrDefaultAsync();
                     var accountOutS = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidOutS).FirstOrDefaultAsync();
                     accountIn.Amount += movements.AmountInS;
-                    accountOut.Amount += movements.AmountOutS;
+                    accountOut.Amount -= movements.AmountOutS;
                     _context.Update(accountInS);
                     _context.Update(accountOutS);
                     await _context.SaveChangesAsync();
