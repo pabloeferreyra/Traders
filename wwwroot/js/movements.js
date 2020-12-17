@@ -21,7 +21,7 @@
 }
 
 $("#AmmountIn").blur(function () {
-    if ($("#AmmountIn").val() == '' || $("#AmmountIn").val() == '0') {
+    if ($("#AmmountIn").val() == '' || $("#AmmountIn").val() <= '0') {
         $("#AmmountInVal").text('Por favor ingrese un valor mayor a 0.');
         $("#btnCreateMov").prop('disabled', true);
     }
@@ -30,7 +30,7 @@ $("#AmmountIn").blur(function () {
     }
 });
 $("#AmmountOut").blur(function () {
-    if ($("#AmmountOut").val() == '' || $("#AmmountOut").val() == '0') {
+    if ($("#AmmountOut").val() == '' || $("#AmmountOut").val() <= '0') {
         $("#AmmountOutVal").text('Por favor ingrese un valor mayor a 0.');
         $("#btnCreateMov").prop('disabled', true);
     }
@@ -40,7 +40,7 @@ $("#AmmountOut").blur(function () {
 });
 
 $("#Comission").blur(function () {
-    if ($("#Comission").val() == '') {
+    if ($("#Comission").val() == '' || $("#AmmountIn").val() <= '0') {
         $("#ComissionVal").text('Por favor ingrese un valor mayor a 0.');
         $("#btnCreateMov").prop('disabled', true);
     }
