@@ -1,0 +1,49 @@
+﻿@model Traders.Models.ClientsViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Agregar Cliente";
+    var cuc = ViewBag.ClientUCien;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>ClientsViewModel</h4>
+    </div>
+    <hr />
+    <form method="post">
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Trader")))
+                {
+                    <label asp-for="Code" class="control-label"></label>
+                    <input asp-for="Code" class="form-control" id="ClientCode" value="@ViewBag.ClientCode" readonly />
+                    <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
+                }
+                else
+                {
+                    <label asp-for="Code" class="control-label"></label>
+                    <input asp-for="Code" id="ClientCode" class="form-control" />
+                    <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" id="ClientEmail" class="form-control" />
+                <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
+            </div>
+            <div class="card-footer">
+                <button id="btnCreateClient" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Clients")')">Aceptar</button>
+                <a asp-action="Index">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/js/clients.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
