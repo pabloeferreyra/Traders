@@ -9,7 +9,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4>ClientsViewModel</h4>
+        <h4>Agregar Cliente</h4>
     </div>
     <hr />
     <form method="post">
@@ -38,7 +38,14 @@
             </div>
             <div class="card-footer">
                 <button id="btnCreateClient" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Clients")')">Aceptar</button>
-                <a asp-action="Index">Cancelar</a>
+                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+                {
+                    <a asp-action="Index" asp-controller="Home">Cancelar</a>
+                }
+                else
+                {
+                    <a asp-action="Index">Cancelar</a>
+                }
             </div>
         </div>
     </form>
