@@ -19,6 +19,25 @@ namespace Traders.Data
             builder.Entity<MovementsViewModel>()
             .Property(b => b.DateMov)
             .HasDefaultValueSql("getdate()");
+            builder.Entity<BankAccountsViewModel>()
+                .HasMany(m => m.Movements)
+                .WithOne(b => b.BankAccounts);
+            builder.Entity<BadgesViewModel>()
+                .HasMany(m => m.Movements)
+                .WithOne(b => b.Badges);
+            builder.Entity<MovementsViewModel>()
+                .Ignore(m => m.AmountInS)
+                .Ignore(m => m.AmountOutS)
+                .Ignore(m => m.BadgeGuidInS)
+                .Ignore(m => m.BadgeGuidOutS)
+                .Ignore(m => m.BadgesS)
+                .Ignore(m => m.BankAccountGuidInS)
+                .Ignore(m => m.BankAccountGuidOutS)
+                .Ignore(m => m.BankAccountsS);
         }
+        public DbSet<BadgesViewModel> Badges { get; set; }
+        public DbSet<MovementsViewModel> Movements { get; set; }
+        public DbSet<BankAccountsViewModel> BankAccounts { get; set; }
+        public DbSet<ClientsViewModel> Clients { get; set; }
     }
 }

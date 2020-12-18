@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
@@ -218,11 +219,89 @@ namespace Traders.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Traders.Models.BadgesViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Badges");
+                });
+
+            modelBuilder.Entity("Traders.Models.BankAccountsViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("Traders.Models.ClientsViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AmountIn")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<decimal>("AmountOut")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<Guid>("BadgeGuidIn")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BadgeGuidOut")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BadgesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BankAccountGuidIn")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BankAccountGuidOut")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BankAccountsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Comission")
+                        .HasColumnType("decimal(10,8)");
 
                     b.Property<DateTime>("DateMov")
                         .ValueGeneratedOnAdd()
@@ -235,7 +314,11 @@ namespace Traders.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MovementsViewModel");
+                    b.HasIndex("BadgesId");
+
+                    b.HasIndex("BankAccountsId");
+
+                    b.ToTable("Movements");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -285,6 +368,21 @@ namespace Traders.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
+                {
+                    b.HasOne("Traders.Models.BadgesViewModel", "Badges")
+                        .WithMany("Movements")
+                        .HasForeignKey("BadgesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
+                        .WithMany("Movements")
+                        .HasForeignKey("BankAccountsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Traders.Models.MovementsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Movimientos</h1>
+
+<p>
+    <a asp-action="Create">Nuevo movimiento</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateMov)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserGuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Badges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccounts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgesS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BankAccountsS)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <partial name="_MovementsPartial" model="@Model.ToList()" />
+    </tbody>
+</table>
