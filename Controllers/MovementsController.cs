@@ -67,8 +67,11 @@ namespace Traders.Controllers
         public async Task<IActionResult> Create()
         {
             List<BadgesViewModel> Badges = await _context.Badges.ToListAsync();
+            List<BankAccountsViewModel> bankAccounts = await _context.BankAccounts.ToListAsync();
             ViewBag.BadgesIn = Badges;
             ViewBag.BadgesOut = Badges;
+            ViewBag.BankAccountIn = bankAccounts;
+            ViewBag.BankAccountOut = bankAccounts;
             return View();
         }
 
