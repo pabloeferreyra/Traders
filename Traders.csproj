@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20201212013334_FixMovements.Designer.cs" />
     <Compile Remove="Migrations\20201214232419_fixmov2.cs" />
     <Compile Remove="Migrations\20201214232419_fixmov2.Designer.cs" />
+    <Compile Remove="Migrations\20201217000137_Clients.cs" />
+    <Compile Remove="Migrations\20201217000137_Clients.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

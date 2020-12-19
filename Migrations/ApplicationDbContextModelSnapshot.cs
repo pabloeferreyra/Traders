@@ -252,6 +252,24 @@ namespace Traders.Migrations
                     b.ToTable("BankAccounts");
                 });
 
+            modelBuilder.Entity("Traders.Models.ClientsViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.Property<Guid>("Id")

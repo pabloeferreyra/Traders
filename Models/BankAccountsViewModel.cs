@@ -13,6 +13,7 @@ namespace Traders.Models
         [Display(Name = "Nombre"), Required]
         public String Name { get; set; }
         [Column(TypeName = "decimal(10,8)")]
+        [Display(Name = "Balance")]
         public Decimal Amount { get; set; }
         public ICollection<MovementsViewModel> Movements { get; set; }
     }
