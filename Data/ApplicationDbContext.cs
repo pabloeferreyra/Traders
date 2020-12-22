@@ -34,10 +34,17 @@ namespace Traders.Data
                 .Ignore(m => m.BankAccountGuidInS)
                 .Ignore(m => m.BankAccountGuidOutS)
                 .Ignore(m => m.BankAccountsS);
+            builder.Entity<FuturesViewModel>()
+                .Ignore(m => m.FinishDate)
+                .Ignore(m => m.FinalResult);
+            builder.Entity<FuturesUpdateViewModel>()
+                .Ignore(m => m.GainFinal);
         }
         public DbSet<BadgesViewModel> Badges { get; set; }
         public DbSet<MovementsViewModel> Movements { get; set; }
         public DbSet<BankAccountsViewModel> BankAccounts { get; set; }
         public DbSet<ClientsViewModel> Clients { get; set; }
+        public DbSet<FuturesViewModel> Futures { get; set; }
+        public DbSet<FuturesUpdateViewModel> FuturesUpdates { get; set; }
     }
 }

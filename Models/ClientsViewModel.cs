@@ -17,5 +17,6 @@ namespace Traders.Models
 
         [Display(Name = "Email"), Required]
         public string Email { get; set; }
+        public ICollection<FuturesViewModel> Futures { get; set; }
     }
 }
