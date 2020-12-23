@@ -20,6 +20,7 @@ namespace Traders.Controllers
             _context = context;
         }
 
+        
         [Authorize(Roles = "Trader")]
         public async Task<IActionResult> Index()
         {

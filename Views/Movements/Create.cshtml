@@ -14,40 +14,40 @@
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserGuid" class="control-label"></label>
+                <label asp-for="UserGuid" class="control-label far fa-user-circle"></label>
                 <input asp-for="UserGuid" id="UserGuid" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <label asp-for="AmountIn" class="control-label"></label>
+                <label asp-for="AmountIn" class="control-label fas fa-hand-holding-usd"></label>
                 <input asp-for="AmountIn" id="AmmountIn" class="form-control" />
                 <span asp-validation-for="AmountIn" id="AmmountInVal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BadgeGuidIn" class="control-label"></label>
+                <label asp-for="BadgeGuidIn" class="control-label fab fa-btc"></label>
                 <select asp-for="BadgeGuidIn" id="BadgesIn"
                         class="form-control BadgeGuidIn"
                         asp-items="@(new SelectList(ViewBag.BadgesIn, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
-                <label asp-for="BankAccountGuidIn" class="control-label"></label>
+                <label asp-for="BankAccountGuidIn" class="control-label fas fa-wallet"></label>
                 <select asp-for="BankAccountGuidIn" id="BankAccountIn"
                         class="form-control BankAccountIn"
                         asp-items="@(new SelectList(ViewBag.BankAccountIn, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AmountOut" class="control-label"></label>
+                <label asp-for="AmountOut" class="control-label fas fa-hand-holding-usd"></label>
                 <input asp-for="AmountOut" id="AmountOut" class="form-control" />
                 <span asp-validation-for="AmountOut" id="AmmountOutVal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BadgeGuidOut" class="control-label"></label>
+                <label asp-for="BadgeGuidOut" class="control-label fab fa-btc"></label>
                 <select asp-for="BadgeGuidOut" id="BadgesOut"
                         class="form-control BadgeGuidOut"
                         asp-items="@(new SelectList(ViewBag.BadgesOut, "Id", "Name"))"></select>
                 <span asp-validation-for="BadgeGuidOut" id="BadgesGuidOut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BankAccountGuidOut" class="control-label"></label>
+                <label asp-for="BankAccountGuidOut" class="control-label fas fa-wallet"></label>
                 <select asp-for="BankAccountGuidOut" id="BankAccountOut"
                         class="form-control BankAccountOut"
                         asp-items="@(new SelectList(ViewBag.BankAccountOut, "Id", "Name"))"></select>
@@ -55,33 +55,33 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <label asp-for="AmountInS" class="control-label"></label>
+                <label asp-for="AmountInS" class="control-label fas fa-hand-holding-usd"></label>
                 <input asp-for="AmountInS" id="AmmountInS" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="BadgeGuidInS" class="control-label"></label>
+                <label asp-for="BadgeGuidInS" class="control-label fab fa-btc"></label>
                 <select asp-for="BadgeGuidInS" id="BadgesInS"
                         class="form-control BadgeGuidIn"
                         asp-items="@(new SelectList(ViewBag.BadgesIn, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
-                <label asp-for="BankAccountGuidInS" class="control-label"></label>
+                <label asp-for="BankAccountGuidInS" class="control-label fas fa-wallet"></label>
                 <select asp-for="BankAccountGuidInS" id="BankAccountInS"
                         class="form-control BankAccountIn"
                         asp-items="@(new SelectList(ViewBag.BankAccountIn, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AmountOutS" class="control-label"></label>
+                <label asp-for="AmountOutS" class="control-label fas fa-hand-holding-usd"></label>
                 <input asp-for="AmountOutS" id="AmountOutS" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="BadgeGuidOutS" class="control-label"></label>
+                <label asp-for="BadgeGuidOutS" class="control-label fab fa-btc"></label>
                 <select asp-for="BadgeGuidOutS" id="BadgesOutS"
                         class="form-control BadgeGuidOut"
                         asp-items="@(new SelectList(ViewBag.BadgesOut, "Id", "Name"))"></select>
             </div>
             <div class="form-group">
-                <label asp-for="BankAccountGuidOutS" class="control-label"></label>
+                <label asp-for="BankAccountGuidOutS" class="control-label fas fa-hand-holding-usd"></label>
                 <select asp-for="BankAccountGuidOutS" id="BankAccountOutS"
                         class="form-control BankAccountOutS"
                         asp-items="@(new SelectList(ViewBag.BankAccountOut, "Id", "Name"))"></select>

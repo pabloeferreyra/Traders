@@ -9,6 +9,7 @@ namespace Traders.Models
 {
     public class FuturesUpdateViewModel
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public Guid ContractId { get; set; }
         [Display(Name = "Contrato"), Required]

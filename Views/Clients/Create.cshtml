@@ -19,20 +19,20 @@
             <div class="form-group">
                 @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Trader")))
                 {
-                    <label asp-for="Code" class="control-label"></label>
+                    <label asp-for="Code" class="control-label far fa-folder-open"></label>
                     <input asp-for="Code" class="form-control" id="ClientCode" value="@ViewBag.ClientCode" readonly />
                     <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
                 }
                 else
                 {
-                    <label asp-for="Code" class="control-label"></label>
+                    <label asp-for="Code" class="control-label far fa-folder-open"></label>
                     <input asp-for="Code" id="ClientCode" class="form-control" />
                     <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
                 }
             </div>
 
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label fas fa-at"></label>
                 <input asp-for="Email" id="ClientEmail" class="form-control" />
                 <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
             </div>

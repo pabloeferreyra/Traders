@@ -13,13 +13,13 @@
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label fas fa-wallet"></label>
                 <input asp-for="Name" id="accountName" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" id="ammountName" class="form-control" readonly value="0.00" />
+                <label asp-for="Amount" class="control-label fas fa-cash-register"></label>
+                <input asp-for="Amount" id="ammount" class="form-control" readonly value="0.00" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="card-footer">
@@ -30,6 +30,6 @@
     </form>
 </div>
     @section Scripts {
-        <script src="~/js/badges.js"></script>
+        <script src="~/js/accounts.js"></script>
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }

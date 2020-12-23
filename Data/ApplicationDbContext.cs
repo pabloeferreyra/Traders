@@ -46,5 +46,6 @@ namespace Traders.Data
         public DbSet<ClientsViewModel> Clients { get; set; }
         public DbSet<FuturesViewModel> Futures { get; set; }
         public DbSet<FuturesUpdateViewModel> FuturesUpdates { get; set; }
+        public DbSet<ParticipationViewModel> Participations { get; set; }
     }
 }

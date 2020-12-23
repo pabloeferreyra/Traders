@@ -1,0 +1,47 @@
+﻿@model Traders.Models.FuturesViewModel
+
+@{
+    ViewData["Title"] = "Nuevo Contrato";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Nuevo Contrato</h4>
+    </div>
+    <hr />
+    <form method="post">
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ClientId" class="control-label"></label>
+                <select asp-for="ClientId" id="clientId" class="form-control" asp-items="ViewBag.ClientId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" id="startDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParticipationId" class="control-label"></label>
+                <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Capital" class="control-label"></label>
+                <input asp-for="Capital" id="capital" class="form-control" />
+                <span asp-validation-for="Capital" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="card-footer">
+                <button id="btnCreateFuture" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Futures")')">Aceptar</button>
+                <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

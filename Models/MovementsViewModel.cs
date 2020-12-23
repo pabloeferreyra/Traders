@@ -66,5 +66,7 @@ namespace Traders.Models
         [Column(TypeName = "decimal(10,8)")]
         public Decimal Comission { get; set; }
 
+        public DateTime DateOperation { get; set; }
+
     }
 }
