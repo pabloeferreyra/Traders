@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Traders.Models.FuturesViewModel>
+@foreach (var item in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Client.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Participation.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Capital)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FinishDate)
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+    </td>
+</tr>
+}

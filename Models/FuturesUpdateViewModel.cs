@@ -11,9 +11,6 @@ namespace Traders.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public Guid ContractId { get; set; }
-        [Display(Name = "Contrato"), Required]
-        public FuturesViewModel Contract { get; set; }
         [Display(Name = "Fecha Evento"), Required]
         public DateTime ModifDate { get; set; }
         [Display(Name = "Ganancia Porcentaje"), Required]

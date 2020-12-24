@@ -32,15 +32,13 @@ namespace Traders.Controllers
             {
                 return NotFound();
             }
-
-            var bankAccountsViewModel = await _context.BankAccounts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bankAccountsViewModel == null)
+            if (BankAccountsViewModelExists((Guid)id))
             {
-                return NotFound();
+                var bankAccountsViewModel = await _context.BankAccounts
+                .FirstOrDefaultAsync(m => m.Id == id);
+                return View(bankAccountsViewModel);
             }
-
-            return View(bankAccountsViewModel);
+            return NotFound();
         }
 
         public IActionResult Create()
@@ -52,7 +50,7 @@ namespace Traders.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Amount")] BankAccountsViewModel bankAccountsViewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !BankAccountsViewModelExists(bankAccountsViewModel.Name))
             {
                 bankAccountsViewModel.Id = Guid.NewGuid();
                 _context.Add(bankAccountsViewModel);
@@ -65,6 +63,11 @@ namespace Traders.Controllers
         private bool BankAccountsViewModelExists(Guid id)
         {
             return _context.BankAccounts.Any(e => e.Id == id);
+        }
+
+        private bool BankAccountsViewModelExists(string name)
+        {
+            return _context.BankAccounts.Any(e => e.Name.ToUpper() == name.ToUpper());
         }
     }
 }

@@ -25,7 +25,12 @@ namespace Traders.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Futures.Include(f => f.Client).Include(f => f.Participation);
-            return View(await applicationDbContext.ToListAsync());
+            var futures = await applicationDbContext.ToListAsync();
+            for (int f = 0; f < futures.Count(); f++)
+            {
+                futures[f].FinishDate = futures[f].StartDate.AddMonths(6);
+            }
+            return View(futures);
         }
 
         // GET: Futures/Details/5
@@ -35,17 +40,16 @@ namespace Traders.Controllers
             {
                 return NotFound();
             }
-
-            var futuresViewModel = await _context.Futures
+            if (FuturesViewModelExists((Guid)id))
+            {
+                var futuresViewModel = await _context.Futures
                 .Include(f => f.Client)
                 .Include(f => f.Participation)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (futuresViewModel == null)
-            {
-                return NotFound();
+                futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                return View(futuresViewModel);
             }
-
-            return View(futuresViewModel);
+            return NotFound();
         }
 
         public IActionResult Create()

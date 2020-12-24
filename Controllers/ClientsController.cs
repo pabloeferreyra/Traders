@@ -20,7 +20,6 @@ namespace Traders.Controllers
             _context = context;
         }
 
-        
         [Authorize(Roles = "Trader")]
         public async Task<IActionResult> Index()
         {
@@ -28,12 +27,13 @@ namespace Traders.Controllers
         }
 
 
+
         [Authorize(Roles = "Trader, Admin")]
         public async Task<IActionResult> Create()
         {
             ViewBag.ClientUCien = await _context.Clients.OrderBy(c => c.Code).Where(c => c.Code < 100).Select(c => c.Code).LastOrDefaultAsync();
             var cCode = await _context.Clients.OrderBy(c => c.Code).Select(c => c.Code).LastOrDefaultAsync();
-            if (cCode != 0 && cCode > 100)
+            if (cCode != 0 && cCode >= 100)
                 ViewBag.ClientCode = cCode + 1;
             else
                 ViewBag.ClientCode = 100;
@@ -55,7 +55,7 @@ namespace Traders.Controllers
             return View(clientsViewModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Trader")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -63,15 +63,18 @@ namespace Traders.Controllers
                 return NotFound();
             }
 
-            var clientsViewModel = await _context.Clients.FindAsync(id);
-            if (clientsViewModel == null)
+            if (!ClientsViewModelExists((Guid)id))
             {
                 return NotFound();
+            }else
+            {
+                var clientsViewModel = await _context.Clients.FindAsync(id);
+                return View(clientsViewModel);
             }
-            return View(clientsViewModel);
+            
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Trader")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Code,Email")] ClientsViewModel clientsViewModel)
@@ -81,7 +84,7 @@ namespace Traders.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && ClientsViewModelExists(clientsViewModel.Id))
             {
                 try
                 {

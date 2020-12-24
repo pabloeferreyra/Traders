@@ -19,47 +19,51 @@ namespace Traders.Models
         [Display(Name ="Usuario"), Required]
         public string UserGuid { get; set; }
         
-        [Display(Name = "Monto venta"), Required]
+        [Display(Name = "Monto Compra"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountIn { get; set; }
-        
+        [Display(Name = "Divisa Compra"), Required]
         public Guid BadgeGuidIn { get; set; }
-       
+        [Display(Name = "Cuenta Compra"), Required]
         public Guid BankAccountGuidIn { get; set; }
 
 
         [Display(Name = "Monto venta")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountInS { get; set; }
-
+        [Display(Name = "Divisa Compra"), Required]
         public Guid BadgeGuidInS { get; set; }
-
+        [Display(Name = "Cuenta Compra"), Required]
         public Guid BankAccountGuidInS { get; set; }
 
-        [Display(Name = "Monto compra"), Required]
+        [Display(Name = "Monto Venta"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOut { get; set; }
+        [Display(Name = "Divisa Venta"), Required]
         public Guid BadgeGuidOut { get; set; }
+        [Display(Name = "Cuenta Venta"), Required]
         public Guid BankAccountGuidOut { get; set; }
 
-        [Display(Name = "Monto compra Segundo")]
+        [Display(Name = "Monto Venta")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOutS { get; set; }
-
+       
+        [Display(Name = "Divisa Venta")]
         public Guid BadgeGuidOutS { get; set; }
-
+        
+        [Display(Name = "Cuenta Venta")]
         public Guid BankAccountGuidOutS { get; set; }
-
-        [Display(Name = "Divisa"), Required]
-        public BadgesViewModel Badges { get; set; }
-
-        [Display(Name = "Cuenta"), Required]
-        public BankAccountsViewModel BankAccounts { get; set; }
         
         [Display(Name = "Divisa")]
-        public BadgesViewModel BadgesS { get; set; }
-
+        public BadgesViewModel Badges { get; set; }
+        
         [Display(Name = "Cuenta")]
+        public BankAccountsViewModel BankAccounts { get; set; }
+        
+        [Display(Name = "Divisa Secundaria")]
+        public BadgesViewModel BadgesS { get; set; }
+        
+        [Display(Name = "Cuenta Secundaria")]
         public BankAccountsViewModel BankAccountsS { get; set; }
 
         [Display(Name = "Comision"), Required]

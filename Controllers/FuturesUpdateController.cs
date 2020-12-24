@@ -11,46 +11,44 @@ using Traders.Models;
 
 namespace Traders.Controllers
 {
-    [Authorize(Roles = "Trader, Admin")]
-    public class BadgesController : Controller
+    [Authorize(Roles = "Trader")]
+    public class FuturesUpdateController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BadgesController(ApplicationDbContext context)
+        public FuturesUpdateController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Badges
+        // GET: FuturesUpdate
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Badges.ToListAsync());
+            return View(await _context.FuturesUpdates.ToListAsync());
         }
 
-        // GET: Badges/Create
         public IActionResult Create()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] BadgesViewModel badgesViewModel)
+        public async Task<IActionResult> Create([Bind("Id,ModifDate,Gain")] FuturesUpdateViewModel futuresUpdateViewModel)
         {
-            if (ModelState.IsValid && !BadgesViewModelExists(badgesViewModel.Name))
+            if (ModelState.IsValid)
             {
-                badgesViewModel.Id = Guid.NewGuid();
-                _context.Add(badgesViewModel);
+                futuresUpdateViewModel.Id = Guid.NewGuid();
+                _context.Add(futuresUpdateViewModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(badgesViewModel);
+            return View(futuresUpdateViewModel);
         }
 
-        private bool BadgesViewModelExists(string name)
+        private bool FuturesUpdateViewModelExists(Guid id)
         {
-            return _context.Badges.Any(e => e.Name.ToUpper() == name.ToUpper());
+            return _context.FuturesUpdates.Any(e => e.Id == id);
         }
     }
 }
