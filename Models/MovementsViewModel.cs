@@ -44,6 +44,9 @@ namespace Traders.Models
         [Display(Name = "Cuenta Venta"), Required]
         public Guid BankAccountGuidOut { get; set; }
 
+        [Display(Name ="Movimiento Correlativo")]
+        public Guid? CorrelationId { get; set; }
+
         [Display(Name = "Monto Venta")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOutS { get; set; }

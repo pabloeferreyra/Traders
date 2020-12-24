@@ -81,16 +81,18 @@ namespace Traders.Controllers
             if (ModelState.IsValid)
             {
                 ClaimsPrincipal currentUser = this.User;
+                Guid movementId = Guid.NewGuid();
                 var movements = new MovementsViewModel
                 {
-                    Id = Guid.NewGuid(),
+                    Id = movementId,
                     UserGuid = currentUser.FindFirst(ClaimTypes.Name).Value,
                     AmountIn = movementsViewModel.AmountIn,
                     AmountOut = movementsViewModel.AmountOut,
                     BadgeGuidIn = movementsViewModel.BadgeGuidIn,
                     BadgeGuidOut = movementsViewModel.BadgeGuidOut,
                     BankAccountGuidIn = movementsViewModel.BankAccountGuidIn,
-                    BankAccountGuidOut = movementsViewModel.BankAccountGuidOut
+                    BankAccountGuidOut = movementsViewModel.BankAccountGuidOut,
+                    CorrelationId = null
                 };
                 if (movementsViewModel.AmountInS > 0)
                     movements.Comission = (movementsViewModel.Comission / 2);
@@ -111,20 +113,21 @@ namespace Traders.Controllers
                     {
                         Id = Guid.NewGuid(),
                         UserGuid = currentUser.FindFirst(ClaimTypes.Name).Value,
-                        AmountInS = movementsViewModel.AmountInS,
-                        AmountOutS = movementsViewModel.AmountOutS,
-                        BadgeGuidInS = movementsViewModel.BadgeGuidInS,
-                        BadgeGuidOutS = movementsViewModel.BadgeGuidOutS,
-                        BankAccountGuidInS = movementsViewModel.BankAccountGuidInS,
-                        BankAccountGuidOutS = movementsViewModel.BankAccountGuidOutS,
+                        AmountIn = movementsViewModel.AmountInS,
+                        AmountOut = movementsViewModel.AmountOutS,
+                        BadgeGuidIn = movementsViewModel.BadgeGuidInS,
+                        BadgeGuidOut = movementsViewModel.BadgeGuidOutS,
+                        BankAccountGuidIn = movementsViewModel.BankAccountGuidInS,
+                        BankAccountGuidOut = movementsViewModel.BankAccountGuidOutS,
+                        CorrelationId = movementId,
                         Comission = (movementsViewModel.Comission / 2)
                     };
                     _context.Add(movementsViewModel);
                     await _context.SaveChangesAsync();
-                    var accountInS = await _context.BankAccounts.Where(b => b.Id == movementsS.BankAccountGuidInS).FirstOrDefaultAsync();
-                    var accountOutS = await _context.BankAccounts.Where(b => b.Id == movementsS.BankAccountGuidOutS).FirstOrDefaultAsync();
-                    accountIn.Amount += movements.AmountInS;
-                    accountOut.Amount -= movements.AmountOutS;
+                    var accountInS = await _context.BankAccounts.Where(b => b.Id == movementsS.BankAccountGuidIn).FirstOrDefaultAsync();
+                    var accountOutS = await _context.BankAccounts.Where(b => b.Id == movementsS.BankAccountGuidOut).FirstOrDefaultAsync();
+                    accountIn.Amount += movementsS.AmountIn;
+                    accountOut.Amount -= movementsS.AmountOut;
                     _context.Update(accountInS);
                     _context.Update(accountOutS);
                     await _context.SaveChangesAsync();

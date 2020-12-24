@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-2">
                 <b>@Html.DisplayNameFor(model => model.DateMov)</b>
-                </div>
+            </div>
             <div class="col-10">
                 @Html.DisplayFor(model => model.DateMov)
             </div>
@@ -64,6 +64,17 @@
             <div class="col-10">
                 @Html.DisplayFor(model => model.Comission) USD
             </div>
+            @{
+                if (Model.CorrelationId != null)
+                {
+                    <div class="col-2">
+                        <b>@Html.DisplayNameFor(model => model.CorrelationId)</b>
+                    </div>
+                    <div class="col-10">
+                        <a asp-action="Details" asp-route-id="@Model.CorrelationId"> >@Html.DisplayFor(model => model.CorrelationId)</a>
+                    </div>
+                }
+            }
         </div>
     </div>
     <div class="card-footer">
