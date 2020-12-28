@@ -39,6 +39,8 @@ namespace Traders.Data
                 .Ignore(m => m.FinalResult);
             builder.Entity<FuturesUpdateViewModel>()
                 .Ignore(m => m.GainFinal);
+            builder.Entity<FuturesViewModel>()
+                .Ignore(m => m.FuturesUpdates);
         }
         public DbSet<BadgesViewModel> Badges { get; set; }
         public DbSet<MovementsViewModel> Movements { get; set; }

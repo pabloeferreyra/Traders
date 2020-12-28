@@ -29,5 +29,7 @@ namespace Traders.Models
         [Column(TypeName = "decimal(12,2)")]
         public Decimal FinalResult { get; set; }
 
+        public ICollection<FuturesUpdateViewModel> FuturesUpdates { get; set; }
+
     }
 }

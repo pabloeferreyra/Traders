@@ -42,11 +42,34 @@ namespace Traders.Controllers
             }
             if (FuturesViewModelExists((Guid)id))
             {
-                var futuresViewModel = await _context.Futures
+                FuturesViewModel futuresViewModel = await _context.Futures
                 .Include(f => f.Client)
                 .Include(f => f.Participation)
                 .FirstOrDefaultAsync(m => m.Id == id);
                 futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                futuresViewModel.FuturesUpdates = new List<FuturesUpdateViewModel>();
+                List<FuturesUpdateViewModel> futuresUpdates = await _context.FuturesUpdates.Where(fu => fu.ModifDate >= futuresViewModel.StartDate).OrderBy(fu => fu.ModifDate).ToListAsync();
+                if (futuresUpdates.Count > 0)
+                {
+                    foreach (var fu in futuresUpdates)
+                    {
+                        fu.GainFinal = ((futuresViewModel.Capital * (fu.Gain / 100)) / (futuresViewModel.Participation.Percentage / 100));
+                        futuresViewModel.FuturesUpdates.Add(fu);
+                    }
+
+                    decimal fuGain = 0;
+
+                    foreach (var fu in futuresUpdates)
+                    {
+                        fuGain += ((futuresViewModel.Capital * (fu.Gain / 100)) / (futuresViewModel.Participation.Percentage / 100));
+                    }
+
+                    futuresViewModel.FinalResult += fuGain;
+                }
+                else
+                {
+                    futuresViewModel.FinalResult = futuresViewModel.Capital;
+                }
                 return View(futuresViewModel);
             }
             return NotFound();
