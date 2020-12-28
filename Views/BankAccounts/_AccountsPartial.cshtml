@@ -1,11 +1,4 @@
 ﻿@model IEnumerable<Traders.Models.BankAccountsViewModel>
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-}
 @foreach (var item in Model)
 {
     <tr>
@@ -14,6 +7,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
         </td>
     </tr>
 }

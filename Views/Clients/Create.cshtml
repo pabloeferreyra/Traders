@@ -1,55 +1,52 @@
 ﻿@model Traders.Models.ClientsViewModel
 @using Microsoft.AspNetCore.Identity
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @{
-    ViewData["Title"] = "Agregar Cliente";
+    ViewData["Title"] = "Crear Cliente";
     var cuc = ViewBag.ClientUCien;
 }
 
 <div class="card">
     <div class="card-header">
-        <h4>Agregar Cliente</h4>
+        <h4>Crear Cliente</h4>
     </div>
     <hr />
     <form method="post">
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <div class="form-group">
-                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Trader")))
-                {
-                    <label asp-for="Code" class="control-label"></label>
-                    <input asp-for="Code" class="form-control" id="ClientCode" value="@ViewBag.ClientCode" readonly />
-                    <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
-                }
-                else
-                {
-                    <label asp-for="Code" class="control-label"></label>
-                    <input asp-for="Code" id="ClientCode" class="form-control" />
-                    <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
-                }
+                <i class="far fa-folder-open"></i>
+                <label asp-for="Code" class="control-label "></label>
+                <input asp-for="Code" id="ClientCode" value="@ViewBag.ClientCode" class="form-control" readonly />
+                <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <i class="fas fa-at"></i>
+                <label asp-for="Email" class="control-label "></label>
                 <input asp-for="Email" id="ClientEmail" class="form-control" />
                 <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
             </div>
-            <div class="card-footer">
-                <button id="btnCreateClient" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Clients")')">Aceptar</button>
-                @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
-                {
-                    <a asp-action="Index" asp-controller="Home">Cancelar</a>
-                }
-                else
-                {
-                    <a asp-action="Index">Cancelar</a>
-                }
-            </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnCreateClient" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Clients")')">Aceptar</button>
+            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
+            {
+                <a asp-action="Index" asp-controller="Home">Cancelar</a>
+            }
+            else
+            {
+                <a asp-action="Index">Cancelar</a>
+            }
         </div>
     </form>
 </div>
+
 @section Scripts {
     <script src="~/js/clients.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

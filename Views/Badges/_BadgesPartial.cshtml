@@ -1,26 +1,9 @@
 ﻿@model IEnumerable<Traders.Models.BadgesViewModel>
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
 @foreach (var item in Model)
 {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin")))
-            {
-                <span id="confirmaccessedSpan_@item.Id" style="display:none">
-                    <button onclick="Delete('@Url.Action("Delete","Badges")','@item.Id');" class="btn btn-danger">Si</button>
-                    <a href="#" class="btn btn-primary"
-                       onclick="ConfirmDelete('@item.Id', false)">No</a>
-                </span>
-                <span id="accessedSpan_@item.Id">
-                    <a href="#" class="btn btn-danger"
-                       onclick="ConfirmDelete('@item.Id', true)">Eliminar</a>
-                </span>
-            }
         </td>
     </tr>
 }
