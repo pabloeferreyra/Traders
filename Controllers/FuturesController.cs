@@ -74,6 +74,41 @@ namespace Traders.Controllers
             }
             return NotFound();
         }
+        
+        public async Task<IActionResult> Renewal(Guid? id)
+        {
+            if (id != null || FuturesViewModelExists((Guid)id))
+            {
+                FuturesViewModel futuresViewModel = await _context.Futures
+                .Include(f => f.Client)
+                .Include(f => f.Participation)
+                .FirstOrDefaultAsync(m => m.Id == id);
+                futuresViewModel.Id = Guid.NewGuid();
+                futuresViewModel.StartDate = DateTime.Today;
+                futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                List<FuturesUpdateViewModel> futuresUpdates = await _context.FuturesUpdates.Where(fu => fu.ModifDate >= futuresViewModel.StartDate).OrderBy(fu => fu.ModifDate).ToListAsync();
+                if (futuresUpdates.Count > 0)
+                {
+                    decimal fuGain = 0;
+
+                    foreach (var fu in futuresUpdates)
+                    {
+                        fuGain += ((futuresViewModel.Capital * (fu.Gain / 100)) / (futuresViewModel.Participation.Percentage / 100));
+                    }
+
+                    futuresViewModel.Capital += fuGain;
+                }
+                else
+                {
+                    futuresViewModel.Capital = futuresViewModel.Capital;
+                }
+                _context.Futures.Add(futuresViewModel);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Details", "Futures", new { @id = futuresViewModel.Id });
+            }
+            return NotFound();
+        }
 
         public IActionResult Create()
         {
