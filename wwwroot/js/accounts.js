@@ -7,7 +7,7 @@
         data: {
             __RequestVerificationToken: token,
             Name: $("#accountName").val(),
-            Amount: $("ammountName").val()
+            Amount: $("ammount").val()
         },
         dataType: "json",
         contentType: "application/json"

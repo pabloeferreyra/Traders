@@ -1,12 +1,14 @@
 ﻿@model Traders.Models.BankAccountsViewModel
-
-@{
-    ViewData["Title"] = "Crear Cuenta";
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
 }
-
+@{
+    ViewData["Title"] = "Agregar Cuenta";
+}
 <div class="card">
     <div class="card-header">
-        <h4>Crear Cuenta</h4>
+        <h4>Agregar Cuenta</h4>
     </div>
     <hr />
     <form method="post">
@@ -14,22 +16,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" id="accountName" class="form-control" />
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" id="ammountName" class="form-control" readonly value="0.00" />
+                <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="card-footer">
-                <button id="btnCreateAccount" class="btn btn-primary" onclick="Create('@Url.Action("Create", "BankAccounts")')">Crear</button>
+                <button id="btnCreateAccount" class="btn btn-primary" onclick="Create('@Url.Action("Create", "BankAccounts")')">Aceptar</button>
                 <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
             </div>
         </div>
     </form>
 </div>
-    @section Scripts {
-        <script src="~/js/badges.js"></script>
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+
+@section Scripts {
+    <script src="~/js/accounts.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

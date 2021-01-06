@@ -270,6 +270,50 @@ namespace Traders.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("Traders.Models.FuturesUpdateViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Gain")
+                        .HasColumnType("decimal(4,2)");
+
+                    b.Property<DateTime>("ModifDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FuturesUpdates");
+                });
+
+            modelBuilder.Entity("Traders.Models.FuturesViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Capital")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ParticipationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ParticipationId");
+
+                    b.ToTable("Futures");
+                });
+
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -288,7 +332,7 @@ namespace Traders.Migrations
                     b.Property<Guid>("BadgeGuidOut")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BadgesId")
+                    b.Property<Guid?>("BadgesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BankAccountGuidIn")
@@ -297,16 +341,22 @@ namespace Traders.Migrations
                     b.Property<Guid>("BankAccountGuidOut")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BankAccountsId")
+                    b.Property<Guid?>("BankAccountsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Comission")
                         .HasColumnType("decimal(10,8)");
 
+                    b.Property<Guid?>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("DateMov")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getdate()");
+
+                    b.Property<DateTime>("DateOperation")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserGuid")
                         .IsRequired()
@@ -319,6 +369,23 @@ namespace Traders.Migrations
                     b.HasIndex("BankAccountsId");
 
                     b.ToTable("Movements");
+                });
+
+            modelBuilder.Entity("Traders.Models.ParticipationViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Participations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -372,19 +439,30 @@ namespace Traders.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Traders.Models.FuturesViewModel", b =>
+                {
+                    b.HasOne("Traders.Models.ClientsViewModel", "Client")
+                        .WithMany("Futures")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Traders.Models.ParticipationViewModel", "Participation")
+                        .WithMany("Futures")
+                        .HasForeignKey("ParticipationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
                     b.HasOne("Traders.Models.BadgesViewModel", "Badges")
                         .WithMany("Movements")
-                        .HasForeignKey("BadgesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BadgesId");
 
                     b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
                         .WithMany("Movements")
-                        .HasForeignKey("BankAccountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BankAccountsId");
                 });
 #pragma warning restore 612, 618
         }

@@ -28,6 +28,9 @@
             @Html.DisplayFor(modelItem => item.BankAccountsS.Name)
         </td>
         <td>
+            <a asp-action="Details" asp-route-id="@item.CorrelationId">@Html.DisplayFor(modelItem => item.CorrelationId)</a>
+        </td>
+        <td>
             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
         </td>
     </tr>
