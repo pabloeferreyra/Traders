@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201223003249_Participation")]
+    partial class Participation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,6 +278,9 @@ namespace Traders.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Gain")
                         .HasColumnType("decimal(4,2)");
 
@@ -283,6 +288,8 @@ namespace Traders.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
 
                     b.ToTable("FuturesUpdates");
                 });
@@ -332,7 +339,7 @@ namespace Traders.Migrations
                     b.Property<Guid>("BadgeGuidOut")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BadgesId")
+                    b.Property<Guid>("BadgesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BankAccountGuidIn")
@@ -341,14 +348,11 @@ namespace Traders.Migrations
                     b.Property<Guid>("BankAccountGuidOut")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankAccountsId")
+                    b.Property<Guid>("BankAccountsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Comission")
                         .HasColumnType("decimal(10,8)");
-
-                    b.Property<Guid?>("CorrelationId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateMov")
                         .ValueGeneratedOnAdd()
@@ -439,6 +443,15 @@ namespace Traders.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Traders.Models.FuturesUpdateViewModel", b =>
+                {
+                    b.HasOne("Traders.Models.FuturesViewModel", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Traders.Models.FuturesViewModel", b =>
                 {
                     b.HasOne("Traders.Models.ClientsViewModel", "Client")
@@ -458,11 +471,15 @@ namespace Traders.Migrations
                 {
                     b.HasOne("Traders.Models.BadgesViewModel", "Badges")
                         .WithMany("Movements")
-                        .HasForeignKey("BadgesId");
+                        .HasForeignKey("BadgesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
                         .WithMany("Movements")
-                        .HasForeignKey("BankAccountsId");
+                        .HasForeignKey("BankAccountsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

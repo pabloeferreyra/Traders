@@ -9,6 +9,7 @@ namespace Traders.Models
 {
     public class BankAccountsViewModel
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Display(Name = "Nombre"), Required]
         public String Name { get; set; }

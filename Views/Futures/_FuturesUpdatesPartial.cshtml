@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Traders.Models.FuturesUpdateViewModel>
+@foreach(var item in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ModifDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Gain)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.GainFinal)
+    </td>
+</tr>
+}

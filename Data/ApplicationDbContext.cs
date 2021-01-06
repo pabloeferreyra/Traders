@@ -39,6 +39,8 @@ namespace Traders.Data
                 .Ignore(m => m.FinalResult);
             builder.Entity<FuturesUpdateViewModel>()
                 .Ignore(m => m.GainFinal);
+            builder.Entity<FuturesViewModel>()
+                .Ignore(m => m.FuturesUpdates);
         }
         public DbSet<BadgesViewModel> Badges { get; set; }
         public DbSet<MovementsViewModel> Movements { get; set; }
@@ -46,5 +48,6 @@ namespace Traders.Data
         public DbSet<ClientsViewModel> Clients { get; set; }
         public DbSet<FuturesViewModel> Futures { get; set; }
         public DbSet<FuturesUpdateViewModel> FuturesUpdates { get; set; }
+        public DbSet<ParticipationViewModel> Participations { get; set; }
     }
 }

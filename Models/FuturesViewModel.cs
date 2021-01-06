@@ -9,14 +9,17 @@ namespace Traders.Models
 {
     public class FuturesViewModel
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [Display(Name = "Cliente"), Required]
         public Guid ClientId { get; set; }
         [Display(Name = "Fecha Inicio"), Required]
         public DateTime StartDate { get; set; }
-        [Display(Name = "Cliente"), Required]
+        
         public ClientsViewModel Client { get; set; }
         [Display(Name = "Participacion"), Required]
-        public int Participation { get; set; }
+        public Guid ParticipationId { get; set; }
+        public ParticipationViewModel Participation { get; set; }
         [Display(Name = "Fecha Fin")]
         public DateTime FinishDate { get; set; }
         [Display(Name = "Capital"), Required]
@@ -25,6 +28,8 @@ namespace Traders.Models
         [Display(Name = "Resultado Final")]
         [Column(TypeName = "decimal(12,2)")]
         public Decimal FinalResult { get; set; }
+
+        public ICollection<FuturesUpdateViewModel> FuturesUpdates { get; set; }
 
     }
 }

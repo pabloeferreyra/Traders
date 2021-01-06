@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201223231012_wut")]
+    partial class wut
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,6 +278,9 @@ namespace Traders.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ContractId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Gain")
                         .HasColumnType("decimal(4,2)");
 
@@ -283,6 +288,8 @@ namespace Traders.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
 
                     b.ToTable("FuturesUpdates");
                 });
@@ -346,9 +353,6 @@ namespace Traders.Migrations
 
                     b.Property<decimal>("Comission")
                         .HasColumnType("decimal(10,8)");
-
-                    b.Property<Guid?>("CorrelationId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateMov")
                         .ValueGeneratedOnAdd()
@@ -435,6 +439,15 @@ namespace Traders.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Traders.Models.FuturesUpdateViewModel", b =>
+                {
+                    b.HasOne("Traders.Models.FuturesViewModel", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

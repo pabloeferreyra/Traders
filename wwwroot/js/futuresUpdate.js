@@ -6,8 +6,8 @@
         url: urlAction,
         data: {
             __RequestVerificationToken: token,
-            Name: $("#accountName").val(),
-            Amount: $("ammount").val()
+            ModifDate: $("#modifDate").val(),
+            Gain: $("#gain").val()
         },
         dataType: "json",
         contentType: "application/json"

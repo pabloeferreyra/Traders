@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Traders.Models.FuturesViewModel>
+@foreach (var item in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Client.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Participation.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Capital)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FinishDate)
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+        @if (item.FinishDate.Date <= DateTime.Today && item.FinishDate.Date <= DateTime.Today.AddMonths(2))
+        {
+            <a asp-action="Renewal" asp-route-id="@item.Id"><button class="btn btn-primary">Renovar</button></a>
+        }
+        else
+        {
+            <a asp-action="Renewal" asp-route-id="@item.Id" ><button class="btn btn-primary" disabled>Renovar</button></a>
+        }
+    </td>
+</tr>
+}
