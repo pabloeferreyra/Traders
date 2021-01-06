@@ -5,8 +5,9 @@
     <UserSecretsId>aspnet-Traders-272827CB-E39F-48BB-8E54-23DF3EE3B346</UserSecretsId>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <NeutralLanguage>es-AR</NeutralLanguage>
-    <AssemblyVersion>1.0.*</AssemblyVersion>
-    <FileVersion>1.0.*</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
