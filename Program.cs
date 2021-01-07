@@ -1,11 +1,5 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting; 
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Traders
 {
@@ -20,7 +14,12 @@ namespace Traders
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    webBuilder.UseStartup<Startup>().UseKestrel(options =>
+                    {
+                        int port = 5002;
+                        options.ListenAnyIP(port);
+
+                    });
+                }).UseWindowsService();
     }
 }

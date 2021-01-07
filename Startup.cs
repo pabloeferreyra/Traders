@@ -10,8 +10,6 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using Traders.Data;
-using Traders.Services;
-using Traders.Settings;
 
 namespace Traders
 {
@@ -74,8 +72,6 @@ namespace Traders
                 options.AddPolicy("DeleteRolePolicy",
                     policy => policy.RequireClaim("Delete Role"));
             });
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddSingleton<IMailService, MailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -64,7 +64,7 @@ namespace Traders.Controllers
         }
 
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             ClaimsPrincipal currentUser = this.User;
             ViewData["CurrentUser"] = currentUser.FindFirst(ClaimTypes.NameIdentifier).Subject.Name;
