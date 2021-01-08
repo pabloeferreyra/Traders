@@ -250,7 +250,7 @@ namespace Traders.Controllers
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
-
+            var users = await userManager.GetUsersInRoleAsync(role.Name);
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
@@ -263,12 +263,9 @@ namespace Traders.Controllers
                 RoleName = role.Name
             };
 
-            foreach (var user in userManager.Users)
+            foreach (var user in users)
             {
-                if (await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    model.Users.Add(user.UserName);
-                }
+                model.Users.Add(user.UserName);
             }
 
             return View(model);
@@ -324,6 +321,8 @@ namespace Traders.Controllers
             ViewBag.roleId = roleId;
 
             var role = await roleManager.FindByIdAsync(roleId);
+            var users = await userManager.GetUsersInRoleAsync(role.Name);
+            var users2 = await userManager.Users.Select(user => new IdentityUser { Id = user.Id, Email = user.Email, UserName = user.UserName }).ToListAsync();
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
@@ -332,24 +331,33 @@ namespace Traders.Controllers
 
             var model = new List<UserRoleViewModel>();
 
-            foreach (var user in userManager.Users)
+            foreach (var user in users)
             {
                 var userRoleViewModel = new UserRoleViewModel
                 {
                     UserId = user.Id,
                     UserName = user.UserName
                 };
-                if (await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    userRoleViewModel.IsSelected = true;
-                }
-                else
-                {
-                    userRoleViewModel.IsSelected = false;
-                }
+                userRoleViewModel.IsSelected = true;
 
                 model.Add(userRoleViewModel);
             }
+
+            foreach (var user in users2)
+            {
+                var userRoleViewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+                if (!await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRoleViewModel.IsSelected = false;
+                }
+                model.Add(userRoleViewModel);
+            }
+
+            
             return View(model);
         }
 
