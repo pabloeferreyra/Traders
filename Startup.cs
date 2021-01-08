@@ -77,7 +77,7 @@ namespace Traders
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UsePathBase(Configuration.GetValue<string>("Subdirectory"));
+            app.UsePathBase(Configuration.GetValue<string>("Subdirectory"));
             Directory.SetCurrentDirectory(env.ContentRootPath);
 
             if (env.IsDevelopment())
