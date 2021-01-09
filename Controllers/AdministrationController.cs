@@ -353,11 +353,9 @@ namespace Traders.Controllers
                 if (!await userManager.IsInRoleAsync(user, role.Name))
                 {
                     userRoleViewModel.IsSelected = false;
+                    model.Add(userRoleViewModel);
                 }
-                model.Add(userRoleViewModel);
             }
-
-            
             return View(model);
         }
 
