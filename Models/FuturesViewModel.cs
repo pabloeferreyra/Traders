@@ -11,6 +11,8 @@ namespace Traders.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [Display(Name = "Numero de contrato")]
+        public int ContractNumber { get; set; }
         [Display(Name = "Cliente"), Required]
         public Guid ClientId { get; set; }
         [Display(Name = "Fecha Inicio"), Required]
