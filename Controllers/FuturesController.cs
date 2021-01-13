@@ -83,9 +83,12 @@ namespace Traders.Controllers
                 .Include(f => f.Client)
                 .Include(f => f.Participation)
                 .FirstOrDefaultAsync(m => m.Id == id);
+                var contract = await _context.Futures.OrderBy(c => c.ContractNumber).Select(c => c.ContractNumber).LastOrDefaultAsync();
                 futuresViewModel.Id = Guid.NewGuid();
+                futuresViewModel.ContractNumber = contract++;
                 futuresViewModel.StartDate = DateTime.Today;
                 futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+
                 List<FuturesUpdateViewModel> futuresUpdates = await _context.FuturesUpdates.Where(fu => fu.ModifDate >= futuresViewModel.StartDate).OrderBy(fu => fu.ModifDate).ToListAsync();
                 if (futuresUpdates.Count > 0)
                 {
@@ -123,7 +126,9 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
+                var contract = await _context.Futures.OrderBy(c => c.ContractNumber).Select(c => c.ContractNumber).LastOrDefaultAsync();
                 futuresViewModel.Id = Guid.NewGuid();
+                futuresViewModel.ContractNumber = contract++;
                 _context.Add(futuresViewModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
