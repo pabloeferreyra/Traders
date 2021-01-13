@@ -83,8 +83,18 @@ namespace Traders.Controllers
                 await _service.SendEmailAsync(MailRequest);
             }
             
-            return NoContent();
+            return Ok();
         }
 
+
+        [HttpGet]
+        [Route("clean")]
+        public async Task<IActionResult> CleanMovements()
+        {
+            var movements = await _context.Movements.Where(m => m.DateMov < DateTime.Today).ToListAsync();
+            _context.Movements.RemoveRange(movements);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
