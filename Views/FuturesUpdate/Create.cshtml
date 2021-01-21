@@ -15,7 +15,6 @@
     <div class="card-header">
         <h4>Nuevo Rendimiento</h4>
     </div>
-    <hr />
     <form method="post">
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -29,10 +28,11 @@
                 <input asp-for="Gain" id="gain" class="form-control" />
                 <span asp-validation-for="Gain" class="text-danger"></span>
             </div>
-            <div class="card-footer">
-                <button id="btnCreateFutureUpdate" class="btn btn-primary" onclick="Create('@Url.Action("Create", "FuturesUpdate")')">Aceptar</button>
-                <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
-            </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnCreateFutureUpdate" class="btn btn-primary" onclick="Create('@Url.Action("Create", "FuturesUpdate")')">Aceptar</button>
+            <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
         </div>
     </form>
 </div>
