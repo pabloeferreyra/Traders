@@ -6,8 +6,9 @@
         url: urlAction,
         data: {
             __RequestVerificationToken: token,
-            Name: $("#accountName").val(),
-            Amount: $("ammount").val()
+            Name: $("#Name").val(),
+            Currency: $("#Currency").val(),
+            Amount: $("Amount").val()
         },
         dataType: "json",
         contentType: "application/json"

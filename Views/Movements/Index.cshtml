@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Traders.Models.MovementsViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Operaciones";
 }
 
-<h1>Movimientos</h1>
+<h1>Operaciones</h1>
 
 <p>
-    <a asp-action="Create">Nuevo movimiento</a>
+    <a asp-action="Create">Nueva operación</a>
 </p>
 <table class="table">
     <thead>
@@ -22,19 +22,10 @@
                 @Html.DisplayNameFor(model => model.AmountIn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Badges)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.BankAccounts)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AmountOut)
-            </th>
-            <th>
-                @Html.DisplayName("Divisa Salida")
-            </th>
-            <th>
-                @Html.DisplayName("Cuenta Salida")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CorrelationId)

@@ -1,0 +1,54 @@
+﻿@model Traders.Models.ClientDiversityViewModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@{
+    ViewData["Title"] = "Editar diversificación de cliente";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h1>Editar diversificación de cliente</h1>
+    </div>
+    <form method="post">
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ClientCode" class="control-label"></label>
+                <input asp-for="ClientCode" id="ClientCode" class="form-control" readonly />
+                <span asp-validation-for="ClientCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmmountBTC" class="control-label"></label>
+                <input asp-for="AmmountBTC" id="AmmountBTC" class="form-control" />
+                <span asp-validation-for="AmmountBTC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmmountETH" class="control-label"></label>
+                <input asp-for="AmmountETH" id="AmmountETH" class="form-control" />
+                <span asp-validation-for="AmmountETH" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmmountUSDT" class="control-label"></label>
+                <input asp-for="AmmountUSDT" id="AmmountUSDT" class="form-control" />
+                <span asp-validation-for="AmmountUSDT" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="Active" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btnCreateDiversity" class="btn btn-primary" onclick="Create('@Url.Action("Edit", "ClientDiversity")')">Aceptar</button>
+            <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/diversity.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

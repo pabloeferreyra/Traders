@@ -34,7 +34,7 @@ namespace Traders.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ModifDate,Gain")] FuturesUpdateViewModel futuresUpdateViewModel)
+        public async Task<IActionResult> Create(FuturesUpdateViewModel futuresUpdateViewModel)
         {
             if (ModelState.IsValid)
             {

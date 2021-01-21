@@ -11,7 +11,7 @@ using Traders.Models;
 
 namespace Traders.Controllers
 {
-    [Authorize(Roles = "Trader, Admin")]
+    [Authorize(Roles = "Trader")]
     public class BankAccountsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,7 +48,7 @@ namespace Traders.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Amount")] BankAccountsViewModel bankAccountsViewModel)
+        public async Task<IActionResult> Create(BankAccountsViewModel bankAccountsViewModel)
         {
             if (ModelState.IsValid && !BankAccountsViewModelExists(bankAccountsViewModel.Name))
             {

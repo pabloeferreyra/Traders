@@ -14,8 +14,10 @@ namespace Traders.Models
         [Display(Name = "Nombre"), Required]
         public String Name { get; set; }
         [Column(TypeName = "decimal(10,8)")]
-        [Display(Name = "Balance")]
+        [Display(Name = "Balance"), Required]
         public Decimal Amount { get; set; }
+        [Display(Name = "Moneda"), Required]
+        public string Currency { get; set; }
         public ICollection<MovementsViewModel> Movements { get; set; }
     }
 }

@@ -6,9 +6,20 @@
 
 <h1>Futuros</h1>
 
-<p>
-    <a asp-action="Create">Nuevo Contrato</a>
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p>
+                <a class="btn btn-primary" asp-action="Create">Nuevo Contrato</a>
+            </p>
+        </div>
+
+        <div class="col-2">
+            <button class="btn btn-outline-danger" onclick="SendReport('@Url.Action("ExportReport", "FuturesReport")')">Enviar Reporte</button>
+        </div>
+
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -37,3 +48,7 @@
         <partial name="_FuturesPartial" model="@Model.ToList()" />
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="~/js/futures.js"></script>
+}

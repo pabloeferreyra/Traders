@@ -20,8 +20,16 @@
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <select asp-for="ClientId" id="clientId" class="form-control" asp-items="ViewBag.ClientId"></select>
+                <i class="far fa-folder-open"></i>
+                <label asp-for="Code" class="control-label "></label>
+                <input asp-for="Code" id="ClientCode" value="@ViewBag.ClientCode" class="form-control"  />
+                <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-at"></i>
+                <label asp-for="Email" class="control-label "></label>
+                <input asp-for="Email" id="ClientEmail" class="form-control" />
+                <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
