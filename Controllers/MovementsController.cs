@@ -33,8 +33,6 @@ namespace Traders.Controllers
             List<MovementsViewModel> mov = new List<MovementsViewModel>();
             foreach (var m in movements)
             {
-                m.Badges = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == m.BadgeGuidIn);
-                m.BadgesS = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == m.BadgeGuidOut);
                 m.BankAccounts = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == m.BankAccountGuidIn);
                 m.BankAccountsS = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == m.BankAccountGuidOut);
                 mov.Add(m);
@@ -52,8 +50,6 @@ namespace Traders.Controllers
             if (MovementsViewModelExists((Guid)id))
             {
                 var movementsViewModel = await _context.Movements.FirstOrDefaultAsync(m => m.Id == id);
-                movementsViewModel.Badges = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == movementsViewModel.BadgeGuidIn);
-                movementsViewModel.BadgesS = await _context.Badges.FirstOrDefaultAsync(ba => ba.Id == movementsViewModel.BadgeGuidOut);
                 movementsViewModel.BankAccounts = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == movementsViewModel.BankAccountGuidIn);
                 movementsViewModel.BankAccountsS = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Id == movementsViewModel.BankAccountGuidOut);
 
@@ -68,7 +64,6 @@ namespace Traders.Controllers
         {
             ClaimsPrincipal currentUser = this.User;
             ViewData["CurrentUser"] = currentUser.FindFirst(ClaimTypes.NameIdentifier).Subject.Name;
-            ViewData["Badges"] = new SelectList(_context.Badges, "Id", "Name");
             ViewData["BankAccounts"] = new SelectList(_context.BankAccounts, "Id", "Name");
             return View();
         }
@@ -88,8 +83,6 @@ namespace Traders.Controllers
                     UserGuid = currentUser.FindFirst(ClaimTypes.Name).Value,
                     AmountIn = movementsViewModel.AmountIn,
                     AmountOut = movementsViewModel.AmountOut,
-                    BadgeGuidIn = movementsViewModel.BadgeGuidIn,
-                    BadgeGuidOut = movementsViewModel.BadgeGuidOut,
                     BankAccountGuidIn = movementsViewModel.BankAccountGuidIn,
                     BankAccountGuidOut = movementsViewModel.BankAccountGuidOut,
                     CorrelationId = null
@@ -102,6 +95,8 @@ namespace Traders.Controllers
                 await _context.SaveChangesAsync();
                 var accountIn = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidIn).FirstOrDefaultAsync();
                 var accountOut = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidOut).FirstOrDefaultAsync();
+                movements.BadgeIn = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidIn).Select(b => b.Currency).FirstOrDefaultAsync();
+                movements.BadgeOut = await _context.BankAccounts.Where(b => b.Id == movements.BankAccountGuidOut).Select(b => b.Currency).FirstOrDefaultAsync();
                 accountIn.Amount += movements.AmountIn;
                 accountOut.Amount -= movements.AmountOut;
                 _context.Update(accountIn);
@@ -115,8 +110,8 @@ namespace Traders.Controllers
                         UserGuid = currentUser.FindFirst(ClaimTypes.Name).Value,
                         AmountIn = movementsViewModel.AmountInS,
                         AmountOut = movementsViewModel.AmountOutS,
-                        BadgeGuidIn = movementsViewModel.BadgeGuidInS,
-                        BadgeGuidOut = movementsViewModel.BadgeGuidOutS,
+                        BadgeIn = movementsViewModel.BadgeInS,
+                        BadgeOut = movementsViewModel.BadgeOutS,
                         BankAccountGuidIn = movementsViewModel.BankAccountGuidInS,
                         BankAccountGuidOut = movementsViewModel.BankAccountGuidOutS,
                         CorrelationId = movementId,

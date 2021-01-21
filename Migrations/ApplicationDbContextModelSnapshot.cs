@@ -243,6 +243,10 @@ namespace Traders.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,8)");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -250,6 +254,32 @@ namespace Traders.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BankAccounts");
+                });
+
+            modelBuilder.Entity("Traders.Models.ClientDiversityViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("AmmountBTC")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<decimal>("AmmountETH")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<decimal>("AmmountUSDT")
+                        .HasColumnType("decimal(10,8)");
+
+                    b.Property<int>("ClientCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("clientDiversities");
                 });
 
             modelBuilder.Entity("Traders.Models.ClientsViewModel", b =>
@@ -277,7 +307,7 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Gain")
-                        .HasColumnType("decimal(4,2)");
+                        .HasColumnType("decimal(10,8)");
 
                     b.Property<DateTime>("ModifDate")
                         .HasColumnType("datetime2");
@@ -296,7 +326,7 @@ namespace Traders.Migrations
                     b.Property<decimal>("Capital")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ContractNumber")
@@ -329,13 +359,15 @@ namespace Traders.Migrations
                     b.Property<decimal>("AmountOut")
                         .HasColumnType("decimal(10,8)");
 
-                    b.Property<Guid>("BadgeGuidIn")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("BadgeIn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("BadgeGuidOut")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("BadgeOut")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("BadgesId")
+                    b.Property<Guid?>("BadgesViewModelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BankAccountGuidIn")
@@ -367,7 +399,7 @@ namespace Traders.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BadgesId");
+                    b.HasIndex("BadgesViewModelId");
 
                     b.HasIndex("BankAccountsId");
 
@@ -446,9 +478,7 @@ namespace Traders.Migrations
                 {
                     b.HasOne("Traders.Models.ClientsViewModel", "Client")
                         .WithMany("Futures")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("Traders.Models.ParticipationViewModel", "Participation")
                         .WithMany("Futures")
@@ -459,9 +489,9 @@ namespace Traders.Migrations
 
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
                 {
-                    b.HasOne("Traders.Models.BadgesViewModel", "Badges")
+                    b.HasOne("Traders.Models.BadgesViewModel", null)
                         .WithMany("Movements")
-                        .HasForeignKey("BadgesId");
+                        .HasForeignKey("BadgesViewModelId");
 
                     b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
                         .WithMany("Movements")

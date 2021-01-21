@@ -22,21 +22,19 @@ namespace Traders.Data
             builder.Entity<BankAccountsViewModel>()
                 .HasMany(m => m.Movements)
                 .WithOne(b => b.BankAccounts);
-            builder.Entity<BadgesViewModel>()
-                .HasMany(m => m.Movements)
-                .WithOne(b => b.Badges);
             builder.Entity<MovementsViewModel>()
                 .Ignore(m => m.AmountInS)
                 .Ignore(m => m.AmountOutS)
-                .Ignore(m => m.BadgeGuidInS)
-                .Ignore(m => m.BadgeGuidOutS)
-                .Ignore(m => m.BadgesS)
+                .Ignore(m => m.BadgeInS)
+                .Ignore(m => m.BadgeOutS)
                 .Ignore(m => m.BankAccountGuidInS)
                 .Ignore(m => m.BankAccountGuidOutS)
                 .Ignore(m => m.BankAccountsS);
             builder.Entity<FuturesViewModel>()
                 .Ignore(m => m.FinishDate)
-                .Ignore(m => m.FinalResult);
+                .Ignore(m => m.FinalResult)
+                .Ignore(m => m.Code)
+                .Ignore(m => m.Email);
             builder.Entity<FuturesUpdateViewModel>()
                 .Ignore(m => m.GainFinal);
             builder.Entity<FuturesViewModel>()
@@ -49,5 +47,6 @@ namespace Traders.Data
         public DbSet<FuturesViewModel> Futures { get; set; }
         public DbSet<FuturesUpdateViewModel> FuturesUpdates { get; set; }
         public DbSet<ParticipationViewModel> Participations { get; set; }
+        public DbSet<ClientDiversityViewModel> clientDiversities { get; set; }
     }
 }

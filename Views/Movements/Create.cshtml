@@ -7,16 +7,16 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @{
-    ViewData["Title"] = "Crear nuevo movimiento";
+    ViewData["Title"] = "Crear nueva operación";
 }
 
 
-<div class="card">
-    <div class="card-header">
-        <h4>Crear Movimiento</h4>
-    </div>
-    <hr />
-    <form method="post">
+<form method="post">
+    <div class="card">
+        <div class="card-header">
+            <h4>Crear nueva operación</h4>
+        </div>
+
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -29,15 +29,6 @@
                 <label asp-for="AmountIn" class="control-label"></label>
                 <input asp-for="AmountIn" type="number" id="AmmountIn" class="form-control" />
                 <span asp-validation-for="AmountIn" id="AmmountInVal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <i class="fab fa-btc"></i>
-                <label asp-for="BadgeGuidIn" class="control-label"></label>
-                <select asp-for="BadgeGuidIn" id="BadgesIn"
-                        class="form-control BadgeGuidIn"
-                        asp-items="ViewBag.Badges">
-                    <option disabled selected>--- Seleccione ---</option>
-                </select>
             </div>
             <div class="form-group">
                 <i class="fas fa-wallet"></i>
@@ -55,15 +46,6 @@
                 <span asp-validation-for="AmountOut" id="AmmountOutVal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <i class="fab fa-btc"></i>
-                <label asp-for="BadgeGuidOut" class="control-label "></label>
-                <select asp-for="BadgeGuidOut" id="BadgesOut"
-                        class="form-control BadgeGuidOut"
-                        asp-items="ViewBag.Badges">
-                    <option disabled selected>--- Seleccione ---</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <i class="fas fa-wallet"></i>
                 <label asp-for="BankAccountGuidOut" class="control-label"></label>
                 <select asp-for="BankAccountGuidOut" id="BankAccountOut"
@@ -73,23 +55,24 @@
                 </select>
             </div>
         </div>
-        <hr />
-        <label>Segundo Movimiento (no obligatorio)</label>
-        <hr />
-        <div class="card-body">
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-11">
+                    <h4>Operación correlativa (no obligatorio)</h4>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#secondMov"><i class="fas fa-sort-down" style="color: black"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="secondMov" class="card-body collapse">
             <div class="form-group">
                 <i class="fas fa-hand-holding-usd"></i>
                 <label asp-for="AmountInS" class="control-label"></label>
                 <input asp-for="AmountInS" type="number" id="AmmountInS" value="0" class="form-control" />
-            </div>
-            <div class="form-group">
-                <i class="fab fa-btc"></i>
-                <label asp-for="BadgeGuidInS" class="control-label"></label>
-                <select asp-for="BadgeGuidInS" id="BadgesInS"
-                        class="form-control BadgeGuidIn"
-                        asp-items="ViewBag.Badges">
-                    <option disabled selected>--- Seleccione ---</option>
-                </select>
             </div>
             <div class="form-group">
                 <i class="fas fa-wallet"></i>
@@ -106,15 +89,6 @@
                 <input asp-for="AmountOutS" id="AmountOutS" type="number" value="0" class="form-control" />
             </div>
             <div class="form-group">
-                <i class="fab fa-btc"></i>
-                <label asp-for="BadgeGuidOutS" class="control-label"></label>
-                <select asp-for="BadgeGuidOutS" id="BadgesOutS"
-                        class="form-control BadgeGuidOut"
-                        asp-items="ViewBag.Badges">
-                    <option disabled selected>--- Seleccione ---</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <i class="fas fa-wallet "></i>
                 <label asp-for="BankAccountGuidOutS" class="control-label"></label>
                 <select asp-for="BankAccountGuidOutS" id="BankAccountOutS"
@@ -123,6 +97,10 @@
                     <option disabled selected>--- Seleccione ---</option>
                 </select>
             </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
             <div class="form-group">
                 <label asp-for="Comission" class="control-label"></label>
                 <input asp-for="Comission" id="Comission" class="form-control " />
@@ -134,8 +112,9 @@
             <button id="btnCreateMov" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Movements")')">Crear</button>
             <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
         </div>
-    </form>
-</div>
+    </div>
+
+</form>
 
 @section Scripts {
     <script src="~/js/movements.js"></script>

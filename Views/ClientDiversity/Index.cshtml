@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Traders.Models.ClientDiversityViewModel>
+
+@{
+    ViewData["Title"] = "Diversidad";
+}
+
+<h1>Diversidad</h1>
+
+<p>
+    <a asp-action="Create">Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmmountBTC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmmountETH)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmmountUSDT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <partial name="_DiversityPartial" model="@Model.ToList()" />
+    </tbody>
+</table>

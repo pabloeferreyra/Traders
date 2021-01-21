@@ -15,13 +15,21 @@
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <i class="fas fa-file-signature"></i>
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" id="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <i class="fab fa-btc"></i>
+                <label asp-for="Currency" class="control-label"></label>
+                <input asp-for="Currency" id="Currency" class="form-control" />
+                <span asp-validation-for="Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-piggy-bank"></i>
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
+                <input asp-for="Amount" id="Amount" class="form-control"  value="0.00"/>
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="card-footer">

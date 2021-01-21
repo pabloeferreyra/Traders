@@ -13,11 +13,11 @@ namespace Traders.Models
         public Guid Id { get; set; }
         [Display(Name = "Fecha Evento"), Required]
         public DateTime ModifDate { get; set; }
-        [Display(Name = "Ganancia Porcentaje"), Required]
-        [Column(TypeName = "decimal(4,2)")]
+        [Display(Name = "Ganancia"), Required]
+        [Column(TypeName = "decimal(10,8)")]
         public Decimal Gain { get; set; }
         [Display(Name = "Ganancia total")]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column(TypeName = "decimal(10,8)")]
         public Decimal GainFinal { get; set; }
     }
 }
