@@ -10,7 +10,6 @@
     <div class="card-header">
         <h4>Agregar Cuenta</h4>
     </div>
-    <hr />
     <form method="post">
         <div class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -29,13 +28,14 @@
             <div class="form-group">
                 <i class="fas fa-piggy-bank"></i>
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" id="Amount" class="form-control"  value="0.00"/>
+                <input asp-for="Amount" id="Amount" class="form-control" value="0.00" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
-            <div class="card-footer">
-                <button id="btnCreateAccount" class="btn btn-primary" onclick="Create('@Url.Action("Create", "BankAccounts")')">Aceptar</button>
-                <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
-            </div>
+
+        </div>
+        <div class="card-footer">
+            <button id="btnCreateAccount" class="btn btn-primary" onclick="Create('@Url.Action("Create", "BankAccounts")')">Aceptar</button>
+            <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
         </div>
     </form>
 </div>
