@@ -13,8 +13,11 @@ namespace Traders.Models
         public Guid Id { get; set; }
         [Display(Name = "Numero de contrato")]
         public int ContractNumber { get; set; }
-        [Display(Name = "Cliente"), Required]
-        public Guid ClientId { get; set; }
+        [Display(Name = "Código cliente"), Required]
+        public int Code { get; set; }
+
+        [Display(Name = "Email"), Required]
+        public string Email { get; set; }
         [Display(Name = "Fecha Inicio"), Required]
         public DateTime StartDate { get; set; }
         

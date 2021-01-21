@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/fontawesome/all.min.css" />
+    <link rel="stylesheet" href="~/css/toastr.min.css" />
 </head>
 <body>
     <header>
@@ -24,52 +25,71 @@
                     <partial name="_LoginPartial" />
                     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">Administración</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Badges" asp-action="Index">Monedas</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="BankAccounts" asp-action="Index">Cuentas</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">Usuarios</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a asp-action="ListUsers" asp-controller="Administration" class="dropdown-item">Usuarios</a>
-                                        <a asp-action="ListRoles" asp-controller="Administration" class="dropdown-item">Roles</a>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">Cuentas</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a asp-action="Index" asp-controller="Movements" class="dropdown-item">Movimientos</a>
-                                        <a asp-action="Index" asp-controller="Clients" class="dropdown-item">Clientes</a>
-                                        <a asp-action="Index" asp-controller="FuturesUpdate" class="dropdown-item">Rendimientos</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        }
-                        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Trader"))
-                        {
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">Cuentas</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a asp-action="Index" asp-controller="Movements" class="dropdown-item">Movimientos</a>
-                                        <a asp-action="Index" asp-controller="BankAccounts" class="dropdown-item">Balances</a>
-                                        <a asp-action="Index" asp-controller="Clients" class="dropdown-item">Clientes</a>
-                                        <a asp-action="Index" asp-controller="Futures" class="dropdown-item">Futuros</a>
-                                        <a asp-action="Index" asp-controller="FuturesUpdate" class="dropdown-item">Rendimientos</a>
-                                    </div>
-                                </li>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Cuentas</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="Movements" class="dropdown-item">Operaciones</a>
+                            <a asp-action="Index" asp-controller="BankAccounts" class="dropdown-item">Balances</a>
 
-                            </ul>
-                        }
-                    
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Usuarios</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="ListUsers" asp-controller="Administration" class="dropdown-item">Usuarios</a>
+                            <a asp-action="ListRoles" asp-controller="Administration" class="dropdown-item">Roles</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Futuros</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="Futures" class="dropdown-item">Contratos</a>
+                            <a asp-action="Index" asp-controller="FuturesUpdate" class="dropdown-item">Resultados</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Clientes</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="ClientDiversity" class="dropdown-item">Diversidad</a>
+                        </div>
+                    </li>
+                </ul>
+                    }
+                    else if (SignInManager.IsSignedIn(User) && User.IsInRole("Trader"))
+                    {
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Cuentas</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="Movements" class="dropdown-item">Operaciones</a>
+                            <a asp-action="Index" asp-controller="BankAccounts" class="dropdown-item">Balances</a>
+
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Futuros</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="Futures" class="dropdown-item">Contratos</a>
+                            <a asp-action="Index" asp-controller="FuturesUpdate" class="dropdown-item">Resultados</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Clientes</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="ClientDiversity" class="dropdown-item">Diversidad</a>
+                        </div>
+                    </li>
+                </ul>
+                    }
+
                 </div>
             </div>
         </nav>
@@ -88,6 +108,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/toastr.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

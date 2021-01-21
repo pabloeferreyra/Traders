@@ -8,10 +8,8 @@
             __RequestVerificationToken: token,
             UserGuid: $("#UserGuid").val(),
             AmountIn: $("#AmountIn").val(),
-            BadgeGuidIn: $("#BadgesIn :selected").val(),
             BankAccountGuidIn: $("#BankAccountIn :selected").val(),
             AmountOut: $("#AmountOut").val(),
-            BadgeGuidIn: $("#BadgesOut :selected").val(),
             BankAccountGuidIn: $("#BankAccountOut :selected").val(),
             Comission: $("#Comission").val()
         },

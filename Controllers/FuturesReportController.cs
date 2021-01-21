@@ -32,18 +32,18 @@ namespace Traders.Controllers
         public async Task<IActionResult> ExportReport()
         {
             var futures = _context.Futures.Where(f => f.StartDate.AddMonths(6) > DateTime.Today).ToArray();
-            var clientIds = futures.Select(c => c.ClientId).Distinct();
+            var clientIds = futures.Select(c => c.Client.Id).Distinct();
             var clientEmails = _context.Clients.Where(c => clientIds.Contains(c.Id)).Select(e => e.Email).ToArray();
             DateTime date = new DateTime();
             var startMonth = new DateTime(date.Year, date.Month, 1);
             var finishMonth = startMonth.AddMonths(1).AddDays(-1);
             var movements = await _context.FuturesUpdates.Where(m => m.ModifDate >= startMonth && m.ModifDate <= finishMonth).OrderBy(m => m.ModifDate).ToListAsync();
-            
+            var contracts = await _context.Futures.Where(f => f.StartDate.AddMonths(6) < DateTime.Now).CountAsync();
 
 
             foreach (var f in futures)
             {
-                f.Client = _context.Clients.Where(cl => cl.Id == f.ClientId).FirstOrDefault();
+                f.Client = _context.Clients.Where(cl => cl.Id == f.Client.Id).FirstOrDefault();
                 f.FinishDate = f.StartDate.AddMonths(6);
                 if (movements.Count > 0)
                 {
@@ -51,7 +51,8 @@ namespace Traders.Controllers
 
                     foreach (var fu in movements)
                     {
-                        fuGain += ((f.Capital * (fu.Gain / 100)) / (f.Participation.Percentage / 100));
+                        var gain = fu.Gain / contracts;
+                        fuGain += ((f.Capital + gain) / (f.Participation.Percentage / 100));
                     }
 
                     f.FinalResult += fuGain;

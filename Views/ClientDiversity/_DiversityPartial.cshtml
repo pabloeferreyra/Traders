@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Traders.Models.ClientDiversityViewModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClientCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmmountBTC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmmountETH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AmmountUSDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+        </td>
+    </tr>
+}

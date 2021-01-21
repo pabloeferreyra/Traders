@@ -7,15 +7,22 @@
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
     <OutputType>Exe</OutputType>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NeutralLanguage>es-AR</NeutralLanguage>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.1.238</AssemblyVersion>
+    <FileVersion>1.0.1.238</FileVersion>
     <Version>1.0.1</Version>
     <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <Authors>PFSoftware</Authors>
     <Company>PFSoftware</Company>
     <Product>BTC Santa Fe</Product>
+    <PackageIcon>logo.png</PackageIcon>
+    <RepositoryUrl>https://github.com/pabloeferreyra/Traders</RepositoryUrl>
+    <RepositoryType>Traders</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,15 +30,49 @@
     <Content Remove="Data\Migrations\**" />
     <EmbeddedResource Remove="Data\Migrations\**" />
     <None Remove="Data\Migrations\**" />
+    <None Include="wwwroot\logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201208000424_Initial.cs" />
+    <Compile Remove="Migrations\20201208000424_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201208215149_lost tables.cs" />
+    <Compile Remove="Migrations\20201208215149_lost tables.Designer.cs" />
+    <Compile Remove="Migrations\20201210011401_movementsalpha.cs" />
+    <Compile Remove="Migrations\20201210011401_movementsalpha.Designer.cs" />
+    <Compile Remove="Migrations\20201211003712_accounts.cs" />
+    <Compile Remove="Migrations\20201211003712_accounts.Designer.cs" />
+    <Compile Remove="Migrations\20201211004329_updatemovements.cs" />
+    <Compile Remove="Migrations\20201211004329_updatemovements.Designer.cs" />
+    <Compile Remove="Migrations\20201211004846_fixmodels.cs" />
+    <Compile Remove="Migrations\20201211004846_fixmodels.Designer.cs" />
     <Compile Remove="Migrations\20201212013334_FixMovements.cs" />
     <Compile Remove="Migrations\20201212013334_FixMovements.Designer.cs" />
+    <Compile Remove="Migrations\20201212014014_FixMovementsAndAccounts.cs" />
+    <Compile Remove="Migrations\20201212014014_FixMovementsAndAccounts.Designer.cs" />
     <Compile Remove="Migrations\20201214232419_fixmov2.cs" />
     <Compile Remove="Migrations\20201214232419_fixmov2.Designer.cs" />
+    <Compile Remove="Migrations\20201214234403_addedIgnores.cs" />
+    <Compile Remove="Migrations\20201214234403_addedIgnores.Designer.cs" />
     <Compile Remove="Migrations\20201217000137_Clients.cs" />
     <Compile Remove="Migrations\20201217000137_Clients.Designer.cs" />
+    <Compile Remove="Migrations\20201217000727_Clients.cs" />
+    <Compile Remove="Migrations\20201217000727_Clients.Designer.cs" />
+    <Compile Remove="Migrations\20201222000435_finals.cs" />
+    <Compile Remove="Migrations\20201222000435_finals.Designer.cs" />
+    <Compile Remove="Migrations\20201223003249_Participation.cs" />
+    <Compile Remove="Migrations\20201223003249_Participation.Designer.cs" />
+    <Compile Remove="Migrations\20201223231012_wut.cs" />
+    <Compile Remove="Migrations\20201223231012_wut.Designer.cs" />
+    <Compile Remove="Migrations\20201224003103_fix update.cs" />
+    <Compile Remove="Migrations\20201224003103_fix update.Designer.cs" />
+    <Compile Remove="Migrations\20201224130153_correlationId.cs" />
+    <Compile Remove="Migrations\20201224130153_correlationId.Designer.cs" />
+    <Compile Remove="Migrations\20210112002633_UpdateFutures.cs" />
+    <Compile Remove="Migrations\20210112002633_UpdateFutures.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

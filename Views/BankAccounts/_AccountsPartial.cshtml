@@ -6,10 +6,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Amount)
+            @Html.DisplayFor(modelItem => item.Currency)
         </td>
         <td>
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            @Html.DisplayFor(modelItem => item.Amount)
         </td>
     </tr>
 }
