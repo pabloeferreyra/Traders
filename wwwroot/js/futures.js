@@ -22,15 +22,6 @@
     }
     var currentDate = yyyy + "-" + MM + "-" + dd;
 
-    $("#startDate").blur(function () {
-        if ($("#startDate").val() < currentDate) {
-            $("#startDateVal").text('la fecha no puede ser anterior a la actual.');
-            $("#btnCreateFuture").prop('disabled', true);
-        }
-        else {
-            $("#btnCreateFuture").prop('disabled', false);
-        }
-    });
 });
 function Create(urlAction) {
     var form = $('#__AjaxAntiForgeryForm');
