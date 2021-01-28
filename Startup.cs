@@ -75,9 +75,13 @@ namespace Traders
                 options.AddPolicy("DeleteRolePolicy",
                     policy => policy.RequireClaim("Delete Role"));
             });
-
+            services.AddHttpContextAccessor();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IClientServices, ClientServices>();
+            services.AddScoped<IFuturesServices, FuturesServices>();
+            services.AddScoped<IBankServices, BankServices>();
+            services.AddScoped<IMovementsServices, MovementsServices>();
             services.AddControllers();
         }
 

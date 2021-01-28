@@ -4,88 +4,79 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Traders.Data;
 using Traders.Models;
+using Traders.Services;
+using Traders.Settings;
+using static Traders.Settings.ClientsTypes;
 
 namespace Traders.Controllers
 {
     [Authorize(Roles = "Trader")]
     public class FuturesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IClientServices _clientServices;
+        private readonly IFuturesServices _futuresServices;
 
-        public FuturesController(ApplicationDbContext context)
+        public FuturesController(IClientServices clientServices,
+            IFuturesServices futuresServices)
         {
-            _context = context;
+            _clientServices = clientServices;
+            _futuresServices = futuresServices;
         }
 
-        // GET: Futures
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Futures.Include(f => f.Client).Include(f => f.Participation);
-            var futures = await applicationDbContext.ToListAsync();
-            for (int f = 0; f < futures.Count(); f++)
-            {
-                if (!NoLimitclient(futures[f].Client.Code))
-                {
-                    futures[f].FinishDate = futures[f].StartDate.AddMonths(6);
-                }
-                else
-                {
-                    futures[f].FinishDate = futures[f].StartDate.AddYears(99);
-                }
-            }
-            return View(futures);
+            return View(await _futuresServices.GetFutures());
         }
 
-        // GET: Futures/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            if (FuturesViewModelExists((Guid)id))
+            if (_futuresServices.FuturesViewModelExists((Guid)id))
             {
-                FuturesViewModel futuresViewModel = await _context.Futures
-                .Include(f => f.Client)
-                .Include(f => f.Participation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-                var contracts = await _context.Futures.Where(f => f.StartDate.AddMonths(6) < DateTime.Now).CountAsync();
-                if (!NoLimitclient(futuresViewModel.Client.Code))
+                FuturesViewModel futuresViewModel = await _futuresServices.GetFuture(id);
+                var contracts = await _futuresServices.CountContracts(false);
+                if (!futuresViewModel.FixRent)
                 {
-                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                    
+                    futuresViewModel.FuturesUpdates = new List<FuturesUpdateViewModel>();
+                    List<FuturesUpdateViewModel> futuresUpdates = await _futuresServices.GetFuturesUpdates(futuresViewModel.StartDate);
+                    if (futuresUpdates.Count > 0)
+                    {
+                        foreach (var fu in futuresUpdates)
+                        {
+                            var gain = fu.Gain / contracts;
+                            fu.GainFinal = ((futuresViewModel.Capital + gain) / (futuresViewModel.Participation.Percentage / 100));
+                            futuresViewModel.FuturesUpdates.Add(fu);
+                        }
+
+                        decimal fuGain = 0;
+
+                        foreach (var fu in futuresUpdates)
+                        {
+                            var gain = fu.Gain / contracts;
+                            fuGain += ((futuresViewModel.Capital + gain) / (futuresViewModel.Participation.Percentage / 100));
+                        }
+
+                        futuresViewModel.FinalResult = futuresViewModel.FinalResult + fuGain;
+
+                        if(futuresViewModel.Client.Code == (int)SpecialClients.Uno)
+                        {
+                            var futuresWithFixed = await _futuresServices.GetContracts(true);
+                            futuresViewModel.FinalResult = _futuresServices.FinalResult(futuresWithFixed, futuresViewModel.FinalResult);
+                        }
+                    }
+                    else
+                    {
+                        futuresViewModel.FinalResult = futuresViewModel.Capital;
+                    }
                 }
                 else
                 {
-                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddYears(99);
-                }
-                futuresViewModel.FuturesUpdates = new List<FuturesUpdateViewModel>();
-                List<FuturesUpdateViewModel> futuresUpdates = await _context.FuturesUpdates.Where(fu => fu.ModifDate >= futuresViewModel.StartDate).OrderBy(fu => fu.ModifDate).ToListAsync();
-                if (futuresUpdates.Count > 0)
-                {
-                    foreach (var fu in futuresUpdates)
-                    {
-                        var gain = fu.Gain / contracts;
-                        fu.GainFinal = ((futuresViewModel.Capital + gain) / (futuresViewModel.Participation.Percentage / 100));
-                        futuresViewModel.FuturesUpdates.Add(fu);
-                    }
-
-                    decimal fuGain = 0;
-
-                    foreach (var fu in futuresUpdates)
-                    {
-                        var gain = fu.Gain / contracts;
-                        fuGain += ((futuresViewModel.Capital + gain) / (futuresViewModel.Participation.Percentage / 100));
-                    }
-
-                    futuresViewModel.FinalResult += fuGain;
-                }
-                else
-                {
-                    futuresViewModel.FinalResult = futuresViewModel.Capital;
+                    futuresViewModel.FinalResult = _futuresServices.FixRentCalc(futuresViewModel.Capital);
                 }
                 return View(futuresViewModel);
             }
@@ -94,37 +85,47 @@ namespace Traders.Controllers
         
         public async Task<IActionResult> Renewal(Guid? id)
         {
-            if (id != null || FuturesViewModelExists((Guid)id))
+            if (id != null || _futuresServices.FuturesViewModelExists((Guid)id))
             {
-                FuturesViewModel futuresViewModel = await _context.Futures
-                .Include(f => f.Client)
-                .Include(f => f.Participation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-                var contract = await _context.Futures.OrderBy(c => c.ContractNumber).Select(c => c.ContractNumber).LastOrDefaultAsync();
+                FuturesViewModel futuresViewModel = await _futuresServices.GetFuture(id);
+                var contract = await _futuresServices.GetLastContractNumber();
                 futuresViewModel.Id = Guid.NewGuid();
                 futuresViewModel.ContractNumber = contract++;
                 futuresViewModel.StartDate = DateTime.Today;
-                futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                if (!NoLimitclient(futuresViewModel.Client.Code))
+                {
+                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                }
+                else
+                {
+                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddYears(99);
+                }
 
-                List<FuturesUpdateViewModel> futuresUpdates = await _context.FuturesUpdates.Where(fu => fu.ModifDate >= futuresViewModel.StartDate).OrderBy(fu => fu.ModifDate).ToListAsync();
+                List<FuturesUpdateViewModel> futuresUpdates = await _futuresServices.GetFuturesUpdates(futuresViewModel.StartDate);
                 if (futuresUpdates.Count > 0)
                 {
-                    decimal fuGain = 0;
-
-                    foreach (var fu in futuresUpdates)
+                    if (!futuresViewModel.FixRent)
                     {
-                        fuGain += ((futuresViewModel.Capital * (fu.Gain / 100)) / (futuresViewModel.Participation.Percentage / 100));
-                    }
+                        decimal fuGain = 0;
+                        var contracts = await _futuresServices.CountContracts(false);
+                        foreach (var fu in futuresUpdates)
+                        {
+                            var gain = fu.Gain / contracts;
+                            fuGain += ((futuresViewModel.Capital + gain) / (futuresViewModel.Participation.Percentage / 100));
+                        }
 
-                    futuresViewModel.Capital += fuGain;
+                        futuresViewModel.Capital += fuGain;
+                    }
+                    else
+                    {
+                        futuresViewModel.Capital = _futuresServices.FixRentCalc(futuresViewModel.Capital);
+                    }
                 }
                 else
                 {
                     futuresViewModel.Capital = futuresViewModel.Capital;
                 }
-                _context.Futures.Add(futuresViewModel);
-                await _context.SaveChangesAsync();
-
+                await _futuresServices.CreateFuture(futuresViewModel);
                 return RedirectToAction("Details", "Futures", new { @id = futuresViewModel.Id });
             }
             return NotFound();
@@ -132,14 +133,9 @@ namespace Traders.Controllers
 
         public IActionResult Create()
         {
-            var clients = _context.Clients.OrderBy(c => c.Code);
-            int clientCode = 100;
-            if (clients.Count() > 0)
-            {
-                clientCode = clients.LastOrDefault().Code;
-            }
+            int clientCode = _clientServices.ClientsCode();
             ViewData["ClientCode"] = clientCode++;
-            ViewData["ParticipationId"] = new SelectList(_context.Participations, "Id", "Name");
+            ViewData["ParticipationId"] = _futuresServices.Participations();
             return View();
         }
 
@@ -151,37 +147,46 @@ namespace Traders.Controllers
             {
                 var client = new ClientsViewModel
                 {
+                    Id = Guid.NewGuid(),
                     Code = futuresViewModel.Code,
                     Email = futuresViewModel.Email
                 };
-                var contract = await _context.Futures.OrderBy(c => c.ContractNumber).Select(c => c.ContractNumber).LastOrDefaultAsync();
+                if (futuresViewModel.FixRent)
+                    futuresViewModel.ParticipationId = null;
+                var contract = await _futuresServices.GetLastContractNumber();
                 futuresViewModel.Id = Guid.NewGuid();
-                futuresViewModel.ContractNumber = contract++;
-                _context.Add(client);
-                _context.Add(futuresViewModel);
-                await _context.SaveChangesAsync();
+                futuresViewModel.ContractNumber = contract + 1;
+                futuresViewModel.ClientId = client.Id;
+                if (!NoLimitclient(futuresViewModel.Client.Code))
+                {
+                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
+                }
+                else
+                {
+                    futuresViewModel.FinishDate = futuresViewModel.StartDate.AddYears(99);
+                }
+                await _clientServices.CreateClient(client);
+                await _futuresServices.CreateFuture(futuresViewModel);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParticipationId"] = new SelectList(_context.Participations, "Id", "Name", futuresViewModel.ParticipationId);
             return View(futuresViewModel);
-        }
-
-        private bool FuturesViewModelExists(Guid id)
-        {
-            return _context.Futures.Any(e => e.Id == id);
         }
 
         private bool NoLimitclient(int clientCode)
         {
-            var noLimitClient = new int[] { 001, 002, 003, 004, 005 };
-            if(noLimitClient.Contains(clientCode))
+            
+            switch (clientCode)
             {
-                return true;
+                case (int)ClientsTypes.SpecialClients.Uno:
+                case (int)ClientsTypes.SpecialClients.Dos:
+                case (int)ClientsTypes.SpecialClients.Tres:
+                case (int)ClientsTypes.SpecialClients.Cuatro:
+                case (int)ClientsTypes.SpecialClients.Cinco:
+                    return true;
+                default:
+                    return false;
             }
-            else
-            {
-                return false;
-            }
+            
         }
     }
 }

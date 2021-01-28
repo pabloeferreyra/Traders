@@ -22,14 +22,20 @@ namespace Traders.Models
         public DateTime StartDate { get; set; }
         
         public ClientsViewModel Client { get; set; }
-        [Display(Name = "Participacion"), Required]
-        public Guid ParticipationId { get; set; }
+        public Guid ClientId { get; set; }
+
+        [Display(Name = "Participacion")]
+        public Guid? ParticipationId { get; set; }
         public ParticipationViewModel Participation { get; set; }
         [Display(Name = "Fecha Fin")]
         public DateTime FinishDate { get; set; }
         [Display(Name = "Capital"), Required]
         [Column(TypeName = "decimal(10,2)")]
         public Decimal Capital { get; set; }
+
+        [Display(Name = "RentaFija")]
+        public bool FixRent { get; set; }
+
         [Display(Name = "Resultado Final")]
         [Column(TypeName = "decimal(12,2)")]
         public Decimal FinalResult { get; set; }

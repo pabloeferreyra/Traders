@@ -1,13 +1,12 @@
 ﻿@model Traders.Models.FuturesViewModel 
 @{
-
     if (ViewBag.Date == null)
         ViewBag.Date = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
     else
         String.Format("{0:yyyy-MM-dd}", DateTime.Now);
 }
 @{
-    ViewData["Title"] = "Detalles Contrato" + Model.Id;
+    ViewData["Title"] = "Detalles Contrato " + Model.Id;
 }
 
 
@@ -41,7 +40,7 @@
                 @Html.DisplayNameFor(model => model.Participation)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Participation.Id)
+                @Html.DisplayFor(model => model.Participation.Percentage)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Capital)
@@ -61,26 +60,27 @@
         <a asp-action="Index" cclass="btn btn-outline-warning">Volver</a>
     </div>
 </div>
-<div class="card">
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().ModifDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().Gain)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().GainFinal)
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <partial name="_FuturesUpdatesPartial" model="@Model.FuturesUpdates.ToList()" />
-            </tbody>
-        </table>
+@if (!Model.FixRent) { 
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().ModifDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().Gain)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FuturesUpdates.FirstOrDefault().GainFinal)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <partial name="_FuturesUpdatesPartial" model="@Model.FuturesUpdates.ToList()" />
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
+}

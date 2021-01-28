@@ -13,13 +13,13 @@
             @Html.DisplayFor(modelItem => item.AmountIn)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccounts.Name)
+            @Html.DisplayFor(modelItem => item.BankAccounts.Currency)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AmountOut)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BankAccountsS.Name)
+            @Html.DisplayFor(modelItem => item.BankAccountsS.Currency)
         </td>
         <td>
             <a asp-action="Details" asp-route-id="@item.CorrelationId">@Html.DisplayFor(modelItem => item.CorrelationId)</a>

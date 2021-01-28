@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Traders.Data;
 using Traders.Models;
+using Traders.Services;
 
 namespace Traders.Controllers
 {
@@ -15,15 +16,17 @@ namespace Traders.Controllers
     public class BankAccountsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public BankAccountsController(ApplicationDbContext context)
+        private readonly IBankServices _bankServices;
+        public BankAccountsController(ApplicationDbContext context,
+            IBankServices bankServices)
         {
             _context = context;
+            _bankServices = bankServices;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BankAccounts.ToListAsync());
+            return View(await _bankServices.GetBankAccounts());
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -32,11 +35,9 @@ namespace Traders.Controllers
             {
                 return NotFound();
             }
-            if (BankAccountsViewModelExists((Guid)id))
+            if (_bankServices.BankAccountsViewModelExists((Guid)id))
             {
-                var bankAccountsViewModel = await _context.BankAccounts
-                .FirstOrDefaultAsync(m => m.Id == id);
-                return View(bankAccountsViewModel);
+                return View(await _bankServices.GetBank(id));
             }
             return NotFound();
         }
@@ -50,24 +51,13 @@ namespace Traders.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BankAccountsViewModel bankAccountsViewModel)
         {
-            if (ModelState.IsValid && !BankAccountsViewModelExists(bankAccountsViewModel.Name))
+            if (ModelState.IsValid && !_bankServices.BankAccountsNameViewModelExists(bankAccountsViewModel.Currency))
             {
-                bankAccountsViewModel.Id = Guid.NewGuid();
-                _context.Add(bankAccountsViewModel);
-                await _context.SaveChangesAsync();
+                await _bankServices.CreateBank(bankAccountsViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(bankAccountsViewModel);
         }
 
-        private bool BankAccountsViewModelExists(Guid id)
-        {
-            return _context.BankAccounts.Any(e => e.Id == id);
-        }
-
-        private bool BankAccountsViewModelExists(string name)
-        {
-            return _context.BankAccounts.Any(e => e.Name.ToUpper() == name.ToUpper());
-        }
     }
 }
