@@ -56,10 +56,13 @@ namespace Traders.Services
 
         public SelectList BankList()
         {
-            return new SelectList(_context.BankAccounts, "Id", "Name");
+            return new SelectList(_context.BankAccounts,
+                                                      "Id",
+                                                      "Currency");
         }
 
-        public async Task<int> UpdateAmmount(BankAccountsViewModel modelIn, BankAccountsViewModel modelOut)
+        public async Task<int> UpdateAmmount(BankAccountsViewModel modelIn,
+                                             BankAccountsViewModel modelOut)
         {
             _context.Update(modelIn);
             _context.Update(modelOut);
