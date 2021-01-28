@@ -8,23 +8,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Traders.Data;
 using Traders.Models;
+using Traders.Services;
 
 namespace Traders.Controllers
 {
     [Authorize(Roles = "Trader")]
     public class FuturesUpdateController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IFuturesServices _futuresServices;
 
-        public FuturesUpdateController(ApplicationDbContext context)
+        public FuturesUpdateController(
+            IFuturesServices futuresServices)
         {
-            _context = context;
+            _futuresServices = futuresServices;
         }
 
         // GET: FuturesUpdate
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FuturesUpdates.ToListAsync());
+            return View(await _futuresServices.GetFuturesUpdates(null));
         }
 
         public IActionResult Create()
@@ -38,17 +40,10 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
-                futuresUpdateViewModel.Id = Guid.NewGuid();
-                _context.Add(futuresUpdateViewModel);
-                await _context.SaveChangesAsync();
+                await _futuresServices.CreateFutureUpdate(futuresUpdateViewModel);
                 return RedirectToAction(nameof(Index));
             }
             return View(futuresUpdateViewModel);
-        }
-
-        private bool FuturesUpdateViewModelExists(Guid id)
-        {
-            return _context.FuturesUpdates.Any(e => e.Id == id);
         }
     }
 }

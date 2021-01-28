@@ -11,10 +11,6 @@ namespace Traders.Controllers
     {
         RoleManager<IdentityRole> roleManager;
 
-        /// 
-        /// Injecting Role Manager
-        /// 
-        /// 
         public RoleController(RoleManager<IdentityRole> roleManager)
         {
             this.roleManager = roleManager;

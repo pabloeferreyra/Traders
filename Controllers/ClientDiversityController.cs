@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Traders.Data;
 using Traders.Models;
+using Traders.Services;
 
 namespace Traders.Controllers
 {
@@ -13,19 +14,19 @@ namespace Traders.Controllers
     public class ClientDiversityController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ClientDiversityController(ApplicationDbContext context)
+        private readonly IClientServices _clientServices;
+        public ClientDiversityController(ApplicationDbContext context,
+            IClientServices clientServices)
         {
             _context = context;
+            _clientServices = clientServices;
         }
 
-        // GET: ClientDiversity
         public async Task<IActionResult> Index()
         {
-            return View(await _context.clientDiversities.ToListAsync());
+            return View(await _clientServices.GetAllClientsDiversity());
         }
 
-        // GET: ClientDiversity/Create
         public IActionResult Create()
         {
             return View();
@@ -37,31 +38,32 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
-                clientDiversityViewModel.Id = Guid.NewGuid();
-                _context.Add(clientDiversityViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool created = await _clientServices.CreateClientDiversity(clientDiversityViewModel);
+                if(created)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return View(clientDiversityViewModel);
+
             }
             return View(clientDiversityViewModel);
         }
 
-        // GET: ClientDiversity/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            if (ClientDiversityViewModelExists((Guid)id))
+            if (_clientServices.ClientDiversityViewModelExists((Guid)id))
             {
-                var clientDiversityViewModel = await _context.clientDiversities.FindAsync(id);
+                var clientDiversityViewModel = _clientServices.GetClientDiversityById(id);
                 return View(clientDiversityViewModel);
             }
             else
             {
                 return NotFound();
             }
-            
+
         }
 
 
@@ -69,37 +71,22 @@ namespace Traders.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ClientDiversityViewModel clientDiversityViewModel)
         {
-            if (!ClientDiversityViewModelExists(clientDiversityViewModel.Id))
+            if (!_clientServices.ClientDiversityViewModelExists(clientDiversityViewModel.Id))
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(clientDiversityViewModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientDiversityViewModelExists(clientDiversityViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var updated = await _clientServices.UpdateClientDiversity(clientDiversityViewModel);
+                if(updated)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return View(clientDiversityViewModel);
             }
             return View(clientDiversityViewModel);
         }
 
-        private bool ClientDiversityViewModelExists(Guid id)
-        {
-            return _context.clientDiversities.Any(e => e.Id == id);
-        }
+        
     }
 }

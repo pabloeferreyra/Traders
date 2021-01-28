@@ -6,7 +6,7 @@ using Traders.Models;
 
 namespace Traders.Services
 {
-    public interface IMailService
+    public interface IEmailSender
     {
         Task SendEmailAsync(MailRequestViewModel mailRequest);
     }

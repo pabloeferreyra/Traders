@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Traders.Services;
+using Traders.Models;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace Traders.Areas.Identity.Pages.Account
@@ -56,7 +55,15 @@ namespace Traders.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                return RedirectToPage("./ResetPassword", new { code });
+                MailRequestViewModel mail = new MailRequestViewModel
+                {
+                    ToEmail = Input.Email,
+                    Subject = "[Mail Automatico] Reinicie su contraseña",
+                    Body = $"Por favor reinicie su contraseña <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>haciendo click aqui</a>. <br /> Atte BitCoin Santa Fe"
+                };
+                await _emailSender.SendEmailAsync(mail);
+
+                return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
             return Page();

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Traders.Models;
+using Traders.Services;
 
 namespace Traders.Areas.Identity.Pages.Account.Manage
 {
@@ -98,10 +96,13 @@ namespace Traders.Areas.Identity.Pages.Account.Manage
                     pageHandler: null,
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                MailRequestViewModel mailRequest = new MailRequestViewModel
+                {
+                    ToEmail = Input.NewEmail,
+                    Subject = "[Mail Automatico]Confirme su cuenta",
+                    Body = $"Por favor confirme su cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Haciendo click aqui</a>. <br /> BitCoin Santa Fe"
+                };
+                await _emailSender.SendEmailAsync(mailRequest);
 
                 StatusMessage = "Confirmation link to change email sent. Please check your email.";
                 return RedirectToPage();
@@ -134,10 +135,13 @@ namespace Traders.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            MailRequestViewModel mailRequest = new MailRequestViewModel
+            {
+                ToEmail = Input.NewEmail,
+                Subject = "[Mail Automatico]Confirme su cuenta",
+                Body = $"Por favor confirme su cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Haciendo click aqui</a>. <br /> BitCoin Santa Fe"
+            };
+            await _emailSender.SendEmailAsync(mailRequest);
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

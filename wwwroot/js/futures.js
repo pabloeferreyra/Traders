@@ -73,9 +73,7 @@ $("#ClientCode").blur(function () {
             url: "/Common/ClientExist",
             dataType: "json",
             contentType: "application/json",
-            data: {
-                Code: $("#ClientCode").val(),
-            },
+            data:  $("#ClientCode").val(),
             complete: function (msj) {
                 value = msj.responseText;
                 if (value == 'false') {
@@ -88,6 +86,15 @@ $("#ClientCode").blur(function () {
                 }
             }
         });
+    }
+});
+
+$("#FixRent").change(function () {
+    if ($('#FixRent').is(":checked")) {
+        $("#participationId").hide(1000);
+    }
+    else {
+        $("#participationId").show(1000);
     }
 });
 

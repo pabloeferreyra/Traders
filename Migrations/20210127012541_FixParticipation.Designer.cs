@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Traders.Data;
 
 namespace Traders.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210127012541_FixParticipation")]
+    partial class FixParticipation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,14 +324,11 @@ namespace Traders.Migrations
                     b.Property<decimal>("Capital")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ContractNumber")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("FinishDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool>("FixRent")
                         .HasColumnType("bit");
@@ -480,9 +479,7 @@ namespace Traders.Migrations
                 {
                     b.HasOne("Traders.Models.ClientsViewModel", "Client")
                         .WithMany("Futures")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("Traders.Models.ParticipationViewModel", "Participation")
                         .WithMany("Futures")
