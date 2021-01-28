@@ -22,17 +22,17 @@ namespace Traders.Models
         [Display(Name = "Monto Compra"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountIn { get; set; }
-        [Display(Name = "Divisa Compra"), Required]
+        [Display(Name = "Moneda Compra"), Required]
         public string BadgeIn { get; set; }
-        [Display(Name = "Cuenta Compra"), Required]
+        [Display(Name = "Moneda Compra"), Required]
         public Guid BankAccountGuidIn { get; set; }
 
         [Display(Name = "Monto venta")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountInS { get; set; }
-        [Display(Name = "Divisa Compra"), Required]
+        [Display(Name = "Moneda Compra"), Required]
         public string BadgeInS { get; set; }
-        [Display(Name = "Cuenta Compra"), Required]
+        [Display(Name = "Moneda Compra"), Required]
         public Guid BankAccountGuidInS { get; set; }
 
         [Display(Name = "Monto Venta"), Required]
@@ -40,7 +40,7 @@ namespace Traders.Models
         public Decimal AmountOut { get; set; }
         [Display(Name = "Divisa Venta"), Required]
         public string BadgeOut { get; set; }
-        [Display(Name = "Cuenta Venta"), Required]
+        [Display(Name = "Moneda Venta"), Required]
         public Guid BankAccountGuidOut { get; set; }
 
         [Display(Name ="Movimiento Correlativo")]
@@ -50,13 +50,13 @@ namespace Traders.Models
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOutS { get; set; }
        
-        [Display(Name = "Divisa Venta")]
+        [Display(Name = "Moneda Venta")]
         public string BadgeOutS { get; set; }
         
-        [Display(Name = "Cuenta Venta")]
+        [Display(Name = "Moneda Venta")]
         public Guid BankAccountGuidOutS { get; set; }
         
-        [Display(Name = "Cuenta")]
+        [Display(Name = "Moneda")]
         public BankAccountsViewModel BankAccounts { get; set; }
          
         [Display(Name = "Cuenta Secundaria")]

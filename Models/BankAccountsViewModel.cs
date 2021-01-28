@@ -11,13 +11,12 @@ namespace Traders.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        [Display(Name = "Nombre"), Required]
-        public String Name { get; set; }
+        [Display(Name = "Moneda"), Required]
+        public string Currency { get; set; }
+
         [Column(TypeName = "decimal(10,8)")]
         [Display(Name = "Balance"), Required]
         public Decimal Amount { get; set; }
-        [Display(Name = "Moneda"), Required]
-        public string Currency { get; set; }
         public ICollection<MovementsViewModel> Movements { get; set; }
     }
 }

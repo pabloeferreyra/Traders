@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Traders.Data;
 using Traders.Models;
 using Traders.Services;
+using static Traders.Settings.ClientsTypes;
 
 namespace Traders.Controllers
 {
@@ -16,35 +17,44 @@ namespace Traders.Controllers
     [ApiController]
     public class FuturesReportController : ControllerBase
     {
+        #region consts
+        private const string br = "<br />";
+        private const string startMessage = "Hola!"+ br + "Este es un resumen mensual del estado de tu cuenta en Bitcoin Santa Fe, tomado al día de la fecha:";
+        private const string finishMessage = br
+                    + "Este mensaje es automático, por favor no respondas. Por cualquier consulta comunicate con nosotros por los medios habituales."+ br 
+                    + "<p>* La información contenida en este correo es privada y confidencial.Si cree que lo ha recibido por error, por favor, notifíquelo al remitente.</p>";
+        private const string MensRent = "Rendimiento Mensual: ";
+        private const string usdTConst = "Capital acumulado en USDT: ";
+        #endregion
         private readonly ILogger<FuturesReportController> _logger;
-        private readonly IMailService _service;
+        private readonly IEmailSender _service;
         private readonly ApplicationDbContext _context;
-        public FuturesReportController(ILogger<FuturesReportController> logger, IMailService service,
-            ApplicationDbContext context)
+        private readonly IFuturesServices _futuresServices;
+        private readonly IMovementsServices _movementServices;
+        public FuturesReportController(ILogger<FuturesReportController> logger, IEmailSender service,
+            ApplicationDbContext context,
+            IFuturesServices futuresServices,
+            IMovementsServices movementsServices)
         {
             _logger = logger;
             _service = service;
             _context = context;
+            _futuresServices = futuresServices;
+            _movementServices = movementsServices;
         }
 
         [HttpGet]
         [Route("export")]
         public async Task<IActionResult> ExportReport()
         {
-            var futures = _context.Futures.Where(f => f.StartDate.AddMonths(6) > DateTime.Today).ToArray();
-            var clientIds = futures.Select(c => c.Client.Id).Distinct();
-            var clientEmails = _context.Clients.Where(c => clientIds.Contains(c.Id)).Select(e => e.Email).ToArray();
-            DateTime date = new DateTime();
+           var futures = await _futuresServices.GetAllContracts();
+            DateTime date = DateTime.Today;
             var startMonth = new DateTime(date.Year, date.Month, 1);
             var finishMonth = startMonth.AddMonths(1).AddDays(-1);
-            var movements = await _context.FuturesUpdates.Where(m => m.ModifDate >= startMonth && m.ModifDate <= finishMonth).OrderBy(m => m.ModifDate).ToListAsync();
-            var contracts = await _context.Futures.Where(f => f.StartDate.AddMonths(6) < DateTime.Now).CountAsync();
-
-
+            var movements = await _futuresServices.GetFuturesUpdatesForMail(startMonth, finishMonth);
+            var contracts = await _futuresServices.CountContracts(false);
             foreach (var f in futures)
             {
-                f.Client = _context.Clients.Where(cl => cl.Id == f.Client.Id).FirstOrDefault();
-                f.FinishDate = f.StartDate.AddMonths(6);
                 if (movements.Count > 0)
                 {
                     decimal fuGain = 0;
@@ -52,28 +62,58 @@ namespace Traders.Controllers
                     foreach (var fu in movements)
                     {
                         var gain = fu.Gain / contracts;
-                        fuGain += ((f.Capital + gain) / (f.Participation.Percentage / 100));
+                        fuGain = fuGain + ((f.Capital + gain) / (f.Participation.Percentage / 100));
                     }
 
-                    f.FinalResult += fuGain;
+                    f.FinalResult = f.FinalResult + fuGain;
+
+                    if (f.Client.Code == (int)SpecialClients.Uno)
+                    {
+                        var futuresWithFixed = await _futuresServices.GetContracts(true);
+                        f.FinalResult = _futuresServices.FinalResult(futuresWithFixed, f.FinalResult);
+                    }
                 }
                 else
                 {
                     f.FinalResult = f.Capital;
                 }
-                var percentage = f.FinalResult / f.Capital * 100;
-                var participation = _context.Participations.Where(p => p.Id == f.ParticipationId).Select(p => p.Percentage).FirstOrDefault();
-                var emailTxt = "Hola!<br /> Este es un resumen mensual del estado de tu cuenta en Bitcoin Santa Fe, tomado al día de la fecha:" + DateTime.Today.ToShortDateString() + "<br />"
-                + "Contrato Nro: " + f.ContractNumber + "<br />"
-                + "Capital inicial: " + f.Capital.ToString() + "<br />"
-                + "Rendimiento Mensual: " + percentage + "%<br />"
-                + "Participacion: " + participation + "<br />"
-                + "Capital acumulado en USDT: " + f.FinalResult + "<br />"
-                + "Fecha de proximo retiro: " + f.FinishDate + "<br />"
-                + "<br />"
-                + "Este mensaje es automático, por favor no respondas. Por cualquier consulta comunicate con nosotros por los medios habituales. <br />"
-                + "<p>* La información contenida en este correo es privada y confidencial.Si cree que lo ha recibido por error, por favor, notifíquelo al remitente.</p>";
-;
+                decimal percentage;
+                if (!f.FixRent)
+                {
+                    percentage = f.FinalResult / f.Capital * 100;
+                }
+                else
+                {
+                    percentage = 5;
+                    f.FinalResult = _futuresServices.FixRentCalc(f.Capital);
+                }
+                var participation = _futuresServices.GetParticipation(f.ParticipationId);
+                string emailTxt = startMessage + DateTime.Today.ToShortDateString() + br
+                    + "Contrato Nro: " + f.ContractNumber + br
+                    + "Capital inicial: " + f.Capital.ToString() + br;
+                string signature = "Fecha de proximo retiro: " + f.FinishDate + br
+                    + finishMessage;
+                if (f.Client.Code == (int)SpecialClients.Uno)
+                {
+                    emailTxt = emailTxt + usdTConst + f.FinalResult + br
+                    + "Recuerde que el acumulado se ve afectado por los contratos de renta fija"
+                    + signature; 
+                }
+                else
+                {
+                    if (f.FixRent)
+                    {
+                        emailTxt = emailTxt + MensRent + percentage + "%" + br
+                        + signature;
+                    }
+                    else
+                    {
+                        emailTxt = emailTxt + MensRent + percentage + "%" + br
+                        + "Participacion: " + participation + br
+                        + usdTConst + f.FinalResult + br
+                        + signature;
+                    }
+                }
                 var MailRequest = new MailRequestViewModel()
                 {
                     ToEmail = f.Client.Email,
@@ -83,7 +123,7 @@ namespace Traders.Controllers
                 };
                 await _service.SendEmailAsync(MailRequest);
             }
-            
+
             return Ok();
         }
 
@@ -92,10 +132,11 @@ namespace Traders.Controllers
         [Route("clean")]
         public async Task<IActionResult> CleanMovements()
         {
-            var movements = await _context.Movements.Where(m => m.DateMov < DateTime.Today).ToListAsync();
-            _context.Movements.RemoveRange(movements);
-            await _context.SaveChangesAsync();
-            return Ok();
+            var ret = await _movementServices.RemoveMovements();
+            if (ret != 0)
+                return Ok();
+            else
+                return BadRequest();
         }
     }
 }

@@ -8,7 +8,7 @@ using Traders.Data;
 
 namespace Traders.Controllers
 {
-    [Authorize(Roles = "Trader, Admin")]
+    [AllowAnonymous]
     public class CommonController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,9 +18,14 @@ namespace Traders.Controllers
         }
 
         [HttpPost]
-        public bool ClientExist(int code)
+        public bool ClientExist([FromBody]int Code)
         {
-            return _context.Clients.Where(c => c.Code == code).Any();
+            return _context.Clients.Where(c => c.Code == Code).Any();
         }
+    }
+
+    public class ClientExistBody
+    {
+        public int Code { get; set; }
     }
 }

@@ -35,7 +35,12 @@
                 <input asp-for="StartDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" id="startDate" class="form-control" />
                 <span asp-validation-for="StartDate" id="startDateVal" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="FixRent" asp-for="FixRent" /> @Html.DisplayNameFor(model => model.FixRent)
+                </label>
+            </div>
+            <div class="form-group" id="Participation">
                 <label asp-for="ParticipationId" class="control-label"></label>
                 <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
             </div>

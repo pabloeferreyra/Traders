@@ -12,10 +12,10 @@ using Traders.Settings;
 
 namespace Traders.Services
 {
-    public class MailService : IMailService
+    public class EmailSender : IEmailSender
     {
         private readonly MailSettings _mailSettings;
-        public MailService(IOptions<MailSettings> mailSettings)
+        public EmailSender(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
         }
