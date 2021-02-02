@@ -157,7 +157,7 @@ namespace Traders.Controllers
                 futuresViewModel.Id = Guid.NewGuid();
                 futuresViewModel.ContractNumber = contract + 1;
                 futuresViewModel.ClientId = client.Id;
-                if (!NoLimitclient(futuresViewModel.Client.Code))
+                if (!NoLimitclient(client.Code))
                 {
                     futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
                 }
