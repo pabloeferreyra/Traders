@@ -70,7 +70,7 @@ $("#ClientCode").blur(function () {
     else {
         $.ajax({
             type: "POST",
-            url: "/Common/ClientExist",
+            url: "/Traders/Common/ClientExist",
             dataType: "json",
             contentType: "application/json",
             data:  $("#ClientCode").val(),
