@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Traders.Models
 {
@@ -19,41 +16,41 @@ namespace Traders.Models
         [Display(Name ="Usuario"), Required]
         public string UserGuid { get; set; }
         
-        [Display(Name = "Monto Compra"), Required]
+        [Display(Name = "Monto Ingreso"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountIn { get; set; }
-        [Display(Name = "Moneda Compra"), Required]
+        [Display(Name = "Moneda Ingreso"), Required]
         public string BadgeIn { get; set; }
-        [Display(Name = "Moneda Compra"), Required]
+        [Display(Name = "Moneda Ingreso"), Required]
         public Guid BankAccountGuidIn { get; set; }
 
-        [Display(Name = "Monto venta")]
+        [Display(Name = "Monto Egreso")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountInS { get; set; }
-        [Display(Name = "Moneda Compra"), Required]
+        [Display(Name = "Moneda Ingreso"), Required]
         public string BadgeInS { get; set; }
-        [Display(Name = "Moneda Compra"), Required]
+        [Display(Name = "Moneda Ingreso"), Required]
         public Guid BankAccountGuidInS { get; set; }
 
-        [Display(Name = "Monto Venta"), Required]
+        [Display(Name = "Monto Egreso"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOut { get; set; }
-        [Display(Name = "Divisa Venta"), Required]
+        [Display(Name = "Divisa Egreso"), Required]
         public string BadgeOut { get; set; }
-        [Display(Name = "Moneda Venta"), Required]
+        [Display(Name = "Moneda Egreso"), Required]
         public Guid BankAccountGuidOut { get; set; }
 
         [Display(Name ="Movimiento Correlativo")]
         public Guid? CorrelationId { get; set; }
 
-        [Display(Name = "Monto Venta")]
+        [Display(Name = "Monto Egreso")]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal AmountOutS { get; set; }
        
-        [Display(Name = "Moneda Venta")]
+        [Display(Name = "Moneda Egreso")]
         public string BadgeOutS { get; set; }
         
-        [Display(Name = "Moneda Venta")]
+        [Display(Name = "Moneda Egreso")]
         public Guid BankAccountGuidOutS { get; set; }
         
         [Display(Name = "Moneda")]
@@ -65,6 +62,11 @@ namespace Traders.Models
         [Display(Name = "Comision"), Required]
         [Column(TypeName = "decimal(10,8)")]
         public Decimal Comission { get; set; }
+        
+        [Display(Name = "Moneda Comision"), Required]
+        public Guid ComissionBadgeId { get; set; }
+        
+        public BankAccountsViewModel ComissionBadge { get; set; }
 
         public DateTime DateOperation { get; set; }
 

@@ -61,7 +61,21 @@ namespace Traders.Services
                                                       "Currency");
         }
 
-        public async Task<int> UpdateAmmount(BankAccountsViewModel modelIn,
+        public async Task<bool> EditAmount(BankAccountsViewModel model)
+        {
+            try
+            {
+                _context.Update(model);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<int> UpdateAmount(BankAccountsViewModel modelIn,
                                              BankAccountsViewModel modelOut)
         {
             _context.Update(modelIn);

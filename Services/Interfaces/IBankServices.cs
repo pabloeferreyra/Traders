@@ -14,6 +14,7 @@ namespace Traders.Services
         public Task<BankAccountsViewModel> GetBank(Guid? id);
         public Task<bool> CreateBank(BankAccountsViewModel model);
         public SelectList BankList();
-        public Task<int> UpdateAmmount(BankAccountsViewModel modelIn, BankAccountsViewModel modelOut);
+        public Task<int> UpdateAmount(BankAccountsViewModel modelIn, BankAccountsViewModel modelOut);
+        public Task<bool> EditAmount(BankAccountsViewModel model);
     }
 }
