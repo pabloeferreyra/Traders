@@ -16,12 +16,12 @@
         <h4>Nuevo Contrato</h4>
     </div>
     <form method="post">
-        <div class="card-body">
+        <div class="card-body container">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <i class="far fa-folder-open"></i>
                 <label asp-for="Code" class="control-label "></label>
-                <input asp-for="Code" id="ClientCode" value="@ViewBag.ClientCode" class="form-control"  />
+                <input asp-for="Code" id="ClientCode" value="@ViewBag.ClientCode" class="form-control" />
                 <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,6 +31,12 @@
                 <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Capital" class="control-label"></label>
+                <input asp-for="Capital" id="capital" class="form-control" value="0.00" />
+                <span asp-validation-for="Capital" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <i class="far fa-calendar-alt"></i>
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" id="startDate" class="form-control" />
                 <span asp-validation-for="StartDate" id="startDateVal" class="text-danger"></span>
@@ -40,15 +46,18 @@
                     <input class="form-check-input" id="FixRent" asp-for="FixRent" /> @Html.DisplayNameFor(model => model.FixRent)
                 </label>
             </div>
+            <div class="form-group" id="fixRentP" style="display: none;">
+                <i class="fas fa-percent"></i>
+                <label asp-for="FixRentPercentage" class="control-label"></label>
+                <input asp-for="FixRentPercentage" type="number" class="form-control" />
+
+            </div>
             <div class="form-group" id="Participation">
+                <i class="fas fa-percent"></i>
                 <label asp-for="ParticipationId" class="control-label"></label>
                 <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="Capital" class="control-label"></label>
-                <input asp-for="Capital" id="capital" class="form-control" />
-                <span asp-validation-for="Capital" class="text-danger"></span>
-            </div>
+
         </div>
         <div class="card-footer">
             <button id="btnCreateFuture" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Futures")')">Aceptar</button>

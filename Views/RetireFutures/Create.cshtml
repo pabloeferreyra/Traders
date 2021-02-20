@@ -1,0 +1,55 @@
+﻿@model Traders.Models.RetireFuturesViewModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+    if (ViewBag.Date == null)
+        ViewBag.Date = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
+    else
+        String.Format("{0:yyyy-MM-dd}", DateTime.Now);
+}
+
+@{
+    ViewData["Title"] = "Retirar del contrato Nro: " + Model.ContractNumber;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>@ViewData["Title"] </h4>
+    </div>
+    <form method="post">
+        <div class="card-body container">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ContractNumber" class="control-label"></label>
+                <input asp-for="ContractNumber" id="ContractNumber" class="form-control" readonly/>
+                <span asp-validation-for="ContractNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetireDate" class="control-label"></label>
+                <input asp-for="RetireDate" id="RetireDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" class="form-control" />
+                <span asp-validation-for="RetireDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Capital" class="control-label"></label>
+                <input asp-for="Capital" id="Capital" class="form-control" />
+                <span asp-validation-for="Capital" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetireCapital" class="control-label"></label>
+                <input asp-for="RetireCapital" id="RetireCapital" class="form-control" />
+                <span asp-validation-for="RetireCapital" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btnCreateRetire" class="btn btn-primary" onclick="Retire('@Url.Action("Create", "RetireFutures")')">Aceptar</button>
+            <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/futures.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

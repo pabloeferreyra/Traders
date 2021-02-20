@@ -16,5 +16,7 @@ namespace Traders.Services
         public SelectList BankList();
         public Task<int> UpdateAmount(BankAccountsViewModel modelIn, BankAccountsViewModel modelOut);
         public Task<bool> EditAmount(BankAccountsViewModel model);
+        public Task<bool> AddFutureAmount(decimal amount);
+        public Task<bool> RetireFutureAmount(decimal amount);
     }
 }

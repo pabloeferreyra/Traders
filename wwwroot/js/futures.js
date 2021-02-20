@@ -37,13 +37,36 @@ function Create(urlAction) {
             Email: $("#ClientEmail").val(),
             StartDate: $("#startDate").val(),
             ParticipationId: $("#participationId :selected").val(),
-            Capital: $("#capital").val()
+            Capital: $("#capital").val(),
+            RetireCapital: $("#retireCapital").val()
         },
         complete: function (result) {
             toastr.success('Contrato creado correctamente', 'Correcto!');
         }
     });
 }
+
+function Retire(urlAction) {
+    var form = $('#__AjaxAntiForgeryForm');
+    var token = $('input[name="__RequestVerificationToken"]', form).val();
+    $.ajax({
+        type: "POST",
+        url: urlAction,
+        dataType: "json",
+        contentType: "application/json",
+        data: {
+            __RequestVerificationToken: token,
+            ContractNumber: $("#ContractNumber").val(),
+            Capital: $("#Capital").val(),
+            RetireDate: $('#RetireDate').val,
+            RetireCapital: $("#RetireCapital").val()
+        },
+        complete: function (result) {
+            toastr.success('retiro realizado correctamente', 'Correcto!');
+        }
+    });
+}
+
 
 function SendReport(urlAction) {
     $.ajax({
@@ -68,33 +91,18 @@ $("#ClientCode").blur(function () {
         $("#btnCreateFuture").prop('disabled', true);
     }
     else {
-        $.ajax({
-            type: "POST",
-            url: "/Traders/Common/ClientExist",
-            dataType: "json",
-            contentType: "application/json",
-            data:  $("#ClientCode").val(),
-            complete: function (msj) {
-                value = msj.responseText;
-                if (value == 'false') {
-                    $("#btnCreateFuture").prop('disabled', false);
-                }
-                else {
-                    $("#ClientCodeVal").text('Por favor ingresar un cliente Nuevo.');
-                    toastr.error('Por favor ingresar un cliente Nuevo.', 'Error');
-                    $("#btnCreateFuture").prop('disabled', true);
-                }
-            }
-        });
+        $("#btnCreateFuture").prop('disabled', false);
     }
 });
 
 $("#FixRent").change(function () {
     if ($('#FixRent').is(":checked")) {
-        $("#participationId").hide(1000);
+        $("#Participation").hide(1000);
+        $('#fixRentP').show(1000);
     }
     else {
-        $("#participationId").show(1000);
+        $("#Participation").show(1000);
+        $('#fixRentP').hide(1000);
     }
 });
 

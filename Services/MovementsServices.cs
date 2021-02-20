@@ -42,7 +42,7 @@ namespace Traders.Services
         {
             try
             {
-                var movements = await _context.Movements.Where(m => m.DateMov < DateTime.Today).ToListAsync();
+                var movements = await _context.Movements.Where(m => m.DateMov < DateTime.Today.AddDays(-90)).ToListAsync();
                 _context.Movements.RemoveRange(movements);
                 return await _context.SaveChangesAsync();
             }

@@ -19,6 +19,7 @@ namespace Traders.Models
         [Display(Name = "Email"), Required]
         public string Email { get; set; }
         [Display(Name = "Fecha Inicio"), Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
         
         public ClientsViewModel Client { get; set; }
@@ -28,17 +29,24 @@ namespace Traders.Models
         public Guid? ParticipationId { get; set; }
         public ParticipationViewModel Participation { get; set; }
         [Display(Name = "Fecha Fin")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime FinishDate { get; set; }
         [Display(Name = "Capital"), Required]
-        [Column(TypeName = "decimal(10,2)")]
-        public Decimal Capital { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal Capital { get; set; }
 
         [Display(Name = "RentaFija")]
         public bool FixRent { get; set; }
+        
+        [Display(Name = "Porcentaje")]
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal FixRentPercentage { get; set; }
 
-        [Display(Name = "Resultado Final")]
-        [Column(TypeName = "decimal(12,2)")]
-        public Decimal FinalResult { get; set; }
+        public bool Retire { get; set; }
+
+        [Display(Name = "Resultado")]
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal FinalResult { get; set; }
 
         public ICollection<FuturesUpdateViewModel> FuturesUpdates { get; set; }
 

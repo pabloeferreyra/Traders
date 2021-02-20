@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace Traders.Models
 {
-    public class FuturesUpdateViewModel
+    public class RetireFuturesViewModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        [Display(Name = "Fecha Evento"), Required]
-        public DateTime ModifDate { get; set; }
-        [Display(Name = "Ganancia"), Required]
+        [Display(Name = "Numero de contrato")]
+        public int ContractNumber { get; set; }
+        [Display(Name = "Fecha Retiro"), Required]
+        public DateTime RetireDate { get; set; }
+        [Display(Name = "Capital"), Required]
         [Column(TypeName = "decimal(30,10)")]
-        public Decimal Gain { get; set; }
-        [Display(Name = "Ganancia total")]
+        public decimal Capital { get; set; }
+        [Display(Name = "Retira")]
         [Column(TypeName = "decimal(30,10)")]
-        public Decimal GainFinal { get; set; }
+        public decimal RetireCapital { get; set; }
     }
 }

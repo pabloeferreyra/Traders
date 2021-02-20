@@ -55,6 +55,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Clientes</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a asp-action="Index" asp-controller="Clients" class="dropdown-item">Información</a>
                             <a asp-action="Index" asp-controller="ClientDiversity" class="dropdown-item">Diversidad</a>
                         </div>
                     </li>
@@ -84,7 +85,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Clientes</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a asp-action="Index" asp-controller="ClientDiversity" class="dropdown-item">Diversidad</a>
+                            <a asp-action="Index" asp-controller="Clients" class="dropdown-item">Información</a>
+                            <a asp-action="Index" asp-controller="ClientDiversity" class="dropdown-item">Holds</a>
                         </div>
                     </li>
                 </ul>

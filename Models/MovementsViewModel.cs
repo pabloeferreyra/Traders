@@ -17,24 +17,24 @@ namespace Traders.Models
         public string UserGuid { get; set; }
         
         [Display(Name = "Monto Ingreso"), Required]
-        [Column(TypeName = "decimal(10,8)")]
-        public Decimal AmountIn { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal AmountIn { get; set; }
         [Display(Name = "Moneda Ingreso"), Required]
         public string BadgeIn { get; set; }
         [Display(Name = "Moneda Ingreso"), Required]
         public Guid BankAccountGuidIn { get; set; }
 
         [Display(Name = "Monto Egreso")]
-        [Column(TypeName = "decimal(10,8)")]
-        public Decimal AmountInS { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal AmountInS { get; set; }
         [Display(Name = "Moneda Ingreso"), Required]
         public string BadgeInS { get; set; }
         [Display(Name = "Moneda Ingreso"), Required]
         public Guid BankAccountGuidInS { get; set; }
 
         [Display(Name = "Monto Egreso"), Required]
-        [Column(TypeName = "decimal(10,8)")]
-        public Decimal AmountOut { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal AmountOut { get; set; }
         [Display(Name = "Divisa Egreso"), Required]
         public string BadgeOut { get; set; }
         [Display(Name = "Moneda Egreso"), Required]
@@ -44,8 +44,8 @@ namespace Traders.Models
         public Guid? CorrelationId { get; set; }
 
         [Display(Name = "Monto Egreso")]
-        [Column(TypeName = "decimal(10,8)")]
-        public Decimal AmountOutS { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal AmountOutS { get; set; }
        
         [Display(Name = "Moneda Egreso")]
         public string BadgeOutS { get; set; }
@@ -60,8 +60,8 @@ namespace Traders.Models
         public BankAccountsViewModel BankAccountsS { get; set; }
 
         [Display(Name = "Comision"), Required]
-        [Column(TypeName = "decimal(10,8)")]
-        public Decimal Comission { get; set; }
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal Comission { get; set; }
         
         [Display(Name = "Moneda Comision"), Required]
         public Guid ComissionBadgeId { get; set; }
