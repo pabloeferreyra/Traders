@@ -29,5 +29,6 @@ namespace Traders.Services
         public Task<bool> FuturesNumberExists(int cNumber);
         public Task<FuturesViewModel> FuturesByNumber(int cNumber);
         public Task<decimal> GetResult(FuturesViewModel futuresViewModel);
+        public Task<int> UpdateFinalResultFixed(List<FuturesViewModel> futuresViewModel);
     }
 }

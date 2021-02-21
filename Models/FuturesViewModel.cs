@@ -55,6 +55,9 @@ namespace Traders.Models
         [Column(TypeName = "decimal(30,10)")]
         public decimal FinalResult { get; set; }
 
+        [Column(TypeName = "decimal(30,10)")]
+        public decimal LastGain { get; set; }
+
         public ICollection<FuturesUpdateViewModel> FuturesUpdates { get; set; }
 
     }

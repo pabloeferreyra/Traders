@@ -32,6 +32,20 @@ namespace Traders.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var fixedRentContracts = await _futuresServices.GetContracts(true);
+            List<FuturesViewModel> futuresUpdate = new List<FuturesViewModel>();
+            foreach (var f in fixedRentContracts)
+            {
+                decimal finalOriginal = f.FinalResult;
+                f.FinalResult = _futuresServices.FixRentCalc(f.Capital, f.FixRentPercentage, f.StartDate);
+                f.LastGain =  f.FinalResult - f.Capital;
+                if(finalOriginal != f.FinalResult)
+                {
+                    futuresUpdate.Add(f);
+                }
+            }
+            await _futuresServices.UpdateFinalResultFixed(futuresUpdate);
+
             return View(await _futuresServices.GetFutures(null));
         }
 

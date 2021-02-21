@@ -52,17 +52,18 @@
                 <input asp-for="FixRentPercentage" type="number" class="form-control" />
 
             </div>
-            <div class="form-group" id="Participation">
-                <i class="fas fa-percent"></i>
-                <label asp-for="ParticipationId" class="control-label"></label>
-                <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
-            </div>
-            <div class="form-group" id="Refeerer">
+            <div class="form-group" id="Refeerer" style="display: none;">
                 <i class="fas fa-bullhorn"></i>
                 <label asp-for="RefeerCode" class="control-label"></label>
                 <input asp-for="RefeerCode" id="refeer" type="number" class="form-control" />
                 <span asp-validation-for="RefeerCode" id="RefeerVal" class="text-danger"></span>
             </div>
+            <div class="form-group" id="Participation">
+                <i class="fas fa-percent"></i>
+                <label asp-for="ParticipationId" class="control-label"></label>
+                <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
+            </div>
+
 
         </div>
         <div class="card-footer">

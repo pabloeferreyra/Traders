@@ -100,10 +100,12 @@ $("#FixRent").change(function () {
     if ($('#FixRent').is(":checked")) {
         $("#Participation").hide(1000);
         $('#fixRentP').show(1000);
+        $('#Refeerer').show(1000);
     }
     else {
         $("#Participation").show(1000);
         $('#fixRentP').hide(1000);
+        $('#Refeerer').hide(1000);
     }
 });
 
