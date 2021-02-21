@@ -24,7 +24,12 @@ namespace Traders.Services
             var futures = await _context.Futures
                 .Include(f => f.Client)
                 .Include(f => f.Participation).Where(f => f.ClientId == clientId).ToListAsync();
-            var futuresNew = new List<FuturesViewModel>();
+            return await CalculateFutures(futures);
+        }
+
+        public async Task<List<FuturesViewModel>> CalculateFutures(List<FuturesViewModel> futures)
+        {
+            List<FuturesViewModel> futuresNew = new List<FuturesViewModel>();
             foreach (var f in futures)
             {
                 var contracts = await CountContracts();
@@ -73,58 +78,22 @@ namespace Traders.Services
             return futuresNew;
         }
 
-        public async Task<List<FuturesViewModel>> GetFutures()
+        public async Task<List<FuturesViewModel>> GetFutures(DateTime? date)
         {
-            var futures = await _context.Futures
-                .Include(f => f.Client)
-                .Include(f => f.Participation).ToListAsync();
-            var futuresNew = new List<FuturesViewModel>();
-            foreach (var f in futures)
+            List<FuturesViewModel> futures = new List<FuturesViewModel>();
+            if (date == null)
             {
-                    var contracts = await CountContracts();
-                    if (!f.FixRent)
-                    {
-
-                        f.FuturesUpdates = new List<FuturesUpdateViewModel>();
-                        List<FuturesUpdateViewModel> futuresUpdates = await GetFuturesUpdates(f.StartDate);
-                        if (futuresUpdates.Count > 0)
-                        {
-                            foreach (var fu in futuresUpdates)
-                            {
-                                var gain = fu.Gain / contracts;
-                                fu.GainFinal = ((f.Capital + gain) / (f.Participation.Percentage / 100));
-                                f.FuturesUpdates.Add(fu);
-                            }
-
-                            decimal fuGain = 0;
-
-                            foreach (var fu in futuresUpdates)
-                            {
-                                var gain = fu.Gain / contracts;
-                                fuGain += ((f.Capital + gain) / (f.Participation.Percentage / 100));
-                            }
-
-                            f.FinalResult += fuGain;
-
-                            if (f.Client.Code == (int)SpecialClients.Uno)
-                            {
-                                var futuresWithFixed = await GetContracts(true);
-                                f.FinalResult = FinalResult(futuresWithFixed, f.FinalResult);
-                            }
-                        }
-                        else
-                        {
-                            f.FinalResult = f.Capital;
-                        }
-                    }
-                    else
-                    {
-                        f.FinalResult = FixRentCalc(f.Capital, f.FixRentPercentage, f.StartDate);
-                    }
-                
-                futuresNew.Add(f);
+                futures = await _context.Futures
+                    .Include(f => f.Client)
+                    .Include(f => f.Participation).ToListAsync();
             }
-            return futuresNew;
+            else
+            {
+                futures = await _context.Futures
+                    .Include(f => f.Client)
+                    .Include(f => f.Participation).Where(f => f.FinishDate == date).ToListAsync();
+            }
+            return await CalculateFutures(futures);
         }
 
         public bool FuturesViewModelExists(Guid id)
@@ -328,6 +297,11 @@ namespace Traders.Services
                         var futuresWithFixed = await GetContracts(true);
                         futuresViewModel.FinalResult = FinalResult(futuresWithFixed, futuresViewModel.FinalResult);
                     }
+                    if (futuresViewModel.Refeer.HasValue)
+                    {
+                        var futuresRefeered = await GetFuturesForClient(futuresViewModel.Refeer.Value);
+                        await UpdateRefeerFuture(futuresRefeered.LastOrDefault(), fuGain);
+                    }
                 }
                 else
                 {
@@ -336,9 +310,31 @@ namespace Traders.Services
             }
             else
             {
-                return FixRentCalc(futuresViewModel.Capital, futuresViewModel.FixRentPercentage, futuresViewModel.StartDate);
+                var rentCalc = FixRentCalc(futuresViewModel.Capital, futuresViewModel.FixRentPercentage, futuresViewModel.StartDate);
+                if (futuresViewModel.Refeer.HasValue)
+                {
+                    var futuresRefeered = await GetFuturesForClient(futuresViewModel.Refeer.Value);
+                    var gain = rentCalc - futuresViewModel.Capital;
+                    await UpdateRefeerFuture(futuresRefeered.LastOrDefault(), gain);
+                }
+                return rentCalc;
             }
             return futuresViewModel.FinalResult;
+        }
+
+        private async Task<int> UpdateRefeerFuture(FuturesViewModel futures, decimal gain) 
+        {
+            decimal refeerPerc = (decimal)1.01;
+            if (futures.FinalResult == (decimal)0.00) 
+            {
+                futures.FinalResult = futures.Capital + (gain * refeerPerc);
+            }
+            else 
+            {
+                futures.FinalResult += (gain * refeerPerc);
+            }
+            _context.Futures.Update(futures);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<FuturesViewModel> FuturesByNumber(int cNumber)

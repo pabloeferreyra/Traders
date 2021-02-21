@@ -27,6 +27,7 @@ namespace Traders.Models
 
         [Display(Name = "Participacion")]
         public Guid? ParticipationId { get; set; }
+        [Display(Name = "Participacion")]
         public ParticipationViewModel Participation { get; set; }
         [Display(Name = "Fecha Fin")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
@@ -41,6 +42,12 @@ namespace Traders.Models
         [Display(Name = "Porcentaje")]
         [Column(TypeName = "decimal(30,10)")]
         public decimal FixRentPercentage { get; set; }
+
+        [Display(Name = "Referido")]
+        public int? RefeerCode { get; set; }
+
+        [Display(Name = "Referido")]
+        public Guid? Refeer { get; set; }
 
         public bool Retire { get; set; }
 

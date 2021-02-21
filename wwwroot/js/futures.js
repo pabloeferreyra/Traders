@@ -38,6 +38,7 @@ function Create(urlAction) {
             StartDate: $("#startDate").val(),
             ParticipationId: $("#participationId :selected").val(),
             Capital: $("#capital").val(),
+            RefeerCode: $("#refeer").val(),
             RetireCapital: $("#retireCapital").val()
         },
         complete: function (result) {
@@ -106,6 +107,34 @@ $("#FixRent").change(function () {
     }
 });
 
+$("#refeer").blur(function () {
+    if ($("#refeer").val() <= '0') {
+        $("#RefeerVal").text('Por favor ingresar un valor mayor a 0.');
+        $("#btnCreateFuture").prop('disabled', true);
+    }
+    else if ($("#refeer").val() != '') {
+        $.ajax({
+            type: "POST",
+            url: "/Traders/Common/ClientExist",
+            dataType: "json",
+            contentType: "application/json",
+            data: $("#refeer").val(),
+            complete: function (msj) {
+                value = msj.responseText;
+                if (value == 'true') {
+                    $("#btnCreateFuture").prop('disabled', false);
+                    toastr.success('Cliente aceptado', 'Correcto!');
+                }
+                else {
+                    $("#RefeerVal").text('Por favor ingresar un cliente valido.');
+                    toastr.error('Por favor ingresar un cliente valido.', 'Error');
+                    $("#btnCreateFuture").prop('disabled', true);
+                }
+            }
+        });
+    }
+});
+
 $("#ClientEmail").blur(function () {
     if ($("#ClientEmail").val() == '') {
         $("#ClientEmailVal").text('Por favor ingresar un email.');
@@ -115,3 +144,43 @@ $("#ClientEmail").blur(function () {
         $("#btnCreateFuture").prop('disabled', false);
     }
 });
+
+function SearchFutures(urlAction) {
+    var date = $("#DateContract").val();
+    $.ajax({
+        type: "POST",
+        url: urlAction,
+        data: {
+            dateContract: date
+        },
+        success: function (result) {
+            if (result.trim().length == 0) {
+                toastr.success('no quedan contratos!', 'Todo listo!');
+                $("#FuturesPartial").html(result);
+            }
+            $("#FuturesPartial").html(result);
+        },
+        error: function (req, status, error) {
+        }
+    });
+}
+
+function SearchAllFutures(urlAction) {
+    $.ajax({
+        type: "POST",
+        url: urlAction,
+        data: {
+            dateTurn: null,
+            medicId: null
+        },
+        success: function (result) {
+            if (result.trim().length == 0) {
+                toastr.success('no quedan contratos!', 'Todo listo!');
+                $("#FuturesPartial").html(result);
+            }
+            $("#FuturesPartial").html(result);
+        },
+        error: function (req, status, error) {
+        }
+    });
+}

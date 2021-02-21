@@ -31,6 +31,7 @@ namespace Traders.Data
                 .Ignore(m => m.BankAccountGuidOutS)
                 .Ignore(m => m.BankAccountsS);
             builder.Entity<FuturesViewModel>()
+                .Ignore(m => m.RefeerCode)
                 .Ignore(m => m.Code)
                 .Ignore(m => m.Email);
             builder.Entity<FuturesUpdateViewModel>()

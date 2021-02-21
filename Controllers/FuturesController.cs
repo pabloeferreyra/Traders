@@ -32,7 +32,13 @@ namespace Traders.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _futuresServices.GetFutures());
+            return View(await _futuresServices.GetFutures(null));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchFutures(DateTime? dateContract)
+        {
+            return PartialView("_FuturesPartial", await _futuresServices.GetFutures(dateContract));
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -52,7 +58,8 @@ namespace Traders.Controllers
         public IActionResult Create()
         {
             int clientCode = _clientServices.ClientsCode();
-            ViewData["ClientCode"] = clientCode++;
+            clientCode += 1; 
+            ViewData["ClientCode"] = clientCode;
             ViewData["ParticipationId"] = _futuresServices.Participations();
             return View();
         }
@@ -64,6 +71,10 @@ namespace Traders.Controllers
             if (ModelState.IsValid)
             {
                 var client = await _clientServices.GetClient(futuresViewModel.Code);
+                if (futuresViewModel.RefeerCode.HasValue) {
+                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode.Value);
+                    futuresViewModel.Refeer = refeer.Id;
+                }
                 if (client == null)
                 {
                     client = new ClientsViewModel
