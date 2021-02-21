@@ -44,45 +44,18 @@ namespace Traders.Controllers
         {
            var futures = await _futuresServices.GetAllContracts();
             DateTime date = DateTime.Today;
-            var startMonth = new DateTime(date.Year, date.Month, 1);
-            var finishMonth = startMonth.AddMonths(1).AddDays(-1);
-            var movements = await _futuresServices.GetFuturesUpdatesForMail(startMonth, finishMonth);
-            var contracts = await _futuresServices.CountContracts();
             foreach (var f in futures)
             {
-                if (!f.FixRent)
-                {
-                    if (movements.Count > 0)
-                    {
-                        decimal fuGain = 0;
-
-                        foreach (var fu in movements)
-                        {
-                            var gain = fu.Gain / contracts;
-                            fuGain += ((f.Capital + gain) / (f.Participation.Percentage / 100));
-                        }
-
-                        f.FinalResult += fuGain;
-
-                        if (f.Client.Code == (int)SpecialClients.Uno)
-                        {
-                            var futuresWithFixed = await _futuresServices.GetContracts(true);
-                            f.FinalResult = _futuresServices.FinalResult(futuresWithFixed, f.FinalResult);
-                        }
-                    }
-                    else
-                    {
-                        f.FinalResult = f.Capital;
-                    }
-                }
-                else
-                {
-                    f.FinalResult = _futuresServices.FixRentCalc(f.Capital, f.FixRentPercentage, f.StartDate);
-                }
                 var participation = _futuresServices.GetParticipation(f.ParticipationId);
-                string emailTxt = startMessage + DateTime.Today.ToShortDateString() + br
-                    + "Contrato Nro: " + f.ContractNumber + br
-                    + "Capital inicial: " + f.Capital.ToString() + br;
+                string emailTxt = startMessage
+                                  + DateTime.Today.ToShortDateString()
+                                  + br
+                                  + "Contrato Nro: "
+                                  + f.ContractNumber
+                                  + br
+                                  + "Capital inicial: "
+                                  + f.Capital.ToString()
+                                  + br;
                 string signature = "Fecha de proximo retiro: " + f.FinishDate + br
                     + finishMessage;
                 if (f.Client.Code == (int)SpecialClients.Uno)
