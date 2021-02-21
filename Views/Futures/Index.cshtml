@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<Traders.Models.FuturesViewModel>
 
 @{
+    if (ViewBag.Date == null)
+        ViewBag.Date = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
+    else
+        String.Format("{0:yyyy-MM-dd}", DateTime.Now);
     ViewData["Title"] = "Futuros";
 }
 
@@ -13,7 +17,13 @@
                 <a class="btn btn-primary" asp-action="Create">Nuevo Contrato</a>
             </p>
         </div>
-
+        <div class="col-8">
+            <div class="row">
+                <input id="DateContract" name="dateContract" type="date" class="form-control col-md-3 col-sm-12" value="@ViewBag.Date" data-date-format="dd/MM/yyyy" />
+                <button class="btn btn-primary col-md-2 col-sm-12" onclick="SearchFutures('@Url.Action("SearchFutures","Futures")')">Buscar</button>
+                <button class="btn btn-secondary col-md-2 col-sm-12" onclick="SearchAllFutures('@Url.Action("SearchFutures","Futures")')">Limpiar</button>
+            </div>
+        </div>
         <div class="col-2">
             <button class="btn btn-outline-danger" onclick="SendReport('@Url.Action("ExportReport", "FuturesReport")')">Enviar Reporte</button>
         </div>
@@ -44,7 +54,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="FuturesPartial">
         <partial name="_FuturesPartial" model="@Model.ToList()" />
     </tbody>
 </table>

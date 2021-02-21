@@ -29,6 +29,31 @@ namespace Traders.Controllers
             return View(await _bankServices.GetBankAccounts());
         }
 
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (_bankServices.BankAccountsViewModelExists((Guid)id))
+            {
+                return View(await _bankServices.GetBank(id));
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(BankAccountsViewModel bankAccountsViewModel)
+        {
+            if (ModelState.IsValid && _bankServices.BankAccountsNameViewModelExists(bankAccountsViewModel.Currency))
+            {
+                
+                await _bankServices.EditAmount(bankAccountsViewModel);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(bankAccountsViewModel);
+        }
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)

@@ -27,16 +27,15 @@ $("#ClientCode").blur(function () {
     else {
         $.ajax({
             type: "POST",
-            url: "/Common/ClientExist",
+            url: "/Traders/Common/ClientExist",
             dataType: "json",
             contentType: "application/json",
-            data: {
-                Code: $("#ClientCode").val(),
-            },
+            data: $("#ClientCode").val(),
             complete: function (msj) {
                 value = msj.responseText;
                 if (value == 'true') {
                     $("#btnCreateDiversity").prop('disabled', false);
+                    toastr.success('Cliente aceptado', 'Correcto!');
                 }
                 else {
                     $("#ClientCodeVal").text('Por favor ingresar un cliente valido.');

@@ -14,10 +14,10 @@ namespace Traders.Models
         [Display(Name = "Fecha Evento"), Required]
         public DateTime ModifDate { get; set; }
         [Display(Name = "Ganancia"), Required]
-        [Column(TypeName = "decimal(10,8)")]
+        [Column(TypeName = "decimal(30,10)")]
         public Decimal Gain { get; set; }
         [Display(Name = "Ganancia total")]
-        [Column(TypeName = "decimal(10,8)")]
+        [Column(TypeName = "decimal(30,10)")]
         public Decimal GainFinal { get; set; }
     }
 }

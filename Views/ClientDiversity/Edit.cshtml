@@ -5,12 +5,12 @@
 }
 
 @{
-    ViewData["Title"] = "Editar diversificación de cliente";
+    ViewData["Title"] = "Editar Hold de cliente";
 }
 
 <div class="card">
     <div class="card-header">
-        <h1>Editar diversificación de cliente</h1>
+        <h1>Editar Hold de cliente</h1>
     </div>
     <form method="post">
         <div class="card-body">
@@ -43,7 +43,7 @@
         </div>
         <div class="card-footer">
             <button id="btnCreateDiversity" class="btn btn-primary" onclick="Create('@Url.Action("Edit", "ClientDiversity")')">Aceptar</button>
-            <a asp-action="Index" cclass="btn btn-outline-warning">Cancelar</a>
+            <a asp-action="Index" class="btn btn-outline-warning">Cancelar</a>
         </div>
     </form>
 </div>

@@ -15,8 +15,8 @@ namespace Traders.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -29,18 +29,18 @@ namespace Traders.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -83,8 +83,8 @@ namespace Traders.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -96,12 +96,12 @@ namespace Traders.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -119,17 +119,17 @@ namespace Traders.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -162,12 +162,12 @@ namespace Traders.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -204,12 +204,12 @@ namespace Traders.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -241,7 +241,7 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(10,8)");
+                        .HasColumnType("decimal(30,10)");
 
                     b.Property<string>("Currency")
                         .IsRequired()
@@ -275,7 +275,7 @@ namespace Traders.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("clientDiversities");
+                    b.ToTable("ClientDiversities");
                 });
 
             modelBuilder.Entity("Traders.Models.ClientsViewModel", b =>
@@ -303,7 +303,7 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Gain")
-                        .HasColumnType("decimal(10,8)");
+                        .HasColumnType("decimal(30,10)");
 
                     b.Property<DateTime>("ModifDate")
                         .HasColumnType("datetime2");
@@ -320,7 +320,7 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Capital")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(30,10)");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -328,14 +328,26 @@ namespace Traders.Migrations
                     b.Property<int>("ContractNumber")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("FinalResult")
+                        .HasColumnType("decimal(30,10)");
+
                     b.Property<DateTime>("FinishDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("FixRent")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("FixRentPercentage")
+                        .HasColumnType("decimal(30,10)");
+
                     b.Property<Guid?>("ParticipationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Refeer")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Retire")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -356,10 +368,10 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("AmountIn")
-                        .HasColumnType("decimal(10,8)");
+                        .HasColumnType("decimal(30,10)");
 
                     b.Property<decimal>("AmountOut")
-                        .HasColumnType("decimal(10,8)");
+                        .HasColumnType("decimal(30,10)");
 
                     b.Property<string>("BadgeIn")
                         .IsRequired()
@@ -382,7 +394,10 @@ namespace Traders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Comission")
-                        .HasColumnType("decimal(10,8)");
+                        .HasColumnType("decimal(30,10)");
+
+                    b.Property<Guid>("ComissionBadgeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CorrelationId")
                         .HasColumnType("uniqueidentifier");
@@ -405,6 +420,8 @@ namespace Traders.Migrations
 
                     b.HasIndex("BankAccountsId");
 
+                    b.HasIndex("ComissionBadgeId");
+
                     b.ToTable("Movements");
                 });
 
@@ -423,6 +440,29 @@ namespace Traders.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Participations");
+                });
+
+            modelBuilder.Entity("Traders.Models.RetireFuturesViewModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Capital")
+                        .HasColumnType("decimal(30,10)");
+
+                    b.Property<int>("ContractNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RetireCapital")
+                        .HasColumnType("decimal(30,10)");
+
+                    b.Property<DateTime>("RetireDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Retires");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -487,6 +527,10 @@ namespace Traders.Migrations
                     b.HasOne("Traders.Models.ParticipationViewModel", "Participation")
                         .WithMany("Futures")
                         .HasForeignKey("ParticipationId");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Participation");
                 });
 
             modelBuilder.Entity("Traders.Models.MovementsViewModel", b =>
@@ -498,6 +542,36 @@ namespace Traders.Migrations
                     b.HasOne("Traders.Models.BankAccountsViewModel", "BankAccounts")
                         .WithMany("Movements")
                         .HasForeignKey("BankAccountsId");
+
+                    b.HasOne("Traders.Models.BankAccountsViewModel", "ComissionBadge")
+                        .WithMany()
+                        .HasForeignKey("ComissionBadgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankAccounts");
+
+                    b.Navigation("ComissionBadge");
+                });
+
+            modelBuilder.Entity("Traders.Models.BadgesViewModel", b =>
+                {
+                    b.Navigation("Movements");
+                });
+
+            modelBuilder.Entity("Traders.Models.BankAccountsViewModel", b =>
+                {
+                    b.Navigation("Movements");
+                });
+
+            modelBuilder.Entity("Traders.Models.ClientsViewModel", b =>
+                {
+                    b.Navigation("Futures");
+                });
+
+            modelBuilder.Entity("Traders.Models.ParticipationViewModel", b =>
+                {
+                    b.Navigation("Futures");
                 });
 #pragma warning restore 612, 618
         }

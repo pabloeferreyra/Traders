@@ -26,19 +26,14 @@ namespace Traders.Controllers
         private const string MensRent = "Rendimiento Mensual: ";
         private const string usdTConst = "Capital acumulado en USDT: ";
         #endregion
-        private readonly ILogger<FuturesReportController> _logger;
         private readonly IEmailSender _service;
-        private readonly ApplicationDbContext _context;
         private readonly IFuturesServices _futuresServices;
         private readonly IMovementsServices _movementServices;
-        public FuturesReportController(ILogger<FuturesReportController> logger, IEmailSender service,
-            ApplicationDbContext context,
+        public FuturesReportController(IEmailSender service,
             IFuturesServices futuresServices,
             IMovementsServices movementsServices)
         {
-            _logger = logger;
             _service = service;
-            _context = context;
             _futuresServices = futuresServices;
             _movementServices = movementsServices;
         }
@@ -52,40 +47,37 @@ namespace Traders.Controllers
             var startMonth = new DateTime(date.Year, date.Month, 1);
             var finishMonth = startMonth.AddMonths(1).AddDays(-1);
             var movements = await _futuresServices.GetFuturesUpdatesForMail(startMonth, finishMonth);
-            var contracts = await _futuresServices.CountContracts(false);
+            var contracts = await _futuresServices.CountContracts();
             foreach (var f in futures)
             {
-                if (movements.Count > 0)
-                {
-                    decimal fuGain = 0;
-
-                    foreach (var fu in movements)
-                    {
-                        var gain = fu.Gain / contracts;
-                        fuGain = fuGain + ((f.Capital + gain) / (f.Participation.Percentage / 100));
-                    }
-
-                    f.FinalResult = f.FinalResult + fuGain;
-
-                    if (f.Client.Code == (int)SpecialClients.Uno)
-                    {
-                        var futuresWithFixed = await _futuresServices.GetContracts(true);
-                        f.FinalResult = _futuresServices.FinalResult(futuresWithFixed, f.FinalResult);
-                    }
-                }
-                else
-                {
-                    f.FinalResult = f.Capital;
-                }
-                decimal percentage;
                 if (!f.FixRent)
                 {
-                    percentage = f.FinalResult / f.Capital * 100;
+                    if (movements.Count > 0)
+                    {
+                        decimal fuGain = 0;
+
+                        foreach (var fu in movements)
+                        {
+                            var gain = fu.Gain / contracts;
+                            fuGain += ((f.Capital + gain) / (f.Participation.Percentage / 100));
+                        }
+
+                        f.FinalResult += fuGain;
+
+                        if (f.Client.Code == (int)SpecialClients.Uno)
+                        {
+                            var futuresWithFixed = await _futuresServices.GetContracts(true);
+                            f.FinalResult = _futuresServices.FinalResult(futuresWithFixed, f.FinalResult);
+                        }
+                    }
+                    else
+                    {
+                        f.FinalResult = f.Capital;
+                    }
                 }
                 else
                 {
-                    percentage = 5;
-                    f.FinalResult = _futuresServices.FixRentCalc(f.Capital);
+                    f.FinalResult = _futuresServices.FixRentCalc(f.Capital, f.FixRentPercentage, f.StartDate);
                 }
                 var participation = _futuresServices.GetParticipation(f.ParticipationId);
                 string emailTxt = startMessage + DateTime.Today.ToShortDateString() + br
@@ -103,11 +95,12 @@ namespace Traders.Controllers
                 {
                     if (f.FixRent)
                     {
-                        emailTxt = emailTxt + MensRent + percentage + "%" + br
+                        emailTxt = emailTxt + MensRent + f.FixRentPercentage + "%" + br
                         + signature;
                     }
                     else
                     {
+                        decimal percentage = (((f.FinalResult - f.Capital) /f.Capital) * 100);
                         emailTxt = emailTxt + MensRent + percentage + "%" + br
                         + "Participacion: " + participation + br
                         + usdTConst + f.FinalResult + br
