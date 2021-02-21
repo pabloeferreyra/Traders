@@ -2,30 +2,36 @@
 
 @foreach (var item in Model)
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateMov)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserGuid)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AmountIn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankAccounts.Currency)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AmountOut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankAccountsS.Currency)
-        </td>
-        <td>
-            <a asp-action="Details" asp-route-id="@item.CorrelationId">@Html.DisplayFor(modelItem => item.CorrelationId)</a>
-        </td>
-        <td>
-            <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.DateMov)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserGuid)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.AmountIn)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BankAccounts.Currency)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.AmountOut)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BankAccountsS.Currency)
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@item.CorrelationId">@Html.DisplayFor(modelItem => item.CorrelationId)</a>
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Comission)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ComissionBadge.Currency)
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+    </td>
+</tr>
 }

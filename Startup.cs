@@ -82,6 +82,7 @@ namespace Traders
             services.AddScoped<IFuturesServices, FuturesServices>();
             services.AddScoped<IBankServices, BankServices>();
             services.AddScoped<IMovementsServices, MovementsServices>();
+            services.AddScoped<IFuturesRetireServices, FuturesRetireServices>();
             services.AddControllers();
         }
 
@@ -97,7 +98,6 @@ namespace Traders
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

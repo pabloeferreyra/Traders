@@ -40,6 +40,7 @@ namespace Traders.Controllers
             {
                 m.BankAccounts = await _bankServices.GetBank(m.BankAccountGuidIn);
                 m.BankAccountsS = await _bankServices.GetBank(m.BankAccountGuidOut);
+                m.ComissionBadge = await _bankServices.GetBank(m.ComissionBadgeId);
                 mov.Add(m);
             }
             return View(mov);
@@ -96,6 +97,7 @@ namespace Traders.Controllers
                     movements.Comission = (movementsViewModel.Comission / 2);
                 else
                     movements.Comission = (movementsViewModel.Comission);
+                movements.ComissionBadge = movementsViewModel.ComissionBadge;
                 await _movementsServices.CreateMovement(movementsViewModel);
                 var accountIn = await _bankServices.GetBank(movements.BankAccountGuidIn);
                 var accountOut = await _bankServices.GetBank(movements.BankAccountGuidOut);
@@ -103,7 +105,7 @@ namespace Traders.Controllers
                 movements.BadgeOut = accountOut.Currency;
                 accountIn.Amount += movements.AmountIn;
                 accountOut.Amount -= movements.AmountOut;
-                await _bankServices.UpdateAmmount(accountIn, accountOut);
+                await _bankServices.UpdateAmount(accountIn, accountOut);
                 if (movementsViewModel.AmountInS > 0)
                 {
                     var movementsS = new MovementsViewModel
@@ -124,7 +126,7 @@ namespace Traders.Controllers
                     var accountOutS = await _bankServices.GetBank(movementsS.BankAccountGuidOut);
                     accountIn.Amount += movementsS.AmountIn;
                     accountOut.Amount -= movementsS.AmountOut;
-                    await _bankServices.UpdateAmmount(accountInS, accountOutS);
+                    await _bankServices.UpdateAmount(accountInS, accountOutS);
                 }
                 return RedirectToAction(nameof(Index));
             }

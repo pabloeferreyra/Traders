@@ -31,7 +31,7 @@ namespace Traders.Data
                 .Ignore(m => m.BankAccountGuidOutS)
                 .Ignore(m => m.BankAccountsS);
             builder.Entity<FuturesViewModel>()
-                .Ignore(m => m.FinalResult)
+                .Ignore(m => m.RefeerCode)
                 .Ignore(m => m.Code)
                 .Ignore(m => m.Email);
             builder.Entity<FuturesUpdateViewModel>()
@@ -39,6 +39,7 @@ namespace Traders.Data
             builder.Entity<FuturesViewModel>()
                 .Ignore(m => m.FuturesUpdates);
         }
+        public DbSet<RetireFuturesViewModel> Retires { get; set; }
         public DbSet<BadgesViewModel> Badges { get; set; }
         public DbSet<MovementsViewModel> Movements { get; set; }
         public DbSet<BankAccountsViewModel> BankAccounts { get; set; }
@@ -46,6 +47,6 @@ namespace Traders.Data
         public DbSet<FuturesViewModel> Futures { get; set; }
         public DbSet<FuturesUpdateViewModel> FuturesUpdates { get; set; }
         public DbSet<ParticipationViewModel> Participations { get; set; }
-        public DbSet<ClientDiversityViewModel> clientDiversities { get; set; }
+        public DbSet<ClientDiversityViewModel> ClientDiversities { get; set; }
     }
 }

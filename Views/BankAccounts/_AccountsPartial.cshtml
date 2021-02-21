@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<Traders.Models.BankAccountsViewModel>
 @foreach (var item in Model)
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Currency)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Currency)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Amount)
+    </td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+    </td>
+</tr>
 }

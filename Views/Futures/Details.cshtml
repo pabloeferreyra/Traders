@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Client)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Client.Email)
+                @Html.DisplayFor(model => model.Client.Code)
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Participation)
@@ -57,7 +57,7 @@
         </dl>
     </div>
     <div class="card-footer">
-        <a asp-action="Index" cclass="btn btn-outline-warning">Volver</a>
+        <a asp-action="Index" class="btn btn-outline-warning">Volver</a>
     </div>
 </div>
 @if (!Model.FixRent) { 
