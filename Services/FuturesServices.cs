@@ -270,7 +270,6 @@ namespace Traders.Services
             var contracts = await CountContracts();
             if (!futuresViewModel.FixRent)
             {
-
                 futuresViewModel.FuturesUpdates = new List<FuturesUpdateViewModel>();
                 List<FuturesUpdateViewModel> futuresUpdates = await GetFuturesUpdates(futuresViewModel.StartDate);
                 if (futuresUpdates.Count > 0)
@@ -297,27 +296,11 @@ namespace Traders.Services
                         var futuresWithFixed = await GetContracts(true);
                         futuresViewModel.FinalResult = FinalResult(futuresWithFixed, futuresViewModel.FinalResult);
                     }
-                    if (futuresViewModel.Refeer.HasValue)
-                    {
-                        var futuresRefeered = await GetFuturesForClient(futuresViewModel.Refeer.Value);
-                        await UpdateRefeerFuture(futuresRefeered.LastOrDefault(), fuGain);
-                    }
                 }
                 else
                 {
                     return futuresViewModel.Capital;
                 }
-            }
-            else
-            {
-                var rentCalc = FixRentCalc(futuresViewModel.Capital, futuresViewModel.FixRentPercentage, futuresViewModel.StartDate);
-                if (futuresViewModel.Refeer.HasValue)
-                {
-                    var futuresRefeered = await GetFuturesForClient(futuresViewModel.Refeer.Value);
-                    var gain = rentCalc - futuresViewModel.Capital;
-                    await UpdateRefeerFuture(futuresRefeered.LastOrDefault(), gain);
-                }
-                return rentCalc;
             }
             return futuresViewModel.FinalResult;
         }
@@ -340,6 +323,21 @@ namespace Traders.Services
         public async Task<FuturesViewModel> FuturesByNumber(int cNumber)
         {
             return await _context.Futures.FirstOrDefaultAsync(f => f.ContractNumber == cNumber);
+        }
+
+        public async Task<int> UpdateFinalResultFixed(List<FuturesViewModel> futuresViewModel)
+        {
+            foreach(var f in futuresViewModel)
+            {
+                if(f.Refeer.HasValue)
+                {
+                    var cl = await _context.Clients.FirstOrDefaultAsync(c => c.Id == f.Refeer.Value);
+                    var refeerFuture = await FuturesByNumber(cl.Code);
+                    await UpdateRefeerFuture(refeerFuture, f.LastGain);
+                }
+            }
+            _context.UpdateRange(futuresViewModel);
+            return await _context.SaveChangesAsync();
         }
     }
 }
