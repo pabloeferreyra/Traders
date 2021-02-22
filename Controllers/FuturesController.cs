@@ -72,7 +72,10 @@ namespace Traders.Controllers
         public IActionResult Create()
         {
             int clientCode = _clientServices.ClientsCode();
-            clientCode += 1; 
+            if (clientCode > 100)
+            {
+                clientCode += 1;
+            }
             ViewData["ClientCode"] = clientCode;
             ViewData["ParticipationId"] = _futuresServices.Participations();
             return View();
