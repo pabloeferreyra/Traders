@@ -110,11 +110,7 @@ $("#FixRent").change(function () {
 });
 
 $("#refeer").blur(function () {
-    if ($("#refeer").val() <= '0') {
-        $("#RefeerVal").text('Por favor ingresar un valor mayor a 0.');
-        $("#btnCreateFuture").prop('disabled', true);
-    }
-    else if ($("#refeer").val() != '') {
+    if ($("#refeer").val() != '') {
         $.ajax({
             type: "POST",
             url: "/Traders/Common/ClientExist",
