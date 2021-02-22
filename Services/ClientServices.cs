@@ -76,11 +76,11 @@ namespace Traders.Services
 
         public int ClientsCode()
         {
-            var clients = _context.Clients.OrderBy(c => c.Code);
+            var clients = _context.Clients.Select(c => c.Code).OrderBy(c => c);
             int clientCode = 100;
             if (clients.Count() > 0)
             {
-                clientCode = clients.LastOrDefault().Code;
+                clientCode = clients.LastOrDefault();
             }
             return clientCode;
         }
