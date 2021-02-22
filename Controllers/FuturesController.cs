@@ -39,12 +39,14 @@ namespace Traders.Controllers
                 decimal finalOriginal = f.FinalResult;
                 f.FinalResult = _futuresServices.FixRentCalc(f.Capital, f.FixRentPercentage, f.StartDate);
                 f.LastGain =  f.FinalResult - f.Capital;
+
                 if(finalOriginal != f.FinalResult)
                 {
                     futuresUpdate.Add(f);
                 }
             }
             await _futuresServices.UpdateFinalResultFixed(futuresUpdate);
+            await _futuresServices.UpdateExpiredFutures();
 
             return View(await _futuresServices.GetFutures(null));
         }

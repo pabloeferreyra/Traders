@@ -79,7 +79,7 @@ namespace Traders.Services
         {
             try
             {
-                var usd = await _context.BankAccounts.Where(b => b.Currency == "USD").FirstOrDefaultAsync();
+                var usd = await _context.BankAccounts.Where(b => b.Currency == "USDT Futuros").FirstOrDefaultAsync();
                 usd.Amount = usd.Amount + amount;
                 _context.Update(usd);
                 await _context.SaveChangesAsync();
@@ -95,7 +95,7 @@ namespace Traders.Services
         {
             try
             {
-                var usd = await _context.BankAccounts.Where(b => b.Currency == "USD").FirstOrDefaultAsync();
+                var usd = await _context.BankAccounts.Where(b => b.Currency == "USDT Futuros").FirstOrDefaultAsync();
                 BankAccountsViewModel model = new BankAccountsViewModel
                 {
                     Id = usd.Id,

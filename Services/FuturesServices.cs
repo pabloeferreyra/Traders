@@ -14,9 +14,12 @@ namespace Traders.Services
     public class FuturesServices : IFuturesServices
     {
         private readonly ApplicationDbContext _context;
-        public FuturesServices(ApplicationDbContext context)
+        private readonly IBankServices _bankServices;
+        public FuturesServices(ApplicationDbContext context,
+            IBankServices bankServices)
         {
             _context = context;
+            _bankServices = bankServices;
         }
 
         public async Task<List<FuturesViewModel>> GetFuturesForClient(Guid clientId)
@@ -236,16 +239,26 @@ namespace Traders.Services
 
         public async Task<int> CreateFutureUpdate(FuturesUpdateViewModel model)
         {
+            #region movimiento
             model.Id = Guid.NewGuid();
             _context.Add(model);
-            var futures = await GetContracts(false);
             var ret = await _context.SaveChangesAsync();
+            #endregion
+
+            #region ganancias
+            await _bankServices.AddFutureAmount(model.Gain);
+            #endregion
+
+            #region futuros sin Fija
+            var futures = await GetContracts(false);
             foreach (var f in futures)
             {
                 f.FinalResult = await GetResult(f);
                 _context.Futures.Update(f);
                 ret = await _context.SaveChangesAsync();
             }
+            #endregion
+
             return ret;
         }
 
@@ -338,6 +351,11 @@ namespace Traders.Services
             }
             _context.UpdateRange(futuresViewModel);
             return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateExpiredFutures()
+        {
+            return await _context.Database.ExecuteSqlInterpolatedAsync($"CleanExpiredFutures");
         }
     }
 }
