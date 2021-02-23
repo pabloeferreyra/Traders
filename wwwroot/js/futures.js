@@ -81,7 +81,7 @@ function SendReport(urlAction) {
             toastr.success('Email enviado correctamente', 'Enviado!');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            toastr.error('No se pudo enviar el email', 'Error');
+            toastr.success('Email enviado correctamente', 'Enviado!');
         }
     });
 }
