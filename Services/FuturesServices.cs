@@ -345,10 +345,5 @@ namespace Traders.Services
             _context.UpdateRange(futuresViewModel);
             return await _context.SaveChangesAsync();
         }
-
-        public async Task<int> UpdateExpiredFutures()
-        {
-            return await _context.Database.ExecuteSqlInterpolatedAsync($"CleanExpiredFutures");
-        }
     }
 }
