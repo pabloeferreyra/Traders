@@ -40,7 +40,7 @@ namespace Traders.Models
         public bool FixRent { get; set; }
         
         [Display(Name = "Porcentaje")]
-        [Column(TypeName = "decimal(30,10)")]
+        [Column(TypeName = "decimal(5,2)")]
         public decimal FixRentPercentage { get; set; }
 
         [Display(Name = "Referido")]
