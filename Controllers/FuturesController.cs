@@ -125,7 +125,6 @@ namespace Traders.Controllers
                 }
                 
                 await _futuresServices.CreateFuture(futuresViewModel);
-                await _bankServices.AddFutureAmount(futuresViewModel.Capital);
                 return RedirectToAction(nameof(Index));
             }
             return View(futuresViewModel);
