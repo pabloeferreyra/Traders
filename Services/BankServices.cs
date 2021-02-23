@@ -75,43 +75,6 @@ namespace Traders.Services
             }
         }
 
-        public async Task<bool> AddFutureAmount(decimal amount)
-        {
-            try
-            {
-                var usd = await _context.BankAccounts.Where(b => b.Currency == "USDT Futuros").FirstOrDefaultAsync();
-                usd.Amount = usd.Amount + amount;
-                _context.Update(usd);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> RetireFutureAmount(decimal amount)
-        {
-            try
-            {
-                var usd = await _context.BankAccounts.Where(b => b.Currency == "USDT Futuros").FirstOrDefaultAsync();
-                BankAccountsViewModel model = new BankAccountsViewModel
-                {
-                    Id = usd.Id,
-                    Currency = usd.Currency,
-                    Amount = usd.Amount - amount
-                };
-                _context.Update(model);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public async Task<int> UpdateAmount(BankAccountsViewModel modelIn,
                                              BankAccountsViewModel modelOut)
         {

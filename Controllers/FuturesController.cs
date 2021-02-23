@@ -32,7 +32,6 @@ namespace Traders.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _futuresServices.UpdateExpiredFutures();
             var fixedRentContracts = await _futuresServices.GetContracts(true);
             List<FuturesViewModel> futuresUpdate = new List<FuturesViewModel>();
             foreach (var f in fixedRentContracts)
@@ -125,7 +124,6 @@ namespace Traders.Controllers
                 }
                 
                 await _futuresServices.CreateFuture(futuresViewModel);
-                await _bankServices.AddFutureAmount(futuresViewModel.Capital);
                 return RedirectToAction(nameof(Index));
             }
             return View(futuresViewModel);
