@@ -14,12 +14,9 @@ namespace Traders.Services
     public class FuturesServices : IFuturesServices
     {
         private readonly ApplicationDbContext _context;
-        private readonly IBankServices _bankServices;
-        public FuturesServices(ApplicationDbContext context,
-            IBankServices bankServices)
+        public FuturesServices(ApplicationDbContext context)
         {
             _context = context;
-            _bankServices = bankServices;
         }
 
         public async Task<List<FuturesViewModel>> GetFuturesForClient(Guid clientId)
@@ -243,10 +240,6 @@ namespace Traders.Services
             model.Id = Guid.NewGuid();
             _context.Add(model);
             var ret = await _context.SaveChangesAsync();
-            #endregion
-
-            #region ganancias
-            await _bankServices.AddFutureAmount(model.Gain);
             #endregion
 
             #region futuros sin Fija
