@@ -172,6 +172,9 @@ namespace Traders.Services
         {
             try
             {
+                var usd = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Currency == "USD");
+                usd.Amount += model.Capital;
+                _context.BankAccounts.Update(usd);
                 _context.Futures.Add(model);
                 await _context.SaveChangesAsync();
                 return true;
