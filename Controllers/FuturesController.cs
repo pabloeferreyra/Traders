@@ -87,9 +87,12 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = await _clientServices.GetClient(futuresViewModel.Code);
-                if (futuresViewModel.RefeerCode.HasValue) {
-                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode.Value);
+                var contract = await _futuresServices.GetLastContractNumber();
+                futuresViewModel.Id = Guid.NewGuid();
+                futuresViewModel.ContractNumber = contract + 1;
+                var client = await _clientServices.GetClient(futuresViewModel.Email);
+                if (futuresViewModel.RefeerCode.Length > 0) {
+                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode);
                     futuresViewModel.Refeer = refeer.Id;
                 }
                 if (client == null)
@@ -97,22 +100,21 @@ namespace Traders.Controllers
                     client = new ClientsViewModel
                     {
                         Id = Guid.NewGuid(),
-                        Code = futuresViewModel.Code,
+                        Code = futuresViewModel.ContractNumber,
                         Email = futuresViewModel.Email
                     };
                     await _clientServices.CreateClient(client);
                 }
-                else if(client.Email != futuresViewModel.Email)
+                else if(client.Email != futuresViewModel.Email || client.Code != futuresViewModel.Code)
                 {
+                    client.Code = futuresViewModel.ContractNumber;
                     client.Email = futuresViewModel.Email;
                     await _clientServices.UpdateClient(client);
                 }
 
                 if (futuresViewModel.FixRent)
                     futuresViewModel.ParticipationId = null;
-                var contract = await _futuresServices.GetLastContractNumber();
-                futuresViewModel.Id = Guid.NewGuid();
-                futuresViewModel.ContractNumber = contract + 1;
+                
                 futuresViewModel.ClientId = client.Id;
                 if (!NoLimitclient(client.Code))
                 {

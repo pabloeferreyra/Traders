@@ -43,7 +43,6 @@ namespace Traders.Controllers
         public async Task<IActionResult> ExportReport()
         {
            var futures = await _futuresServices.GetAllContracts();
-            DateTime date = DateTime.Today;
             foreach (var f in futures)
             {
                 var participation = _futuresServices.GetParticipation(f.ParticipationId);
@@ -54,9 +53,12 @@ namespace Traders.Controllers
                                   + f.ContractNumber
                                   + br
                                   + "Capital inicial: "
-                                  + f.Capital.ToString()
+                                  + String.Format("{0:.00}", f.Capital)
+                                  + br
+                                  + "Capital Actual: " 
+                                  + String.Format("{0:.00}", f.FinalResult)
                                   + br;
-                string signature = "Fecha de proximo retiro: " + f.FinishDate + br
+                string signature = "Fecha de proximo retiro: " + f.FinishDate.ToShortDateString() + br
                     + finishMessage;
                 if (f.Client.Code == (int)SpecialClients.Uno)
                 {
