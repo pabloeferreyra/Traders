@@ -78,7 +78,7 @@ namespace Traders.Services
         {
             var clients = _context.Clients.Select(c => c.Code).OrderBy(c => c);
             int clientCode = 100;
-            if (clients.Count() > 0)
+            if (clients.Any())
             {
                 clientCode = clients.LastOrDefault();
             }
@@ -92,9 +92,9 @@ namespace Traders.Services
             return model;
         }
 
-        public async Task<ClientsViewModel> GetClient(int code)
+        public async Task<ClientsViewModel> GetClient(string email)
         {
-            return await _context.Clients.FirstOrDefaultAsync(c => c.Code == code);
+            return await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
 
         }
 
