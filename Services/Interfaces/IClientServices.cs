@@ -14,7 +14,7 @@ namespace Traders.Services
         public bool ClientDiversityViewModelExists(Guid id);
         public int ClientsCode();
         public Task<ClientsViewModel> CreateClient(ClientsViewModel model);
-        public Task<ClientsViewModel> GetClient(int code);
+        public Task<ClientsViewModel> GetClient(string email);
         public Task<ClientsViewModel> UpdateClient(ClientsViewModel model);
         public Task<ClientsViewModel> GetClientDetails(Guid id);
         public Task<List<ClientsViewModel>> GetAllClients();

@@ -44,7 +44,7 @@ namespace Traders.Models
         public decimal FixRentPercentage { get; set; }
 
         [Display(Name = "Referido")]
-        public int? RefeerCode { get; set; }
+        public string RefeerCode { get; set; }
 
         [Display(Name = "Referido")]
         public Guid? Refeer { get; set; }
