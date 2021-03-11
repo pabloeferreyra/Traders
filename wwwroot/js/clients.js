@@ -30,7 +30,7 @@ $("#ClientCode").blur(function () {
 
 $("#ClientEmail").blur(function () {
     if ($("#ClientEmail").val() == '') {
-        $("#ClientEmailVal").text('Por favor ingresar un valor mayor a 0.');
+        $("#ClientEmailVal").text('Por favor ingresar un valor.');
         $("#btnCreateClient").prop('disabled', true);
     }
     else {
