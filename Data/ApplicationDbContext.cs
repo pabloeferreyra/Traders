@@ -32,12 +32,13 @@ namespace Traders.Data
                 .Ignore(m => m.BankAccountsS);
             builder.Entity<FuturesViewModel>()
                 .Ignore(m => m.RefeerCode)
-                .Ignore(m => m.Code)
-                .Ignore(m => m.Email);
+                .Ignore(m => m.Term);
             builder.Entity<FuturesUpdateViewModel>()
                 .Ignore(m => m.GainFinal);
             builder.Entity<FuturesViewModel>()
                 .Ignore(m => m.FuturesUpdates);
+            builder.Entity<ClientsViewModel>()
+                .Ignore(m => m.Contracts);
         }
         public DbSet<RetireFuturesViewModel> Retires { get; set; }
         public DbSet<BadgesViewModel> Badges { get; set; }

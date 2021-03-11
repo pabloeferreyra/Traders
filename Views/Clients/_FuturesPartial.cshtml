@@ -6,16 +6,23 @@
         @Html.DisplayFor(modelItem => item.ContractNumber)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.FinalResult)
+        @Html.DisplayFor(modelItem => item.StartDate)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.StartDate)
+        @Html.DisplayFor(modelItem => item.Participation.Percentage)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FixRentPercentage)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FinalResult)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.FinishDate)
     </td>
-
-
+    <td>
+        @Html.DisplayFor(modelItem => item.Term) Meses
+    </td>
     <td>
         <a asp-action="Details" asp-controller="Futures" asp-route-id="@item.Id">Detalles</a>
     </td>
