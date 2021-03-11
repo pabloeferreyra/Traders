@@ -1,29 +1,4 @@
-﻿$(function () {
-    var tdate = new Date();
-    var dd = tdate.getDate(); //yields day
-    var MM = tdate.getMonth() + 1; //yields month
-    var yyyy = tdate.getFullYear(); //yields year
-    var h = tdate.getHours();
-    var m = tdate.getMinutes();
-    if (h < 10) {
-        h = '0' + h;
-    }
-
-    if (m < 10) {
-        m = '0' + m;
-    }
-
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-
-    if (MM < 10) {
-        MM = '0' + MM;
-    }
-    var currentDate = yyyy + "-" + MM + "-" + dd;
-
-});
-function Create(urlAction) {
+﻿function Create(urlAction) {
     var form = $('#__AjaxAntiForgeryForm');
     var token = $('input[name="__RequestVerificationToken"]', form).val();
     $.ajax({
@@ -39,7 +14,24 @@ function Create(urlAction) {
             ParticipationId: $("#participationId :selected").val(),
             Capital: $("#capital").val(),
             RefeerCode: $("#refeer").val(),
-            RetireCapital: $("#retireCapital").val()
+            RetireCapital: $("#retireCapital").val(),
+            FinishDate: $("#finishDate").val(),
+            StartCurrency: $("#startCurrency").val(),
+            RetireCurrency: $("#retireCurrency").val(),
+            Client: {
+                Name: $("#ClientName").val(),
+                Email: $("#ClientEmail").val(),
+                Dni: $("#ClientDni").val(),
+                BirthDate: $("#ClientBirthDate").val(),
+                Address: $("#ClientAddress").val(),
+                City: $("#ClientCity").val(),
+                Province: $("#ClientProvince").val(),
+                Country: $("#ClientCountry").val(),
+                Phone: $("#ClientPhone").val(),
+                VirtualWallet1: $("#ClientVirtualW1").val(),
+                VirtualWallet2: $("#ClientVirtualW2").val(),
+                Pep: $("#ClientPep").val()
+            }
         },
         complete: function (result) {
             toastr.success('Contrato creado correctamente', 'Correcto!');
@@ -86,12 +78,37 @@ function SendReport(urlAction) {
     });
 }
 
-$("#ClientCode").blur(function () {
-    if ($("#ClientCode").val() == '' || $("#ClientCode").val() <= '0') {
-        $("#ClientCodeVal").text('Por favor ingresar un valor mayor a 0.');
+$("#ClientDni").blur(function () {
+    if ($("#ClientDni").val() == '' || $("#ClientDni").val() <= '0') {
+        $("#ClientDniVal").text('Por favor ingresar un valor mayor a 0.');
         $("#btnCreateFuture").prop('disabled', true);
     }
     else {
+        var dateVal;
+        $.ajax({
+            type: "GET",
+            url: "/Traders/Common/GetClient",
+            dataType: "json",
+            contentType: "application/json",
+            data: ({ dni: $("#ClientDni").val() }),
+            complete: function (msj) {
+                if (msj.responseText.length > 4) {
+                    $("#ClientId").val(msj.responseJSON.id).change();
+                    $("#ClientName").val(msj.responseJSON.name).change();
+                    $("#ClientEmail").val(msj.responseJSON.email).change();
+                    $("#ClientBirthDate").val(msj.responseJSON.birthDate.substring(0, 10)).change();
+                    $("#ClientAddress").val(msj.responseJSON.address).change();
+                    $("#ClientCity").val(msj.responseJSON.city).change();
+                    $("#ClientProvince").val(msj.responseJSON.province).change();
+                    $("#ClientCountry").val(msj.responseJSON.country).change();
+                    $("#ClientPhone").val(msj.responseJSON.phone).change();
+                    $("#ClientVirtualW1").val(msj.responseJSON.virtualWallet1).change();
+                    $("#ClientVirtualW2").val(msj.responseJSON.virtualWallet2).change();
+                    $("#ClientPep").val(msj.responseJSON.pep).change();
+                    $("#ClientPep").prop('disabled', true);
+                }
+            }
+        });
         $("#btnCreateFuture").prop('disabled', false);
     }
 });
@@ -132,10 +149,53 @@ $("#refeer").blur(function () {
         });
     }
 });
+$("#startDate").blur(function () {
+    $.ajax({
+        type: "GET",
+        url: "/Traders/Common/CalculateTime",
+        dataType: "json",
+        contentType: "application/json",
+        data: ({ date: $("#startDate").val() }),
+        complete: function (msj) {
+            var date = new Date(msj.responseJSON);
+            var mo = date.getMonth() + 1;
+            var da = date.getDate();
+            if (mo < 10) {
+                mo = "0" + mo;
+            }
+            if (da < 10) {
+                da = "0" + da;
+            }
+            var dt = date.getFullYear() + "-" + mo + "-" + da;
+            $("#finishDate").val(dt);
+                
+        }
+    });
+});
 
 $("#ClientEmail").blur(function () {
     if ($("#ClientEmail").val() == '') {
         $("#ClientEmailVal").text('Por favor ingresar un email.');
+        $("#btnCreateFuture").prop('disabled', true);
+    }
+    else {
+        $("#btnCreateFuture").prop('disabled', false);
+    }
+});
+
+$("#ClientName").blur(function () {
+    if ($("#ClientName").val() == '') {
+        $("#ClientNameVal").text('Por favor ingresar un nombre.');
+        $("#btnCreateFuture").prop('disabled', true);
+    }
+    else {
+        $("#btnCreateFuture").prop('disabled', false);
+    }
+});
+
+$("#ClientAddress").blur(function () {
+    if ($("#ClientAddress").val() == '') {
+        $("#ClientAddressVal").text('Por favor ingresar un DNI/CUIT.');
         $("#btnCreateFuture").prop('disabled', true);
     }
     else {

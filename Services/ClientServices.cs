@@ -42,7 +42,12 @@ namespace Traders.Services
 
         public async Task<List<ClientsViewModel>> GetAllClients()
         {
-            return await _context.Clients.ToListAsync();
+            var clients = await _context.Clients.ToListAsync();
+            for(int i = 0; i < clients.Count(); i++)
+            {
+                clients[i].Contracts = (await _futuresServices.GetFuturesForClient(clients[i].Id)).Count();
+            }
+            return clients;
         }
 
         public async Task<ClientDiversityViewModel> GetClientDiversityById(Guid? id)
@@ -74,28 +79,11 @@ namespace Traders.Services
             return _context.Clients.Any(e => e.Id == id);
         }
 
-        public int ClientsCode()
-        {
-            var clients = _context.Clients.Select(c => c.Code).OrderBy(c => c);
-            int clientCode = 100;
-            if (clients.Any())
-            {
-                clientCode = clients.LastOrDefault();
-            }
-            return clientCode;
-        }
-
         public async Task<ClientsViewModel> CreateClient(ClientsViewModel model)
         {
             _context.Add(model);
             await _context.SaveChangesAsync();
             return model;
-        }
-
-        public async Task<ClientsViewModel> GetClient(string email)
-        {
-            return await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
-
         }
 
         public async Task<ClientsViewModel> GetClientDetails(Guid id)
@@ -110,6 +98,16 @@ namespace Traders.Services
             _context.Clients.Update(model);
             await _context.SaveChangesAsync();
             return model;
+        }
+
+        public async Task<ClientsViewModel> GetClient(string dni)
+        {
+            return await _context.Clients.FirstOrDefaultAsync(c => c.Dni == dni);
+        }
+
+        public bool ClientExistByDni(string dni)
+        {
+            return _context.Clients.Where(c => c.Dni == dni).Any();
         }
     }
 }

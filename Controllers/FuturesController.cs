@@ -69,12 +69,16 @@ namespace Traders.Controllers
             return NotFound();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            int clientCode = _clientServices.ClientsCode();
+            int clientCode = await _futuresServices.GetLastContractNumber();
             if (clientCode > 100)
             {
                 clientCode += 1;
+            }
+            else if(clientCode == 0)
+            {
+                clientCode = 100;
             }
             ViewData["ClientCode"] = clientCode;
             ViewData["ParticipationId"] = _futuresServices.Participations();
@@ -87,36 +91,25 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
-                var contract = await _futuresServices.GetLastContractNumber();
                 futuresViewModel.Id = Guid.NewGuid();
-                futuresViewModel.ContractNumber = contract + 1;
-                var client = await _clientServices.GetClient(futuresViewModel.Email);
-                if (futuresViewModel.RefeerCode.Length > 0) {
+                var client = _clientServices.ClientExistByDni(futuresViewModel.Client.Dni);
+                if (futuresViewModel.RefeerCode != null) {
                    var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode);
                     futuresViewModel.Refeer = refeer.Id;
                 }
-                if (client == null)
+                if (!client)
                 {
-                    client = new ClientsViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = futuresViewModel.ContractNumber,
-                        Email = futuresViewModel.Email
-                    };
-                    await _clientServices.CreateClient(client);
+                    await _clientServices.CreateClient(futuresViewModel.Client);
                 }
-                else if(client.Email != futuresViewModel.Email || client.Code != futuresViewModel.Code)
+                else 
                 {
-                    client.Code = futuresViewModel.ContractNumber;
-                    client.Email = futuresViewModel.Email;
-                    await _clientServices.UpdateClient(client);
+                    await _clientServices.UpdateClient(futuresViewModel.Client);
                 }
 
                 if (futuresViewModel.FixRent)
                     futuresViewModel.ParticipationId = null;
                 
-                futuresViewModel.ClientId = client.Id;
-                if (!NoLimitclient(client.Code))
+                if (!NoLimitclient(futuresViewModel.ContractNumber))
                 {
                     futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
                 }
@@ -131,10 +124,10 @@ namespace Traders.Controllers
             return View(futuresViewModel);
         }
 
-        private static bool NoLimitclient(int clientCode)
+        private static bool NoLimitclient(int futureContract)
         {
 
-            return clientCode switch
+            return futureContract switch
             {
                 (int)ClientsTypes.SpecialClients.Uno or (int)ClientsTypes.SpecialClients.Dos or (int)ClientsTypes.SpecialClients.Tres or (int)ClientsTypes.SpecialClients.Cuatro or (int)ClientsTypes.SpecialClients.Cinco => true,
                 _ => false,
