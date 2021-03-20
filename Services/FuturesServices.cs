@@ -25,6 +25,7 @@ namespace Traders.Services
                 .Include(f => f.Client)
                 .Include(f => f.Participation).Where(f => f.ClientId == clientId)
                 .Where(f => f.FinishDate > DateTime.Today).ToListAsync();
+            futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
 
@@ -94,10 +95,7 @@ namespace Traders.Services
                     .Include(f => f.Client)
                     .Include(f => f.Participation).Where(f => f.FinishDate == date).ToListAsync();
             }
-            for (int f = 0; f < futures.Count(); f++)
-            {
-                futures[f].Term = ((futures[f].FinishDate - futures[f].StartDate).Days / 30);
-            }
+            futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
 
@@ -352,6 +350,15 @@ namespace Traders.Services
             }
             _context.UpdateRange(futuresViewModel);
             return await _context.SaveChangesAsync();
+        }
+
+        private List<FuturesViewModel> CalculateTerm(List<FuturesViewModel> futures)
+        {
+            for (int f = 0; f < futures.Count(); f++)
+            {
+                futures[f].Term = ((futures[f].FinishDate - futures[f].StartDate).Days / 30);
+            }
+            return futures;
         }
     }
 }
