@@ -33,7 +33,7 @@ namespace Traders.Controllers
         public async Task<IActionResult> Index()
         {
             var fixedRentContracts = await _futuresServices.GetContracts(true);
-            List<FuturesViewModel> futuresUpdate = new List<FuturesViewModel>();
+            List<FuturesViewModel> futuresUpdate = new();
             foreach (var f in fixedRentContracts)
             {
                 decimal finalOriginal = f.FinalResult;

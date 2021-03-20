@@ -35,7 +35,7 @@ namespace Traders.Controllers
         public async Task<IActionResult> Index()
         {
             var movements = await _movementsServices.GetAllMovements();
-            List<MovementsViewModel> mov = new List<MovementsViewModel>();
+            List<MovementsViewModel> mov = new();
             foreach (var m in movements)
             {
                 m.BankAccounts = await _bankServices.GetBank(m.BankAccountGuidIn);

@@ -29,16 +29,13 @@ namespace Traders.Controllers
         private const string usdTxt = "USD";
         #endregion
         private readonly IEmailSender _service;
-        private readonly IFuturesServices _futuresServices;
         private readonly IMovementsServices _movementServices;
         private readonly IClientServices _clientServices;
         public FuturesReportController(IEmailSender service,
-            IFuturesServices futuresServices,
             IMovementsServices movementsServices,
             IClientServices clientServices)
         {
             _service = service;
-            _futuresServices = futuresServices;
             _movementServices = movementsServices;
             _clientServices = clientServices;
         }
@@ -49,7 +46,7 @@ namespace Traders.Controllers
         {
             var clients = await _clientServices.GetAllClients();
 
-            for (int c = 0; c < clients.Count(); c++)
+            for (int c = 0; c < clients.Count; c++)
             {
                 string emailHead = "Hola " 
                                     + clients[c].Name 
