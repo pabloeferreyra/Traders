@@ -46,7 +46,7 @@ namespace Traders.Controllers
 
             foreach (Claim claim in ClaimsStore.AllClaims)
             {
-                UserClaimViewModel userClaim = new UserClaimViewModel
+                UserClaimViewModel userClaim = new()
                 {
                     ClaimType = claim.Type
                 };

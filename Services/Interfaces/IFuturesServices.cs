@@ -23,7 +23,7 @@ namespace Traders.Services
         public Task<List<FuturesUpdateViewModel>> GetFuturesUpdatesForMail(DateTime startDate, DateTime finishDate);
         public int GetParticipation(Guid? participationId);
         public decimal FinalResult(List<FuturesViewModel> futuresWithFixed, decimal finalResult);
-        public decimal FixRentCalc(decimal capital, decimal rentPercentage, DateTime startDate);
+        public decimal FixRentCalc(decimal capital, decimal? rentPercentage, DateTime startDate);
         public Task<int> CreateFutureUpdate(FuturesUpdateViewModel model);
         public Task<bool> FuturesUpdateViewModelExists(Guid id);
         public Task<bool> FuturesNumberExists(int cNumber);

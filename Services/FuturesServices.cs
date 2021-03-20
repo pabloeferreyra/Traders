@@ -31,7 +31,7 @@ namespace Traders.Services
 
         public async Task<List<FuturesViewModel>> CalculateFutures(List<FuturesViewModel> futures)
         {
-            List<FuturesViewModel> futuresNew = new List<FuturesViewModel>();
+            List<FuturesViewModel> futuresNew = new();
             foreach (var f in futures)
             {
                 var contracts = await CountContracts();
@@ -82,7 +82,7 @@ namespace Traders.Services
 
         public async Task<List<FuturesViewModel>> GetFutures(DateTime? date)
         {
-            List<FuturesViewModel> futures = new List<FuturesViewModel>();
+            List<FuturesViewModel> futures = new();
             if (date == null)
             {
                 futures = await _context.Futures
@@ -231,7 +231,7 @@ namespace Traders.Services
             return final;
         }
 
-        public decimal FixRentCalc(decimal capital, decimal fixRentPercentage, DateTime startDate)
+        public decimal FixRentCalc(decimal capital, decimal? fixRentPercentage, DateTime startDate)
         {
             int months = Math.Abs(12 * (startDate.Year - DateTime.Now.Year) + startDate.Month - DateTime.Now.Month);
             double rentPercentage = (double)((fixRentPercentage / 100) + 1);
@@ -352,9 +352,9 @@ namespace Traders.Services
             return await _context.SaveChangesAsync();
         }
 
-        private List<FuturesViewModel> CalculateTerm(List<FuturesViewModel> futures)
+        private static List<FuturesViewModel> CalculateTerm(List<FuturesViewModel> futures)
         {
-            for (int f = 0; f < futures.Count(); f++)
+            for (int f = 0; f < futures.Count; f++)
             {
                 futures[f].Term = ((futures[f].FinishDate - futures[f].StartDate).Days / 30);
             }

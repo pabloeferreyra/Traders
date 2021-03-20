@@ -42,7 +42,7 @@ namespace Traders.Models
         
         [Display(Name = "Renta Fija")]
         [Column(TypeName = "decimal(5,2)")]
-        public decimal FixRentPercentage { get; set; }
+        public decimal? FixRentPercentage { get; set; }
 
         [Display(Name = "Referido")]
         public string RefeerCode { get; set; }
