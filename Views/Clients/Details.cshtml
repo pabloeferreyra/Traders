@@ -1,7 +1,7 @@
 ﻿@model Traders.Models.ClientsViewModel
 
 @{
-    ViewData["Title"] = "Detalles Cliente Nro. " + Model.Code;
+    ViewData["Title"] = "Detalles Cliente " + Model.Email;
 }
 
 <div class="card">
@@ -10,17 +10,65 @@
     </div>
     <div class="card-body">
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Code)
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Name)
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Code)
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Name)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Dni)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.Dni)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.BirthDate)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Province)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.Province)
+            </dd>
+            <dt class="col-2">
                 @Html.DisplayNameFor(model => model.Email)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-10">
                 @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.VirtualWallet1)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.VirtualWallet1)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.VirtualWallet2)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.VirtualWallet2)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Pep)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Pep)
             </dd>
         </dl>
     </div>
@@ -35,13 +83,22 @@
                         @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().ContractNumber)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().Capital)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().StartDate)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().Participation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().FixRentPercentage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().Capital)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().FinishDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Futures.FirstOrDefault().Term)
                     </th>
                     <th></th>
                 </tr>

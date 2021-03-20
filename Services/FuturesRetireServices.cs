@@ -33,6 +33,9 @@ namespace Traders.Services
             {
                 future.FinalResult -= retireFuturesViewModel.RetireCapital;
             }
+            var usd = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Currency == "USD");
+            usd.Amount -= retireFuturesViewModel.RetireCapital;
+            _context.BankAccounts.Update(usd);
             _context.Futures.Update(future);
             _context.Add(retireFuturesViewModel);
             return await _context.SaveChangesAsync();

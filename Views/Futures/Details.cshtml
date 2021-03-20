@@ -15,43 +15,69 @@
     <div class="card-header">
         @ViewData["Title"]
     </div>
-    <hr />
     <div class="card-body">
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt class="col-3">
                 @Html.DisplayNameFor(model => model.ContractNumber)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-9">
                 @Html.DisplayFor(model => model.ContractNumber)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-2">
                 @Html.DisplayNameFor(model => model.StartDate)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-4">
                 @Html.DisplayFor(model => model.StartDate)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Client)
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.FinishDate)
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Client.Code)
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.FinishDate)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Participation)
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Term)
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Participation.Percentage)
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Term) Meses
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.StartCurrency)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.StartCurrency)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.RetireCurrency)
+            </dt>
+            <dd class="col-4">
+                @Html.DisplayFor(model => model.RetireCurrency)
+            </dd>
+            <dt class="col-2">
+                @Html.DisplayNameFor(model => model.Client.Email)
+            </dt>
+            <dd class="col-10">
+                @Html.DisplayFor(model => model.Client.Email)
+            </dd>
+            @if (Model.Participation != null)
+            {
+                <dt class="col-2">
+                    @Html.DisplayNameFor(model => model.Participation)
+                </dt>
+                <dd class="col-10">
+                    @Html.DisplayFor(model => model.Participation.Percentage)
+                </dd>
+            }
+            <dt class="col-2">
                 @Html.DisplayNameFor(model => model.Capital)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-4">
                 @Html.DisplayFor(model => model.Capital)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-2">
                 @Html.DisplayNameFor(model => model.FinalResult)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-4">
                 @Html.DisplayFor(model => model.FinalResult)
             </dd>
         </dl>

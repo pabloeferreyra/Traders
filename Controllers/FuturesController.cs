@@ -32,7 +32,6 @@ namespace Traders.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _futuresServices.UpdateExpiredFutures();
             var fixedRentContracts = await _futuresServices.GetContracts(true);
             List<FuturesViewModel> futuresUpdate = new List<FuturesViewModel>();
             foreach (var f in fixedRentContracts)
@@ -70,12 +69,16 @@ namespace Traders.Controllers
             return NotFound();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            int clientCode = _clientServices.ClientsCode();
+            int clientCode = await _futuresServices.GetLastContractNumber();
             if (clientCode > 100)
             {
                 clientCode += 1;
+            }
+            else if(clientCode == 0)
+            {
+                clientCode = 100;
             }
             ViewData["ClientCode"] = clientCode;
             ViewData["ParticipationId"] = _futuresServices.Participations();
@@ -88,34 +91,25 @@ namespace Traders.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = await _clientServices.GetClient(futuresViewModel.Code);
-                if (futuresViewModel.RefeerCode.HasValue) {
-                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode.Value);
+                futuresViewModel.Id = Guid.NewGuid();
+                var client = _clientServices.ClientExistByDni(futuresViewModel.Client.Dni);
+                if (futuresViewModel.RefeerCode != null) {
+                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode);
                     futuresViewModel.Refeer = refeer.Id;
                 }
-                if (client == null)
+                if (!client)
                 {
-                    client = new ClientsViewModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = futuresViewModel.Code,
-                        Email = futuresViewModel.Email
-                    };
-                    await _clientServices.CreateClient(client);
+                    await _clientServices.CreateClient(futuresViewModel.Client);
                 }
-                else if(client.Email != futuresViewModel.Email)
+                else 
                 {
-                    client.Email = futuresViewModel.Email;
-                    await _clientServices.UpdateClient(client);
+                    await _clientServices.UpdateClient(futuresViewModel.Client);
                 }
 
                 if (futuresViewModel.FixRent)
                     futuresViewModel.ParticipationId = null;
-                var contract = await _futuresServices.GetLastContractNumber();
-                futuresViewModel.Id = Guid.NewGuid();
-                futuresViewModel.ContractNumber = contract + 1;
-                futuresViewModel.ClientId = client.Id;
-                if (!NoLimitclient(client.Code))
+                
+                if (!NoLimitclient(futuresViewModel.ContractNumber))
                 {
                     futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
                 }
@@ -125,16 +119,15 @@ namespace Traders.Controllers
                 }
                 
                 await _futuresServices.CreateFuture(futuresViewModel);
-                await _bankServices.AddFutureAmount(futuresViewModel.Capital);
                 return RedirectToAction(nameof(Index));
             }
             return View(futuresViewModel);
         }
 
-        private static bool NoLimitclient(int clientCode)
+        private static bool NoLimitclient(int futureContract)
         {
 
-            return clientCode switch
+            return futureContract switch
             {
                 (int)ClientsTypes.SpecialClients.Uno or (int)ClientsTypes.SpecialClients.Dos or (int)ClientsTypes.SpecialClients.Tres or (int)ClientsTypes.SpecialClients.Cuatro or (int)ClientsTypes.SpecialClients.Cinco => true,
                 _ => false,

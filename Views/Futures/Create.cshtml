@@ -6,70 +6,164 @@
         ViewBag.Date = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
     else
         String.Format("{0:yyyy-MM-dd}", DateTime.Now);
+
+    ViewBag.FinishDate = String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddMonths(6));
 }
 @{
     ViewData["Title"] = "Nuevo Contrato";
 }
 
 <div class="card">
-    <div class="card-header">
-        <h4>Nuevo Contrato</h4>
-    </div>
     <form method="post">
+        <div class="card-header">
+            <h4>Datos Cliente</h4>
+        </div>
         <div class="card-body container">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <i class="far fa-folder-open"></i>
-                <label asp-for="Code" class="control-label "></label>
-                <input asp-for="Code" id="ClientCode" value="@ViewBag.ClientCode" class="form-control" />
-                <span asp-validation-for="Code" id="ClientCodeVal" class="text-danger"></span>
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" hidden>
+                    <input asp-for="Client.Id" id="ClientId" class="form-control" />
+                </div>
+                <div class="form-group col-6">
+                    <i class="fas fa-id-card"></i>
+                    <label asp-for="Client.Dni" class="control-label "></label>
+                    <input asp-for="Client.Dni" id="ClientDni" type="number" class="form-control" />
+                    <span asp-validation-for="Client.Dni" id="ClientDniVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <i class="fas fa-user"></i>
+                    <label asp-for="Client.Name" class="control-label "></label>
+                    <input asp-for="Client.Name" id="ClientName" class="form-control" />
+                    <span asp-validation-for="Client.Name" id="ClientNameVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-8">
+                    <i class="fas fa-at"></i>
+                    <label asp-for="Client.Email" class="control-label "></label>
+                    <input asp-for="Client.Email" id="ClientEmail" class="form-control" />
+                    <span asp-validation-for="Client.Email" id="ClientEmailVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <i class="fas fa-calendar-day"></i>
+                    <label asp-for="Client.BirthDate" class="control-label "></label>
+                    <input asp-for="Client.BirthDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" 
+                           id="ClientBirthDate" class="form-control" />
+                </div>
+                <div class="form-group col-12">
+                    <i class="far fa-address-book"></i>
+                    <label asp-for="Client.Address" class="control-label "></label>
+                    <input asp-for="Client.Address" id="ClientAddress" class="form-control" />
+                    <span asp-validation-for="Client.Address" id="ClientAddressVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-4">
+                    <i class="far fa-map"></i>
+                    <label asp-for="Client.City" class="control-label "></label>
+                    <input asp-for="Client.City" id="ClientCity" class="form-control" />
+                </div>
+                <div class="form-group col-4">
+                    <i class="far fa-map"></i>
+                    <label asp-for="Client.Province" class="control-label "></label>
+                    <input asp-for="Client.Province" id="ClientProvince" class="form-control" />
+                </div>
+                <div class="form-group col-4">
+                    <i class="far fa-map"></i>
+                    <label asp-for="Client.Country" class="control-label "></label>
+                    <input asp-for="Client.Country" id="ClientCountry" class="form-control" />
+                </div>
+                <div class="form-group col-12">
+                    <i class="fas fa-mobile-alt"></i>
+                    <label asp-for="Client.Phone" class="control-label "></label>
+                    <input asp-for="Client.Phone" id="ClientPhone" class="form-control" />
+                </div>
+                <div class="form-group col-12">
+                    <i class="fas fa-wallet"></i>
+                    <label asp-for="Client.VirtualWallet1" class="control-label "></label>
+                    <input asp-for="Client.VirtualWallet1" id="ClientVirtualW1" class="form-control" />
+                </div>
+                <div class="form-group col-12">
+                    <i class="fas fa-wallet"></i>
+                    <label asp-for="Client.VirtualWallet2" class="control-label "></label>
+                    <input asp-for="Client.VirtualWallet2" id="ClientVirtualW2" class="form-control" />
+                </div>
+                <div class="form-group col-12">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="ClientPep" asp-for="Client.Pep" /> @Html.DisplayNameFor(model => model.Client.Pep)
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <i class="fas fa-at"></i>
-                <label asp-for="Email" class="control-label "></label>
-                <input asp-for="Email" id="ClientEmail" class="form-control" />
-                <span asp-validation-for="Email" id="ClientEmailVal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Capital" class="control-label"></label>
-                <input asp-for="Capital" id="capital" class="form-control" value="0.00" />
-                <span asp-validation-for="Capital" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <i class="far fa-calendar-alt"></i>
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" id="startDate" class="form-control" />
-                <span asp-validation-for="StartDate" id="startDateVal" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" id="FixRent" asp-for="FixRent" /> @Html.DisplayNameFor(model => model.FixRent)
-                </label>
-            </div>
-            <div class="form-group" id="fixRentP" style="display: none;">
-                <i class="fas fa-percent"></i>
-                <label asp-for="FixRentPercentage" class="control-label"></label>
-                <input asp-for="FixRentPercentage" type="number" class="form-control" />
+        </div>
+        <hr />
+        <div class="card-header">
+            <h4>Datos Contrato</h4>
+        </div>
+        <div class="card-body container">
+            <div class="row">
+                <div class="form-group col-12">
+                    <i class="far fa-folder-open"></i>
+                    <label asp-for="ContractNumber" class="control-label "></label>
+                    <input asp-for="ContractNumber" id="ContractNumber" value="@ViewBag.ClientCode" class="form-control" />
+                    <span asp-validation-for="ContractNumber" id="ContractNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <i class="far fa-money-bill-alt"></i>
+                    <label asp-for="Capital" class="control-label"></label>
+                    <input asp-for="Capital" id="capital" class="form-control" value="0.00" />
+                    <span asp-validation-for="Capital" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <i class="fas fa-dollar-sign"></i>
+                    <label asp-for="StartCurrency" class="control-label"></label>
+                    <input asp-for="StartCurrency" id="startCurrency" class="form-control" />
+                </div>
+                <div class="form-group col-6">
+                    <i class="far fa-calendar-alt"></i>
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.Date" id="startDate" class="form-control" />
+                    <span asp-validation-for="StartDate" id="startDateVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6">
+                    <i class="far fa-calendar-alt"></i>
+                    <label asp-for="FinishDate" class="control-label"></label>
+                    <input asp-for="FinishDate" type="date" data-date-format="dd/MM/yyyy" value="@ViewBag.FinishDate" id="finishDate" class="form-control" />
+                    <span asp-validation-for="FinishDate" id="finishtDateVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-12">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="FixRent" asp-for="FixRent" /> @Html.DisplayNameFor(model => model.FixRent)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group col-6" id="fixRentP" style="display: none;">
+                    <i class="fas fa-percent"></i>
+                    <label asp-for="FixRentPercentage" class="control-label"></label>
+                    <input asp-for="FixRentPercentage" type="number" class="form-control" />
 
+                </div>
+                <div class="form-group col-6" id="Refeerer" style="display: none;">
+                    <i class="fas fa-bullhorn"></i>
+                    <label asp-for="RefeerCode" class="control-label"></label>
+                    <input asp-for="RefeerCode" id="refeer" type="number" class="form-control" />
+                    <span asp-validation-for="RefeerCode" id="RefeerVal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6" id="Participation">
+                    <i class="fas fa-percent"></i>
+                    <label asp-for="ParticipationId" class="control-label"></label>
+                    <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
+                </div>
+                <div class="form-group col-6">
+                    <i class="fas fa-dollar-sign"></i>
+                    <label asp-for="RetireCurrency" class="control-label"></label>
+                    <input asp-for="RetireCurrency" id="retireCurrency" class="form-control" />
+                </div>
             </div>
-            <div class="form-group" id="Refeerer" style="display: none;">
-                <i class="fas fa-bullhorn"></i>
-                <label asp-for="RefeerCode" class="control-label"></label>
-                <input asp-for="RefeerCode" id="refeer" type="number" class="form-control" />
-                <span asp-validation-for="RefeerCode" id="RefeerVal" class="text-danger"></span>
-            </div>
-            <div class="form-group" id="Participation">
-                <i class="fas fa-percent"></i>
-                <label asp-for="ParticipationId" class="control-label"></label>
-                <select asp-for="ParticipationId" id="participationId" class="form-control" asp-items="ViewBag.ParticipationId"></select>
-            </div>
-
-
         </div>
         <div class="card-footer">
             <button id="btnCreateFuture" class="btn btn-primary" onclick="Create('@Url.Action("Create", "Futures")')">Aceptar</button>
             <a asp-action="Index" class="btn btn-outline-warning">Cancelar</a>
         </div>
+
     </form>
 </div>
 

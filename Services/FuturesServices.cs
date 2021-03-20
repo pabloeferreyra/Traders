@@ -14,19 +14,18 @@ namespace Traders.Services
     public class FuturesServices : IFuturesServices
     {
         private readonly ApplicationDbContext _context;
-        private readonly IBankServices _bankServices;
-        public FuturesServices(ApplicationDbContext context,
-            IBankServices bankServices)
+        public FuturesServices(ApplicationDbContext context)
         {
             _context = context;
-            _bankServices = bankServices;
         }
 
         public async Task<List<FuturesViewModel>> GetFuturesForClient(Guid clientId)
         {
             var futures = await _context.Futures
                 .Include(f => f.Client)
-                .Include(f => f.Participation).Where(f => f.ClientId == clientId).ToListAsync();
+                .Include(f => f.Participation).Where(f => f.ClientId == clientId)
+                .Where(f => f.FinishDate > DateTime.Today).ToListAsync();
+            futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
 
@@ -60,7 +59,7 @@ namespace Traders.Services
 
                         f.FinalResult += fuGain;
 
-                        if (f.Client.Code == (int)SpecialClients.Uno)
+                        if (f.ContractNumber == (int)SpecialClients.Uno)
                         {
                             var futuresWithFixed = await GetContracts(true);
                             f.FinalResult = FinalResult(futuresWithFixed, f.FinalResult);
@@ -96,6 +95,7 @@ namespace Traders.Services
                     .Include(f => f.Client)
                     .Include(f => f.Participation).Where(f => f.FinishDate == date).ToListAsync();
             }
+            futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
 
@@ -136,7 +136,7 @@ namespace Traders.Services
 
                     future.FinalResult += fuGain;
 
-                    if (future.Client.Code == (int)SpecialClients.Uno)
+                    if (future.ContractNumber == (int)SpecialClients.Uno)
                     {
                         var futuresWithFixed = await GetContracts(true);
                         future.FinalResult = FinalResult(futuresWithFixed, future.FinalResult);
@@ -151,6 +151,7 @@ namespace Traders.Services
             {
                 future.FinalResult = FixRentCalc(future.Capital, future.FixRentPercentage, future.StartDate);
             }
+            future.Term = ((future.FinishDate - future.StartDate).Days / 30);
             return future;
         }
 
@@ -175,6 +176,9 @@ namespace Traders.Services
         {
             try
             {
+                var usd = await _context.BankAccounts.FirstOrDefaultAsync(b => b.Currency == "USD");
+                usd.Amount += model.Capital;
+                _context.BankAccounts.Update(usd);
                 _context.Futures.Add(model);
                 await _context.SaveChangesAsync();
                 return true;
@@ -245,10 +249,6 @@ namespace Traders.Services
             var ret = await _context.SaveChangesAsync();
             #endregion
 
-            #region ganancias
-            await _bankServices.AddFutureAmount(model.Gain);
-            #endregion
-
             #region futuros sin Fija
             var futures = await GetContracts(false);
             foreach (var f in futures)
@@ -304,7 +304,7 @@ namespace Traders.Services
 
                     futuresViewModel.FinalResult += fuGain;
 
-                    if (futuresViewModel.Client.Code == (int)SpecialClients.Uno)
+                    if (futuresViewModel.ContractNumber == (int)SpecialClients.Uno)
                     {
                         var futuresWithFixed = await GetContracts(true);
                         futuresViewModel.FinalResult = FinalResult(futuresWithFixed, futuresViewModel.FinalResult);
@@ -344,8 +344,7 @@ namespace Traders.Services
             {
                 if(f.Refeer.HasValue)
                 {
-                    var cl = await _context.Clients.FirstOrDefaultAsync(c => c.Id == f.Refeer.Value);
-                    var refeerFuture = await FuturesByNumber(cl.Code);
+                    var refeerFuture = await FuturesByNumber(f.ContractNumber);
                     await UpdateRefeerFuture(refeerFuture, f.LastGain);
                 }
             }
@@ -353,9 +352,13 @@ namespace Traders.Services
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateExpiredFutures()
+        private List<FuturesViewModel> CalculateTerm(List<FuturesViewModel> futures)
         {
-            return await _context.Database.ExecuteSqlInterpolatedAsync($"CleanExpiredFutures");
+            for (int f = 0; f < futures.Count(); f++)
+            {
+                futures[f].Term = ((futures[f].FinishDate - futures[f].StartDate).Days / 30);
+            }
+            return futures;
         }
     }
 }
