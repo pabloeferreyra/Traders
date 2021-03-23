@@ -20,7 +20,7 @@ namespace Traders.Models
 
         [Display(Name = "Cliente")]
         public ClientsViewModel Client { get; set; }
-        public Guid ClientId { get; set; }
+        public Guid? ClientId { get; set; }
 
         [Display(Name = "Participacion")]
         public Guid? ParticipationId { get; set; }

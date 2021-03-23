@@ -10,7 +10,7 @@ namespace Traders.Models
     public class ClientsViewModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [Display(Name = "Email"), Required]
         public string Email { get; set; }
