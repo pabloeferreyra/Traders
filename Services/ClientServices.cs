@@ -43,9 +43,9 @@ namespace Traders.Services
         public async Task<List<ClientsViewModel>> GetAllClients()
         {
             var clients = await _context.Clients.ToListAsync();
-            for(int i = 0; i < clients.Count(); i++)
+            for(int i = 0; i < clients.Count; i++)
             {
-                clients[i].Contracts = (await _futuresServices.GetFuturesForClient(clients[i].Id)).Count();
+                clients[i].Contracts = (await _futuresServices.GetFuturesForClient((Guid)clients[i].Id)).Count;
             }
             return clients;
         }
