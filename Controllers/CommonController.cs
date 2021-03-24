@@ -42,7 +42,7 @@ namespace Traders.Controllers
         }
 
         [HttpGet]
-        public bool CurrrencyExists(string currency)
+        public bool CurrencyExists(string currency)
         {
             return _context.BankAccounts.Where(c => c.Currency == currency.ToUpper()).Any();
         }
