@@ -59,10 +59,10 @@ namespace Traders.Models
         [Column(TypeName = "decimal(30,10)")]
         public decimal LastGain { get; set; }
 
-        [Display(Name = "Moneda de inicio")]
+        [Display(Name = "Moneda de inicio"), Required]
         public string StartCurrency { get; set; }
         
-        [Display(Name = "Moneda de retiro")]
+        [Display(Name = "Moneda de retiro"), Required]
         public string RetireCurrency { get; set; }
         public ICollection<FuturesUpdateViewModel> FuturesUpdates { get; set; }
 

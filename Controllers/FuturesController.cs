@@ -93,22 +93,23 @@ namespace Traders.Controllers
             {
                 futuresViewModel.Id = Guid.NewGuid();
                 var client = _clientServices.ClientExistByDni(futuresViewModel.Client.Dni);
-                if (futuresViewModel.RefeerCode != null) {
-                   var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode);
+                if (futuresViewModel.RefeerCode != null)
+                {
+                    var refeer = await _clientServices.GetClient(futuresViewModel.RefeerCode);
                     futuresViewModel.Refeer = refeer.Id;
                 }
                 if (!client)
                 {
                     await _clientServices.CreateClient(futuresViewModel.Client);
                 }
-                else 
+                else
                 {
                     await _clientServices.UpdateClient(futuresViewModel.Client);
                 }
 
                 if (futuresViewModel.FixRent)
                     futuresViewModel.ParticipationId = null;
-                
+
                 if (!NoLimitclient(futuresViewModel.ContractNumber))
                 {
                     futuresViewModel.FinishDate = futuresViewModel.StartDate.AddMonths(6);
@@ -117,11 +118,14 @@ namespace Traders.Controllers
                 {
                     futuresViewModel.FinishDate = futuresViewModel.StartDate.AddYears(99);
                 }
-                
+
                 await _futuresServices.CreateFuture(futuresViewModel);
                 return RedirectToAction(nameof(Index));
             }
-            return View(futuresViewModel);
+            else
+            {
+                return Problem(ModelState.IsValid.ToString(), null, 400);
+            }
         }
 
         private static bool NoLimitclient(int futureContract)

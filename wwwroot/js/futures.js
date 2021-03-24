@@ -33,8 +33,11 @@
                 Pep: $("#ClientPep").val()
             }
         },
-        complete: function (result) {
+        success: function () {
             toastr.success('Contrato creado correctamente', 'Correcto!');
+        },
+        error: function () {
+            toastr.error('Contrato con errores', 'Error!');
         }
     });
 }
@@ -129,11 +132,11 @@ $("#FixRent").change(function () {
 $("#refeer").blur(function () {
     if ($("#refeer").val() != '') {
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/Traders/Common/ClientExist",
             dataType: "json",
             contentType: "application/json",
-            data: $("#refeer").val(),
+            data: ({ email: $("#refeer").val() }),
             complete: function (msj) {
                 value = msj.responseText;
                 if (value == 'true') {
@@ -149,6 +152,69 @@ $("#refeer").blur(function () {
         });
     }
 });
+
+$("#startCurrency").blur(function () {
+    if ($("#startCurrency").val != '') {
+        $.ajax({
+            type: "GET",
+            url: "/Traders/Common/CurrencyExists",
+            dataType: "json",
+            contentType: "application/json",
+            data: ({ currency: $("#startCurrency").val() }),
+            complete: function (msj) {
+                value = msj.responseText;
+                if (value == 'true') {
+                    $("#btnCreateFuture").prop('disabled', false);
+                    toastr.success('Moneda Aceptada', 'Correcto!');
+                }
+                else {
+                    $("#startCurrencyVal").text('Por favor ingresar una Moneda valida.');
+                    toastr.error('Por favor ingresar una moneda valida.', 'Error');
+                    $("#btnCreateFuture").prop('disabled', true);
+                }
+            }
+        });
+    }
+    else {
+        if ($("#startCurrency").val == '') {
+            $("#startCurrencyVal").text('Por favor ingresar una Moneda valida.');
+            toastr.error('Por favor ingresar una moneda valida.', 'Error');
+            $("#btnCreateFuture").prop('disabled', true);
+        }
+    }
+});
+$("#retireCurrency").blur(function () {
+    if ($("#retireCurrency").val != '') {
+        $.ajax({
+            type: "GET",
+            url: "/Traders/Common/CurrencyExists",
+            dataType: "json",
+            contentType: "application/json",
+            data: ({ currency: $("#retireCurrency").val() }),
+            complete: function (msj) {
+                value = msj.responseText;
+                if (value == 'true') {
+                    $("#btnCreateFuture").prop('disabled', false);
+                    toastr.success('Moneda Aceptada', 'Correcto!');
+                }
+                else {
+                    $("#startCurrencyVal").text('Por favor ingresar una Moneda valida.');
+                    toastr.error('Por favor ingresar una moneda valida.', 'Error');
+                    $("#btnCreateFuture").prop('disabled', true);
+                }
+            }
+        });
+    }
+    else {
+        if ($("#retireCurrency").val == '') {
+            $("#retireCurrency").text('Por favor ingresar una Moneda valida.');
+            toastr.error('Por favor ingresar una moneda valida.', 'Error');
+            $("#btnCreateFuture").prop('disabled', true);
+        }
+    }
+});
+
+
 $("#startDate").blur(function () {
     $.ajax({
         type: "GET",

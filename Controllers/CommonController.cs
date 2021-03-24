@@ -22,10 +22,10 @@ namespace Traders.Controllers
             _clientServices = clientServices;
         }
 
-        [HttpPost]
-        public bool ClientExist([FromBody]string email)
+        [HttpGet]
+        public bool ClientExist(string email)
         {
-            return _context.Clients.Where(c => c.Email == email).Any();
+            return _context.Clients.Where(c => c.Dni == email).Any();
         }
 
         [HttpGet]
@@ -39,6 +39,12 @@ namespace Traders.Controllers
         public JsonResult CalculateTime(DateTime date)
         {
             return Json(date.AddMonths(6).ToShortDateString());
+        }
+
+        [HttpGet]
+        public bool CurrrencyExists(string currency)
+        {
+            return _context.BankAccounts.Where(c => c.Currency == currency.ToUpper()).Any();
         }
     }
 }
