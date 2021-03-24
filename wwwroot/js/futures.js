@@ -198,7 +198,7 @@ $("#retireCurrency").blur(function () {
                     toastr.success('Moneda Aceptada', 'Correcto!');
                 }
                 else {
-                    $("#startCurrencyVal").text('Por favor ingresar una Moneda valida.');
+                    $("#retireCurrencyVal").text('Por favor ingresar una Moneda valida.');
                     toastr.error('Por favor ingresar una moneda valida.', 'Error');
                     $("#btnCreateFuture").prop('disabled', true);
                 }
