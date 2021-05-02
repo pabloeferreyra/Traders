@@ -46,13 +46,13 @@ namespace Traders.Controllers
                 }
             }
             await _futuresServices.UpdateFinalResultFixed(futuresUpdate);
-            return View(await _futuresServices.GetFutures(null));
+            return View(await _futuresServices.GetFutures());
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchFutures(DateTime? dateContract)
+        public async Task<IActionResult> SearchFuturesWithCN(int? ContractNumber)
         {
-            return PartialView("_FuturesPartial", await _futuresServices.GetFutures(dateContract));
+            return PartialView("_FuturesPartial", await _futuresServices.GetFuturesByNumber(ContractNumber));
         }
 
         public async Task<IActionResult> Details(Guid? id)

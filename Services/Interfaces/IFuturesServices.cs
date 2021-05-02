@@ -10,7 +10,8 @@ namespace Traders.Services
     {
         public Task<List<FuturesViewModel>> GetFuturesForClient(Guid clientId);
         public Task<List<FuturesViewModel>> CalculateFutures(List<FuturesViewModel> futures);
-        public Task<List<FuturesViewModel>> GetFutures(DateTime? date);
+        public Task<List<FuturesViewModel>> GetFutures();
+        public Task<List<FuturesViewModel>> GetFuturesByNumber(int? contractNumber);
         public bool FuturesViewModelExists(Guid id);
         public Task<FuturesViewModel> GetFuture(Guid? id);
         public Task<int> GetLastContractNumber();

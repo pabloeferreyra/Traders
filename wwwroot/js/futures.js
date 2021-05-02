@@ -288,6 +288,25 @@ function SearchFutures(urlAction) {
         }
     });
 }
+function SearchFuturesWithCN(urlAction) {
+    var number = $("#ContractNumber").val();
+    $.ajax({
+        type: "POST",
+        url: urlAction,
+        data: {
+            ContractNumber: number
+        },
+        success: function (result) {
+            if (result.trim().length == 0) {
+                toastr.success('no quedan contratos!', 'Todo listo!');
+                $("#FuturesPartial").html(result);
+            }
+            $("#FuturesPartial").html(result);
+        },
+        error: function (req, status, error) {
+        }
+    });
+}
 
 function SearchAllFutures(urlAction) {
     $.ajax({
