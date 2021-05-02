@@ -27,7 +27,7 @@
                 <div class="form-group col-6">
                     <i class="fas fa-id-card"></i>
                     <label asp-for="Client.Dni" class="control-label "></label>
-                    <input asp-for="Client.Dni" id="ClientDni" type="number" class="form-control" />
+                    <input asp-for="Client.Dni" id="ClientDni" inputmode="numeric" type="number" class="form-control" />
                     <span asp-validation-for="Client.Dni" id="ClientDniVal" class="text-danger"></span>
                 </div>
                 <div class="form-group col-6">
@@ -39,7 +39,7 @@
                 <div class="form-group col-8">
                     <i class="fas fa-at"></i>
                     <label asp-for="Client.Email" class="control-label "></label>
-                    <input asp-for="Client.Email" id="ClientEmail" class="form-control" />
+                    <input asp-for="Client.Email" inputmode="email" id="ClientEmail" class="form-control" />
                     <span asp-validation-for="Client.Email" id="ClientEmailVal" class="text-danger"></span>
                 </div>
                 <div class="form-group col-4">
@@ -72,7 +72,7 @@
                 <div class="form-group col-12">
                     <i class="fas fa-mobile-alt"></i>
                     <label asp-for="Client.Phone" class="control-label "></label>
-                    <input asp-for="Client.Phone" id="ClientPhone" class="form-control" />
+                    <input asp-for="Client.Phone" inputmode="numeric" id="ClientPhone" class="form-control" />
                 </div>
                 <div class="form-group col-12">
                     <i class="fas fa-wallet"></i>
@@ -102,19 +102,20 @@
                 <div class="form-group col-12">
                     <i class="far fa-folder-open"></i>
                     <label asp-for="ContractNumber" class="control-label "></label>
-                    <input asp-for="ContractNumber" id="ContractNumber" value="@ViewBag.ClientCode" class="form-control" />
+                    <input asp-for="ContractNumber" inputmode="numeric" id="ContractNumber" value="@ViewBag.ClientCode" class="form-control" />
                     <span asp-validation-for="ContractNumber" id="ContractNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group col-6">
                     <i class="far fa-money-bill-alt"></i>
                     <label asp-for="Capital" class="control-label"></label>
-                    <input asp-for="Capital" id="capital" class="form-control" value="0.00" />
+                    <input asp-for="Capital" inputmode="numeric" id="capital" class="form-control" value="0.00" />
                     <span asp-validation-for="Capital" class="text-danger"></span>
                 </div>
                 <div class="form-group col-6">
                     <i class="fas fa-dollar-sign"></i>
                     <label asp-for="StartCurrency" class="control-label"></label>
                     <input asp-for="StartCurrency" id="startCurrency" class="form-control" />
+                    <span asp-validation-for="StartCurrency" id="startCurrencyVal" class="text-danger"></span>
                 </div>
                 <div class="form-group col-6">
                     <i class="far fa-calendar-alt"></i>
@@ -138,13 +139,13 @@
                 <div class="form-group col-6" id="fixRentP" style="display: none;">
                     <i class="fas fa-percent"></i>
                     <label asp-for="FixRentPercentage" class="control-label"></label>
-                    <input asp-for="FixRentPercentage" type="number" class="form-control" />
+                    <input asp-for="FixRentPercentage" inputmode="numeric" type="number" class="form-control" />
 
                 </div>
                 <div class="form-group col-6" id="Refeerer" style="display: none;">
                     <i class="fas fa-bullhorn"></i>
                     <label asp-for="RefeerCode" class="control-label"></label>
-                    <input asp-for="RefeerCode" id="refeer" type="number" class="form-control" />
+                    <input asp-for="RefeerCode" id="refeer" inputmode="numeric" type="number" placeholder="Dni/Cuit Cliente" class="form-control" />
                     <span asp-validation-for="RefeerCode" id="RefeerVal" class="text-danger"></span>
                 </div>
                 <div class="form-group col-6" id="Participation">
@@ -156,6 +157,7 @@
                     <i class="fas fa-dollar-sign"></i>
                     <label asp-for="RetireCurrency" class="control-label"></label>
                     <input asp-for="RetireCurrency" id="retireCurrency" class="form-control" />
+                    <span asp-validation-for="RetireCurrency" id="retireCurrencyVal" class="text-danger"></span>
                 </div>
             </div>
         </div>
