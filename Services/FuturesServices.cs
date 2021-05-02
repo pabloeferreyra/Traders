@@ -25,6 +25,7 @@ namespace Traders.Services
                 .Include(f => f.Client)
                 .Include(f => f.Participation).Where(f => f.ClientId == clientId)
                 .Where(f => f.FinishDate > DateTime.Today).OrderBy(f => f.ContractNumber).ToListAsync();
+
             futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
