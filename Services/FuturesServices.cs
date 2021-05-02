@@ -24,7 +24,8 @@ namespace Traders.Services
             var futures = await _context.Futures
                 .Include(f => f.Client)
                 .Include(f => f.Participation).Where(f => f.ClientId == clientId)
-                .Where(f => f.FinishDate > DateTime.Today).ToListAsync();
+                .Where(f => f.FinishDate > DateTime.Today).OrderBy(f => f.ContractNumber).ToListAsync();
+
             futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
         }
@@ -80,10 +81,20 @@ namespace Traders.Services
             return futuresNew;
         }
 
-        public async Task<List<FuturesViewModel>> GetFutures(DateTime? date)
+        public async Task<List<FuturesViewModel>> GetFutures()
         {
             List<FuturesViewModel> futures = new();
-            if (date == null)
+                futures = await _context.Futures
+                    .Include(f => f.Client)
+                    .Include(f => f.Participation).OrderByDescending(f => f.ContractNumber).ToListAsync();
+            futures = CalculateTerm(futures);
+            return await CalculateFutures(futures);
+        }
+
+        public async Task<List<FuturesViewModel>> GetFuturesByNumber(int? contractNumber)
+        {
+            List<FuturesViewModel> futures = new();
+            if (contractNumber == null)
             {
                 futures = await _context.Futures
                     .Include(f => f.Client)
@@ -93,7 +104,7 @@ namespace Traders.Services
             {
                 futures = await _context.Futures
                     .Include(f => f.Client)
-                    .Include(f => f.Participation).Where(f => f.FinishDate == date).ToListAsync();
+                    .Include(f => f.Participation).Where(f => f.ContractNumber == contractNumber).ToListAsync();
             }
             futures = CalculateTerm(futures);
             return await CalculateFutures(futures);
@@ -168,7 +179,7 @@ namespace Traders.Services
             }
             else
             {
-                return await _context.FuturesUpdates.ToListAsync();
+                return await _context.FuturesUpdates.OrderBy(fu => fu.ModifDate).ToListAsync();
             }
         }
 
